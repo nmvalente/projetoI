@@ -52,7 +52,7 @@
 \linebreak
 \Large{Mestrado Integrado em Engenharia Informática e Computação}\linebreak\linebreak\linebreak\linebreak
 }
-\author{\textbf{Grupo ?? Turma ???}\\
+\author{\textbf{Turma 3 - Grupo A3\_2}\\
 Artur Ferreira - ei12168 - ei12168@fe.up.pt\\
 Nuno Valente - up200204376 - up200204376@fe.up.pt\\
 \linebreak\linebreak \\
@@ -99,38 +99,80 @@ In this problem we need to consider a few concepts like truck, container, place 
 
 \subsubsection{Problem description}
 
-In a summarized way we need to determine the best itinerary that contemplates the already referred objectives in \ref{objective}.
+In a summarized way we need to determine the best itinerary that contemplates the already referred objectives in section \ref{objective}.
 
 \subsubsection{Problem restrictions}
 
-In order to make the problem more realistic, we try to use some streets of the city of Oporto, with coordinates of real latitude and longitude. In this sense, it is intended that in a more advanced phase of the project, these coordinates are used to better represent the selected itinerary. 
+In order to make the problem more realistic, we try to use some streets of the city of Oporto, with coordinates of real latitude and longitude where we put containers. In this sense, it is intended that in a more advanced phase of the project, these coordinates are used to better represent the selected itinerary and the distance covered. 
 
 \subsubsection{Problem representation}
 
 To represent the map of this problem, we considered a non-directed graph with a list of adjacent edges on each node and it is used to represent, in general, the garbage container map. A node represents a point of passage: central, container or treatment station. The edges of the graph store the distance between the node that has that edge and the target node.
 
-\subsubsection{Solution}
+\subsubsection{List of requirements}\label{subsecsec:requirements}
 
-% todo
+\begin{table}[H]
+	\centering
+	\label{tab:list-of-requirements}
+	\begin{tabular}{|l|l|p{9cm}|}
+		\hline
+		\textbf{Id} & \textbf{Priority} & \textbf{Description} \\ \hline
+		R1 & Mandatory        & The user can chose the number of each type of truck available on the central  \\ \hline
+		R2 & Mandatory         & The user can enter the truck capacity \\ \hline
+		R3 & Mandatory          & The user can select the number of stations to leave the garbage \\ \hline
+		R4 & Mandatory         & The user will see the result of the implemented search algorithm in console. \\ \hline
+		R5 & Mandatory         & The application must provide the result with the data that the user chose to test \\ \hline
+		R6 & Opcional         & The user will see the result of the implemented search algorithm in a graphical friendly user interface.\\ \hline
+		R7 & Opcional         & Nodes and edges are loaded from a csv file to facilitate the edition of data \\ \hline
+	\end{tabular}
+\end{table}
 
-Representação do tema como problema de pesquisa: estados, função de transição, heurísticas.
-Algoritmos de pesquisa a aplicar (ilustrados para o caso concreto).
+\subsubsection{Solution}\label{solution}
+
+In order to finding the best solution to the problem, we intend to apply the algorithm $A^*$ to a graph that represents a map with some of the possible routes from the Central to the Treatment Station. This algorithm figures the least cost path to the node which makes it a best first search algorithm. Uses the following formula:
+
+\begin{equation}\label{equation}
+f(x) = g(x) + h(x)
+\end{equation}
+
+where $g(x)$ is the total distance in kilometers ($km$) from the initial position to the current position, $h(x)$ is the heuristic function that is used to approximate distance from the current location to the goal state. This function is distinct because it is a mere estimation rather than an exact value. The more accurate the heuristic the better and faster the goal state is reach and with much more accuracy.
+
+The equation refered in (\ref{equation}) represents the current approximation of the shortest path to the goal. 
+
+To ensure the admissibility of the $h(x)$ heuristic function, it is thought to calculate the straight-line distance between the geographic coordinates between the node in question and the last node - the station, only when all containers have been reached, of course, if they have enough garbage to collect.
+When there is still garbage to collect, the Manhattan distance is calculated for the path from the current point to all points yet to be reached until the final node.
 
 \subsection{Work already done}
 
-Utilizou-se página web que possui uma ferramenta online \ref{openStreet}
+We believed that the next exposed method to approach the problem, facilitate our work. First, we make a effort to understand the problem. After and considering what we learned on lectures classes, we analyse and we made a choice of one of the problem solving methodologies - using algorithms for informed solutions research. 
+Posteriorly we felt the need to have some data and store a little bank of data with information of nodes and edges in one file \emph{.csv}.
+Further, we made prints to have a simple debug implemented. 
+In our last step until the delivery of this report we are trying to implement the algorithm already referred in the last subsection \ref{solution}.
+
+Nodes and edges were generated from coordinates obtained by OpenStreetMap, an open source tool, where we export a rectangle zone of streets from city of Oporto. 
+
+In our approach we are increasing the level of difficult of the project. Until know, we can chose the desired number of each type of trucks, the truck capacity and the number of stations, all in a graphical interface. For applying the algorithm we in this phase just have one truck of paper waste and one station, although the graphical interface is already prepared to edit with other data. 
+
+We have too one basic other graphical interface prepared to show the results of the algorithm.
+
+
+The best solution to the problem was calculated by counting the distance as a calculation factor for both the cost function up to the $g(n)$ node and the heuristic function $h(n)$. A basic graphical representation of the initial map and the solution generated by the program is made.
+
+It was used a website that has an online tool \ref{itm:openStreet}
 
 \subsection{Expected results and future evaluation of the project}
 
+In the future we need to validate the results. Why? Because of two reasons: software always has defects and we want to catch them before we deliver the project. It is important to us that the application is consistent and we have some degree of safe with what we developed; by other hand, we want to test the solution, more properly, the implemented algorithm. 
+
+Other thing we want to permit the user to do is to let him visualize the solution in a friendly way, with a graph viewer tool.
+
 \section{Conclusions} 
 
-The model that we developed covers all the requirements included implicitly on the theme project and the list of requirements described in section \ref{sec:requirements}.
+The application developed until now meets some items of the list of requirements \ref{subsecsec:requirements}, but in a small scale, because the number of data used. We want to increment the number of nodes and edges, maybe try and test with other algorithm to compare the solutions. 
 
-In the end, and after model verifications, we all see the game developed in VDM++ like one of the more consistent and safe projects that we have ever developed during the course.
+Last we can say that we have one doubt - what graph viwer tool we'll use and if it is a good tool. 
 
-Even though we all had previous contact with several versions of the game, we are quite pleased with this version of ours. The main things we would like to change would have to be done in Java, because they are related with the Command Line Interface. Indeed, we wanted to make the game accept keystrokes without the need to press Enter. And if that had been achieved, we would have implemented a timer that depending on the level would make the pieces move down in increasing speeds, making the game more difficult. It would also be interesting to show where each piece will land (ghost piece function) and the next tetramino that will appear. However, we feel that these features, lay outside the spectrum of the course.
-
-Overall the project took approximately 80 man-hours to develop. We feel that the work was more or less well distributed between the members, and although each one was mainly focused on a different part of the project, we discussed most things with each other and planned together.
+\newpage
 
 \section{Resources}
 
@@ -138,24 +180,29 @@ Overall the project took approximately 80 man-hours to develop. We feel that the
 
 \begin{enumerate}
 	
-	\item https://en.wikipedia.org/wiki/Tetris
-	
+	\item Slides from lectures classes
+	\bibitem{lamport93}
+	Stuart Russell, Peter Norvig
+	\emph{Artifical Intelligence A Modern Approach},
+	Pearson Education
+	3rd edition,
+	2010.
+	\item \url{http://www.gpsvisualizer.com/tutorials/waypoints.html} 
+	\item \url{https://reference.wolfram.com/language/ref/ManhattanDistance.html}
+
 \end{enumerate}
 
 \subsection{Used software} \label{openStreet}
 \begin{enumerate}
 	
-\item http://www.openstreetmap.org/
+\item \url{http://www.openstreetmap.org/}\label{itm:openStreet}
+\item \url{http://jgrapht.org/}
 
 \end{enumerate}
 
 \newpage
 \appendix
 
-\section{Annex}\label{}
-
-
-
-
+%\section{Annex}\label{}
 	
 \end{document}
