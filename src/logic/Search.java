@@ -72,8 +72,8 @@ public class Search {
 		System.out.println("A STAR SELECTED");	
 		this.copyG = new Graph(graph); // grafo para manipular 
 
-		//System.out.println(this.copyG);
-		
+		System.out.println(this.copyG);
+
 		for(Node n : this.copyG.getNodes()){
 			if(! n.equals(central)){
 				n.setGValue(straightLineDistance(central.getLatitude(), central.getLongitude(), 
@@ -83,7 +83,7 @@ public class Search {
 			}
 			//System.out.println(n.getId() + " " + n.getFValue());
 		}
-		
+
 		explored = new HashSet<Node>();
 		queue = new PriorityQueue<Node>(this.copyG.getNodes().size(),   new Comparator<Node>(){
 
@@ -103,12 +103,12 @@ public class Search {
 
 		//cost from start
 		initial.setGValue(0);
-		
+
 		queue.add(initial);
 		boolean found = false;
 
 		while((!queue.isEmpty())&&(!found)){
-			
+
 			//the node having the lowest f_score value
 			Node current = queue.poll();
 
@@ -119,35 +119,33 @@ public class Search {
 				found = true;
 				queue.add(current); // no caso em que deve adicionar o final
 			}
-			//System.out.println(current + "    fdafsfjohiusayghufg");
-			//System.out.println(current.getOutEdges() + "    fdafsfjohiusayghufg");
-			
-			
+
+
 			//check every child of current node
 			for(Edge e : current.getOutEdges()){
-				
+
 				Node child = e.getDestiny();
-				
+
 				double cost = straightLineDistance(current.getLatitude(), current.getLongitude(), 
 						child.getLatitude(), child.getLongitude());
 				double temp_g_scores = current.getGValue() + cost;
 				double temp_f_scores = temp_g_scores + child.getHValue();
-				
+
 				//System.out.println(temp_g_scores + "   " + temp_f_scores);
 				/*if child node has been evaluated and 
                      the newer f_score is higher, skip*/
-				
+
 				if((explored.contains(child)) && (temp_f_scores >= child.getFValue())){
 					continue;
 				}
 
 				/*else if child node is not in queue or 
                      newer f_score is lower*/
-				
+
 				else if((!queue.contains(child)) || (temp_f_scores < child.getFValue())){
-					
+
 					child.setParent(current);
-					
+
 					//System.out.println(child.getName() +  " has parent " + current.getName());
 					child.setGValue(temp_g_scores);
 					child.setFValue(temp_f_scores);
@@ -163,11 +161,11 @@ public class Search {
 
 	public List<Node> buildItinerary(){
 		this.itinerary = new ArrayList<Node>();
-			
+
 		for(Node node = queue.poll(); node != null; node = node.getParent()){
 
 			//System.out.println(node.getParent());
-			
+
 			this.itinerary.add(node);
 		}
 
@@ -178,10 +176,17 @@ public class Search {
 
 	public void printItinerary(){
 		
-		System.out.println(this.itinerary);
-		/*for(Node node : this.itinerary ){
-			System.out.println(node);
-		}*/
+		System.out.println("Itinerary :");
+
+		System.out.print("[");
+		for(Node node : this.itinerary ){
+			if(node.getType() == this.station.getType())
+				System.out.print(node.getName());
+			else
+				System.out.print(node.getName() + ", ");
+		}
+		System.out.println("]");
+
 	}
 
 
