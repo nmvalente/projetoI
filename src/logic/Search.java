@@ -1,10 +1,8 @@
 package logic;
 
-import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,7 +68,7 @@ public class Search {
 		System.out.println("A STAR SELECTED");	
 		this.copyG = new Graph(graph); // grafo para manipular 
 
-		//System.out.println(this.copyG);
+		System.out.println(this.copyG);
 		
 		for(Node n : this.copyG.getNodes()){
 			if(! n.equals(central)){
@@ -79,7 +77,9 @@ public class Search {
 				n.setHValue(0);
 				n.setFValue(n.getGValue() + n.getHValue());
 			}
-			//System.out.println(n.getId() + " " + n.getFValue());
+			System.out.println("NODE -" + n.getId() + " FVALUE -" + n.getFValue() + " GVALUE -" + n.getGValue() + " HVALUE -" + n.getHValue());
+			System.out.println(n.getOutEdges());
+		
 		}
 		
 
@@ -118,14 +118,12 @@ public class Search {
 			//goal found
 			if(current.getId() == goal.getId()){
 				found = true;
-			}
-			//System.out.println(current + "    fdafsfjohiusayghufg");
-			//System.out.println(current.getOutEdges() + "    fdafsfjohiusayghufg");
-			
+			}			
 			
 			//check every child of current node
 			for(Edge e : current.getOutEdges()){
-				System.out.println(current.getId() + "   " + current.getOutEdges().size() + "    814864849148941984sdadsafdafsfjohiusayghufg");
+				//System.out.println("entrou no for");
+
 				Node child = e.getDestiny();
 				double cost = e.getDistance();
 				double temp_g_scores = current.getGValue() + cost;
@@ -143,7 +141,7 @@ public class Search {
 				
 				else if((!queue.contains(child)) || (temp_f_scores < child.getFValue())){
 					
-					System.out.println("3843028049832084903248237740687" + "    fdafsfjohiusayghufg");
+					//System.out.println("entrou no else");
 					child.setParent(current);
 					child.setGValue(temp_g_scores);
 					child.setFValue(temp_f_scores);
@@ -174,9 +172,14 @@ public class Search {
 	}
 
 	public void printItinerary(){
+		System.out.print("[");
 		for(Node node : this.itinerary ){
-			System.out.println(node);
+			if(node == this.station)
+				System.out.print(node.getName());
+			else
+				System.out.print(node.getName() + ",");
 		}
+		System.out.println("]");
 	}
 
 
