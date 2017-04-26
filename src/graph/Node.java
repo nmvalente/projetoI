@@ -37,7 +37,7 @@ public class Node{
 			this.indegree = 0;
 			this.name = node.name;
 			this.outEdges = new ArrayList<Edge>();
-			
+			this.outEdges = node.getOutEdges();
 		}
 	}
 
