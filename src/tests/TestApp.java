@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 import logic.*;
 import org.junit.Test;
 
+import graph.Node;
+
 public class TestApp {
 
 	@Test
