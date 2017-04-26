@@ -30,6 +30,8 @@ public class Search {
 	protected Node station;
 	protected Map<String, ArrayList<Truck>> trucks;
 	protected PriorityQueue<Node> queue;
+	Set<Node> explored;
+
 
 	public Search(Graph graph,
 			LinkedList<Node> containers,
@@ -83,7 +85,7 @@ public class Search {
 		}
 		
 
-		Set<Node> explored = new HashSet<Node>();
+		explored = new HashSet<Node>();
 		queue = new PriorityQueue<Node>(this.copyG.getNodes().size(),   new Comparator<Node>(){
 
 			//override compare method
@@ -118,6 +120,7 @@ public class Search {
 			//goal found
 			if(current.getId() == goal.getId()){
 				found = true;
+				queue.add(current); // no caso em que deve adicionar o final
 			}
 			//System.out.println(current + "    fdafsfjohiusayghufg");
 			//System.out.println(current.getOutEdges() + "    fdafsfjohiusayghufg");
@@ -125,12 +128,15 @@ public class Search {
 			
 			//check every child of current node
 			for(Edge e : current.getOutEdges()){
-				System.out.println(current.getId() + "   " + current.getOutEdges().size() + "    814864849148941984sdadsafdafsfjohiusayghufg");
+				
 				Node child = e.getDestiny();
-				double cost = e.getDistance();
+				
+				double cost = straightLineDistance(current.getLatitude(), current.getLongitude(), 
+						child.getLatitude(), child.getLongitude());
 				double temp_g_scores = current.getGValue() + cost;
 				double temp_f_scores = temp_g_scores + child.getHValue();
 				
+				//System.out.println(temp_g_scores + "   " + temp_f_scores);
 				/*if child node has been evaluated and 
                      the newer f_score is higher, skip*/
 				
@@ -143,13 +149,13 @@ public class Search {
 				
 				else if((!queue.contains(child)) || (temp_f_scores < child.getFValue())){
 					
-					System.out.println("3843028049832084903248237740687" + "    fdafsfjohiusayghufg");
 					child.setParent(current);
+					
+					//System.out.println(child.getName() +  " has parent " + current.getName());
 					child.setGValue(temp_g_scores);
 					child.setFValue(temp_f_scores);
 					if(queue.contains(child)){
 						queue.remove(child);
-						
 					}
 					queue.add(child);
 				}
@@ -160,10 +166,10 @@ public class Search {
 
 	public List<Node> buildItinerary(){
 		this.itinerary = new ArrayList<Node>();
+			
+		for(Node node = queue.poll(); node != null; node = node.getParent()){
 
-		for(Node node = this.station; node != null; node = node.getParent()){
-
-			System.out.println(node.getParent());
+			//System.out.println(node.getParent());
 			
 			this.itinerary.add(node);
 		}
@@ -174,9 +180,11 @@ public class Search {
 	}
 
 	public void printItinerary(){
-		for(Node node : this.itinerary ){
+		
+		System.out.println(this.itinerary);
+		/*for(Node node : this.itinerary ){
 			System.out.println(node);
-		}
+		}*/
 	}
 
 
