@@ -84,7 +84,6 @@ public class Search {
 			//System.out.println(n.getId() + " " + n.getFValue());
 		}
 		
-
 		explored = new HashSet<Node>();
 		queue = new PriorityQueue<Node>(this.copyG.getNodes().size(),   new Comparator<Node>(){
 
@@ -101,8 +100,6 @@ public class Search {
 				}
 			}
 		});
-
-
 
 		//cost from start
 		initial.setGValue(0);
