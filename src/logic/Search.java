@@ -2,62 +2,35 @@ package logic;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 import graph.Edge;
 import graph.Graph;
 import graph.Node;
 import gui.Result;
+import logic.Utils;
+
 
 public class Search {
 
-	public static enum SEARCH_MODE {
-		UNIFORM_COST("Uniform-cost search"), 
-		A_STAR_BASIC("A* search with basic heuristic function"), 
-		A_STAR_ADVANCED("A* search with advanced heuristic function");
-
-		private final String outputString;
-
-		private SEARCH_MODE(String value) {
-			outputString = value;
-		}
-
-		@Override
-		public String toString() {
-			return outputString;
-		}
-	}
-
-
-	protected Truck truck;
-	protected ResultGraph result;
-	protected SEARCH_MODE searchMode;
-	protected double priceRatio;
-	protected double distRatio;
-	private int generatedNodesCounter;
-
-	public Search(Truck truck, SEARCH_MODE searchMode, double distRatio, double priceRatio){
-		this.generatedNodesCounter = 0;
-		this.setTruck(truck);
-		//this.setResult(new ResultGraph());
-		this.searchMode = searchMode;
-		this.distRatio = distRatio;
-		this.priceRatio = priceRatio;
-	}
-
-	////////////////////////////////////////////////////////////////////
-
+	protected Graph copyG;
 	protected LinkedList<Node> containers;
 	protected ArrayList<Node> garbageStations;
-	protected LinkedList<Node> itinerary;
+	protected List<Node> itinerary;
 	protected Map<String, Integer> typeTruck;
 	protected Node central;
 	protected Node station;
 	protected Map<String, ArrayList<Truck>> trucks;
+	protected PriorityQueue<Node> queue;
+
 
 	public Search(Graph graph,
 			LinkedList<Node> containers,
@@ -66,14 +39,153 @@ public class Search {
 			Map<String, Integer> typeTruck,
 			Node central,
 			Node station,
-			Map<String, ArrayList<Truck>> trucks){
+			Map<String, ArrayList<Truck>> trucks,
+			String heuristic){
 
-		
-		sendSearchToResult();
+		this.containers = containers;
+		this.central = new Node(central);
+		this.station = new Node(station);
+
+
+		switch(heuristic) {
+		case Utils.A_STAR:
+			a_star(graph, this.central, this.station);
+			buildItinerary();
+			printItinerary();
+			break;
+		case Utils.UNIFORM_COST:
+			uniform_cost();
+			break;
+		default:
+			break;
+		}
+
+		// show in gui the result
+
+		//sendSearchToResult();
 	}
 
-	public static double straightLineDistance(double lat1, double lon1,
-			double lat2, double lon2) {
+	private void uniform_cost() {System.out.println("UNIFORM SELECTED");}
+
+	private void a_star(Graph graph, Node initial, Node goal) {
+		System.out.println("A STAR SELECTED");	
+		this.copyG = new Graph(graph); // grafo para manipular 
+
+		System.out.println(this.copyG);
+		
+		for(Node n : this.copyG.getNodes()){
+			if(! n.equals(central)){
+				n.setGValue(straightLineDistance(central.getLatitude(), central.getLongitude(), 
+						n.getLatitude(), n.getLongitude()));
+				n.setHValue(0);
+				n.setFValue(n.getGValue() + n.getHValue());
+			}
+			System.out.println(n.getId() + " " + n.getFValue());
+		}
+		
+
+		Set<Node> explored = new HashSet<Node>();
+		queue = new PriorityQueue<Node>(copyG.getNodes().size(),   new Comparator<Node>(){
+
+			//override compare method
+			public int compare(Node i, Node j){
+				if(i.getFValue() > j.getFValue()){
+					return 1;
+				}
+				else if (i.getFValue() < j.getFValue()){
+					return -1;
+				}
+				else{
+					return 0;
+				}
+			}
+		});
+
+
+
+		//cost from start
+		initial.setGValue(0);
+		
+		queue.add(initial);
+		boolean found = false;
+
+		while((!queue.isEmpty())&&(!found)){
+			
+			//the node having the lowest f_score value
+			Node current = queue.poll();
+
+			explored.add(current);
+
+			//goal found
+			if(current.getId() == goal.getId()){
+				found = true;
+			}
+			System.out.println("dfisouhdiofsufhushfidshu");
+			//check every child of current node
+			for(Edge e : current.getOutEdges()){
+				System.out.println(e);
+				Node child = e.getDestiny();
+				double cost = e.getDistance();
+				double temp_g_scores = current.getGValue() + cost;
+				double temp_f_scores = temp_g_scores + child.getHValue();
+				
+				/*if child node has been evaluated and 
+                     the newer f_score is higher, skip*/
+				
+				if((explored.contains(child)) && (temp_f_scores >= child.getFValue())){
+					continue;
+				}
+
+				/*else if child node is not in queue or 
+                     newer f_score is lower*/
+				
+				else if((!queue.contains(child)) || (temp_f_scores < child.getFValue())){
+					System.out.println(child);
+					child.setParent(current);
+					child.setGValue(temp_g_scores);
+					child.setFValue(temp_f_scores);
+					if(queue.contains(child)){
+						queue.remove(child);
+					}
+					queue.add(child);
+				}
+			}
+		}
+	}
+
+
+	public List<Node> buildItinerary(){
+		this.itinerary = new ArrayList<Node>();
+
+		for(Node node = this.station; node != null; node = node.getParent()){
+
+			//System.out.println(node.getParent());
+			
+			this.itinerary.add(node);
+		}
+
+		Collections.reverse(this.itinerary);
+
+		return this.itinerary;
+	}
+
+	public void printItinerary(){
+		for(Node node : this.itinerary ){
+			System.out.println(node);
+		}
+	}
+
+
+	public void sendSearchToResult() {
+		try {
+			Result window = new Result(10,2); // to change in future
+			window.frmResult.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static double straightLineDistance(double lat1, double lon1, double lat2, double lon2) {
 		double dLat = Math.toRadians(lat2 - lat1);
 		double dLon = Math.toRadians(lon2 - lon1);
 		double a = Math.pow((Math.sin(dLat / 2.0)), 2.0)
@@ -82,116 +194,5 @@ public class Search {
 				* Math.pow((Math.sin(dLon / 2.0)), 2.0);
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		return Utils.EARTH_RADIUS * c;
-	}
-
-	public boolean buildResult(StateNode finalNode) {
-		//this.result = new ResultGraph();
-		this.truck = finalNode.getTruck();
-		StateNode lastNode = null;
-		StateNode nodEval = finalNode;
-
-		do {
-			Node destNode = nodEval.getNode();
-
-			Node sourcNode = new Node(destNode);
-			if (lastNode != null) {
-				Edge edge = lastNode.getEdge();
-				if (edge != null) {
-					sourcNode.addEdge(lastNode.getNode(), edge.getDistance());
-				}
-			}
-			//this.result.addNode(sourcNode);
-
-			if (nodEval.isSleepNeeded()) {
-				// System.out.println("sleep needed: "
-				// + nodEval.getNode().getDescription());
-				this.result.addGarbageContainer(nodEval.getNode());
-			}
-			if (nodEval.isGasNeeded()) {
-				this.result.addGarbageStation(nodEval.getNode());
-			}
-
-			lastNode = nodEval;
-			nodEval = nodEval.getParent();
-		} while (nodEval != null);
-
-		//this.result.setTruck(truck);
-		return true;
-	}
-
-	public boolean run() {
-		Comparator<StateNode> compareNodes = new Comparator<StateNode>() {
-			public int compare(StateNode node1, StateNode node2) {
-				return node1.compareEvaluation(node2);
-			}
-		};
-
-		PriorityQueue<StateNode> open = new PriorityQueue<StateNode>(20,
-				compareNodes);
-		HashMap<Integer, StateNode> closed = new HashMap<Integer, StateNode>();
-
-		StateNode startNode = new StateNode(this.truck.getStartingPosition(), null, null,
-				new Truck(truck), this.searchMode, this.distRatio, this.priceRatio);
-		open.add(startNode);
-
-		StateNode currentNode;
-		StateNode finalNode = new StateNode(this.truck.getDestinyPosition(), null, null,
-				new Truck(truck), this.searchMode, this.distRatio, this.priceRatio);
-
-		while (!open.isEmpty()) {
-			currentNode = open.poll();
-			closed.put(currentNode.getNode().getId(), currentNode);
-
-			if (currentNode.getNode().getId() == finalNode.getNode().getId()) {
-				return buildResult(currentNode);
-			}
-			for (Edge edge : currentNode.getNode().getOutEdges()) {
-				StateNode neighbour = new StateNode(edge.getDestiny(),
-						new StateNode(currentNode), edge, new Truck(
-								currentNode.getTruck()), this.searchMode,
-						this.distRatio, this.priceRatio);
-
-				generatedNodesCounter++;
-
-				if (closed.containsKey(neighbour.getNode().getId())) {
-					continue;
-				}
-
-				// Replace node if already exists one with higher cost
-				/*if (neighbour.isValid() && !open.contains(neighbour)) {
-					open.add(neighbour);
-				}*/
-			}
-		}
-		return false;
-	}
-
-	public Truck getTruck() {
-		return truck;
-	}
-
-	public void setTruck(Truck truck) {
-		this.truck = truck;
-	}
-
-	public ResultGraph getResult() {
-		return result;
-	}
-
-	protected void setResult(ResultGraph result) {
-		this.result = result;
-	}
-
-	public int getGeneratedNodesCounter() {
-		return generatedNodesCounter;
-	}
-
-	public void sendSearchToResult() {
-		try {
-			Result window = new Result(10,2);
-			window.frmResult.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

@@ -91,19 +91,19 @@ In this problem we need to consider a few concepts like truck, container, place 
 
 \begin{itemize}
 	\item The specialized truck has a limited capacity and a type of waste;
-	\item The place of departure is the centrar where are the trucks to initialize their route;
+	\item The place of departure is the central where are the trucks to initialize their route;
 	\item The place of arrival is where are the treatment stations that the trucks use to leave the waste collected;
 	\item One container is consider as a set of four individual type waste;
-	\item And the itinerary that we're trying to determine considering the objective. 
+	\item The itinerary that we're trying to determine considering the objective. 
 \end{itemize}
 
 \subsubsection{Problem description}
 
-In a summarized way we need to determine the best itinerary that contemplates the already referred objectives in section \ref{objective}.
+In a summarized way, we need to determine the best itinerary that contemplates the already referred objectives in section \ref{objective}.
 
 \subsubsection{Problem restrictions}
 
-In order to make the problem more realistic, we try to use some streets of the city of Oporto, with coordinates of real latitude and longitude where we put containers. In this sense, it is intended that in a more advanced phase of the project, these coordinates are used to better represent the selected itinerary and the distance covered. 
+In order to make the problem more realistic, we try to use some streets of Oporto city, with real latitude and longitude coordinates where we put the containers. In this sense, it is intended that in a more advanced phase of the project, these coordinates are used to better represent the selected itinerary and the distance covered. 
 
 \subsubsection{Problem representation}
 
@@ -120,27 +120,27 @@ To represent the map of this problem, we considered a non-directed graph with a 
 		R1 & Mandatory        & The user can chose the number of each type of truck available on the central  \\ \hline
 		R2 & Mandatory         & The user can enter the truck capacity \\ \hline
 		R3 & Mandatory          & The user can select the number of stations to leave the garbage \\ \hline
-		R4 & Mandatory         & The user will see the result of the implemented search algorithm in console. \\ \hline
+		R4 & Mandatory         & The user will see the result of the implemented search algorithm in console \\ \hline
 		R5 & Mandatory         & The application must provide the result with the data that the user chose to test \\ \hline
 		R6 & Opcional         & The user will see the result of the implemented search algorithm in a graphical friendly user interface.\\ \hline
 		R7 & Opcional         & Nodes and edges are loaded from a csv file to facilitate the edition of data \\ \hline
+		R8 & Opcional         & The user might chose other algorithms to find the best itinerary \\ \hline
 	\end{tabular}
 \end{table}
 
 \subsubsection{Solution}\label{solution}
 
-In order to finding the best solution to the problem, we intend to apply the algorithm $A^*$ to a graph that represents a map with some of the possible routes from the Central to the Treatment Station. This algorithm figures the least cost path to the node which makes it a best first search algorithm. Uses the following formula:
+In order to finding the best solution to the problem, we intend to apply the algorithm $A^*$ to a graph that represents a map with some of the possible routes from the Central to the Treatment Stations. This algorithm figures the least cost path to the node which makes it a best first search algorithm. Uses the following formula:
 
 \begin{equation}\label{equation}
 f(x) = g(x) + h(x)
 \end{equation}
 
-where $g(x)$ is the total distance in kilometers ($km$) from the initial position to the current position, $h(x)$ is the heuristic function that is used to approximate distance from the current location to the goal state. This function is distinct because it is a mere estimation rather than an exact value. The more accurate the heuristic the better and faster the goal state is reach and with much more accuracy.
+where $g(x)$ is the total distance in kilometers ($km$) from the initial position to the current position, $h(x)$ is the heuristic function that is used to approximate distance from the current location to the goal state, minimize the number of active trucks and maximize the waste loaded. This function is distinct because it is a mere estimation rather than an exact value. The more accurate the heuristic the better and faster the goal state is reach and with much more accuracy.
 
 The equation refered in (\ref{equation}) represents the current approximation of the shortest path to the goal. 
 
 To ensure the admissibility of the $h(x)$ heuristic function, it is thought to calculate the straight-line distance between the geographic coordinates between the node in question and the last node - the station, only when all containers have been reached, of course, if they have enough garbage to collect.
-When there is still garbage to collect, the Manhattan distance is calculated for the path from the current point to all points yet to be reached until the final node.
 
 \subsection{Work already done}
 
@@ -151,14 +151,16 @@ In our last step until the delivery of this report we are trying to implement th
 
 Nodes and edges were generated from coordinates obtained by OpenStreetMap, an open source tool, where we export a rectangle zone of streets from city of Oporto. 
 
-In our approach we are increasing the level of difficult of the project. Until know, we can chose the desired number of each type of trucks, the truck capacity and the number of stations, all in a graphical interface. For applying the algorithm we in this phase just have one truck of paper waste and one station, although the graphical interface is already prepared to edit with other data. 
+In our approach we are, gradually, increasing the level of difficult to reach the objective of the project. Until know, we can chose the desired number of each type of trucks, the truck capacity and the number of stations, all in a graphical interface. For applying the algorithm, in this phase, we only have one truck of paper waste and one treatment station, although the graphical interface is already prepared to edit with other data. 
 
-We have too one basic other graphical interface prepared to show the results of the algorithm.
+We also have one basic other graphical interface prepared to show the results of the algorithm.
 
 
-The best solution to the problem was calculated by counting the distance as a calculation factor for both the cost function up to the $g(n)$ node and the heuristic function $h(n)$. A basic graphical representation of the initial map and the solution generated by the program is made.
+The best solution to the problem was calculated by counting the distance as a calculation factor for both the cost function up to the $g(x)$ node and the heuristic function $h(x)$. 
 
-It was used a website that has an online tool \ref{itm:openStreet}
+Finally we've done a basic graphical representation of the initial map, the solution generated by the application and implemented classes to test in JUnit.
+
+It was used a website that has an online tool that allow us to generate real coordinates.\ref{itm:openStreet}
 
 \subsection{Expected results and future evaluation of the project}
 
@@ -189,6 +191,8 @@ Last we can say that we have one doubt - what graph viwer tool we'll use and if 
 	2010.
 	\item \url{http://www.gpsvisualizer.com/tutorials/waypoints.html} 
 	\item \url{https://reference.wolfram.com/language/ref/ManhattanDistance.html}
+	\item \url{http://junit.org/junit4/}
+	
 
 \end{enumerate}
 

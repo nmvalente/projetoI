@@ -9,6 +9,10 @@ public class Graph {
 		this.nodes = new ArrayList<Node>();
 	}
 
+	public Graph(Graph newG){
+		this.nodes = newG.getNodes();
+	}
+	
 	public ArrayList<Node> getNodes() {
 		return nodes;
 	}
@@ -148,4 +152,7 @@ public class Graph {
 		String str = strb.toString();
 		return str;	
 	}
+	
+	
+
 }

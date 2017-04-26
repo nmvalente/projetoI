@@ -1,0 +1,16 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Objective}{3}{section.1}
+\contentsline {section}{\numberline {2}Description}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}Specification}{3}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Important concepts}{3}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}Problem description}{3}{subsubsection.2.1.2}
+\contentsline {subsubsection}{\numberline {2.1.3}Problem restrictions}{3}{subsubsection.2.1.3}
+\contentsline {subsubsection}{\numberline {2.1.4}Problem representation}{4}{subsubsection.2.1.4}
+\contentsline {subsubsection}{\numberline {2.1.5}List of requirements}{4}{subsubsection.2.1.5}
+\contentsline {subsubsection}{\numberline {2.1.6}Solution}{4}{subsubsection.2.1.6}
+\contentsline {subsection}{\numberline {2.2}Work already done}{4}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Expected results and future evaluation of the project}{5}{subsection.2.3}
+\contentsline {section}{\numberline {3}Conclusions}{5}{section.3}
+\contentsline {section}{\numberline {4}Resources}{6}{section.4}
+\contentsline {subsection}{\numberline {4.1}References}{6}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Used software}{6}{subsection.4.2}

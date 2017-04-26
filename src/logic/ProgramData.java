@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 
 import graph.Graph;
 import graph.Node;
+import logic.Utils;
 
 public class ProgramData {
 
@@ -18,6 +19,7 @@ public class ProgramData {
 	protected int numberOfStations;
 	protected int truckCapacity;
 	protected double minimumLevelContainer;
+	protected String heuristic;
 
 	public ProgramData(int truckCapacity,
 			int numberOfStations,
@@ -25,7 +27,8 @@ public class ProgramData {
 			int truckPlastic,
 			int truckPaper,
 			int truckGlass,
-			int truckCommon) {
+			int truckCommon, 
+			String heuristic){
 
 		this.truckPlastic = truckPlastic;
 		this.truckPaper = truckPaper;
@@ -34,26 +37,24 @@ public class ProgramData {
 		this.numberOfStations = numberOfStations;
 		this.truckCapacity = truckCapacity;
 		this.minimumLevelContainer = minimumLevelContainer;
+		this.heuristic = heuristic;
 
-		displayInformation();
+		//displayInformation();
 		try {
 			this.graph = loadMap();
 		}
-		catch (IOException e) {
-			System.out.println("Unable to load file");
-			e.printStackTrace();
-		}
-		printGraph();
-		
-		new ResultGraph(this.graph,
+		catch (IOException e) {System.out.println("Unable to load csv file"); e.printStackTrace(); }
+		//printGraph();
+
+		new BuildGraph(this.graph,
 				this.truckPlastic,
 				this.truckPaper,
 				this.truckGlass,
 				this.truckCommon,
 				this.numberOfStations,
 				this.truckCapacity,
-				this.minimumLevelContainer);
-
+				this.minimumLevelContainer,
+				this.heuristic);
 	}
 	public void displayInformation(){
 		System.out.println(this);
@@ -67,7 +68,8 @@ public class ProgramData {
 				"Number of common trucks: " + this.truckCommon + "\n" +
 				"Number of total trucks: " + totalTrucks + "\n" +
 				"Minimum Level of each container: " + this.minimumLevelContainer + "\n" +
-				"Truck capacity: " + this.truckCapacity + "\n";
+				"Truck capacity: " + this.truckCapacity + "\n" + 
+				"Heuristic selected: " + this.heuristic + "\n";
 		return str;
 	}
 
@@ -108,13 +110,13 @@ public class ProgramData {
 							nodeValues[3],						//type
 							nodeValues[4]); 					//name of street
 					graph.addNode(node);
-					
+
 					break;
 
 				case Utils.EDGES:
-					
+
 					String[] edgeValues = fileLine.split(Utils.SPLITTER);
-					
+
 					if (edgeValues.length != 3) {
 						break;
 					}
@@ -129,10 +131,10 @@ public class ProgramData {
 					double distance = Double.parseDouble(edgeValues[2]);
 
 					// double side because the file has only one - undirected graph
-	
+
 					source.addEdge(destiny, distance);
 					destiny.addEdge(source, distance);
-	
+
 					break;
 				default:
 					readMode = Utils.UNDEFINED;

@@ -14,6 +14,8 @@ public class Node{
 	private boolean visited;
 	private int indegree; // incident edges
 	protected String name;
+	protected Node parent;
+	protected double g,h,f=0;
 
 	/*public Node(int id, double latitude, double longitude, String type){
 		this.setId(id);
@@ -35,6 +37,7 @@ public class Node{
 			this.indegree = 0;
 			this.name = node.name;
 			this.outEdges = new ArrayList<Edge>();
+			
 		}
 	}
 
@@ -171,5 +174,18 @@ public class Node{
 
 	public void setOutEdges(ArrayList<Edge> outEdges2) {
 		this.outEdges = outEdges2;
+	}
+	
+	public double getGValue(){return this.g;}
+	public double getHValue(){return this.h;}
+	public double getFValue(){return this.f;}
+	public void setGValue(double gValue){this.g = gValue;}
+	public void setHValue(double hValue){this.h = hValue;}
+	public void setFValue(double fValue){this.f = fValue;}
+	
+	public Node getParent(){return this.parent;}
+
+	public void setParent(Node current) {
+		this.parent = current;		
 	}
 }

@@ -8,7 +8,7 @@ import java.util.Map;
 import graph.Graph;
 import graph.Node;
 
-public class ResultGraph {
+public class BuildGraph {
 
 	protected LinkedList<Node> containers;
 	protected ArrayList<Node> garbageStations;
@@ -18,20 +18,21 @@ public class ResultGraph {
 	protected Node station;
 	protected Map<String, ArrayList<Truck>> trucks;
 
-	public ResultGraph(Graph graph, 
+	public BuildGraph(Graph graph, 
 			int truckPlastic, 
 			int truckPaper, 
 			int truckGlass, 
 			int truckCommon, 
 			int numberOfStations, 
 			double truckCapacity, 
-			double minimumLevelContainer) {
+			double minimumLevelContainer, 
+			String heuristic) {
 
 		setContainersAndStations(graph);
 		setMapTrucks(truckPlastic, truckPaper, truckGlass, truckCommon);
 		setTrucks(truckCapacity);
 
-		new Search(graph, containers, garbageStations, itinerary, typeTruck,central,station,trucks);
+		new Search(graph, containers, garbageStations, itinerary, typeTruck,central,station,trucks, heuristic);
 
 		//this.itinerary = new LinkedList<Node>();
 	}

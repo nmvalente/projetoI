@@ -2,7 +2,6 @@ package logic;
 
 import graph.Edge;
 import graph.Node;
-import logic.Search.SEARCH_MODE;
 
 public class StateNode {
 	private StateNode parent;
@@ -14,7 +13,7 @@ public class StateNode {
 	private double g, h;
 
 	public StateNode(Node node, StateNode parent, Edge edge, Truck truck,
-			SEARCH_MODE useHeuristics, double distRatio, double priceRatio) {
+			String useHeuristics, double distRatio, double priceRatio) {
 		this.parent = parent;
 		this.node = node;
 		this.edge = edge;
@@ -76,7 +75,7 @@ public class StateNode {
 		double neededLitersToGoal;
 
 		switch (useHeuristics) {
-		case A_STAR_BASIC:
+		case Utils.A_STAR:
 			distanceToGoal = Search.straightLineDistance(node.getLatitude(),
 					node.getLongitude(), goalNode.getLatitude(),
 					goalNode.getLongitude());
@@ -87,22 +86,9 @@ public class StateNode {
 			}
 			//this.h = distanceToGoal * distRatio + neededLitersToGoal * priceRatio;
 			break;
-		case A_STAR_ADVANCED:
-			distanceToGoal = Search.straightLineDistance(node.getLatitude(),
-					node.getLongitude(), goalNode.getLatitude(),
-					goalNode.getLongitude());
-			drivingRangeNeeded = distanceToGoal - this.truck.getDistanceCovered();
-			currentTankFuelLiters = this.truck.getDistanceCovered();
-			neededLitersToGoal = (currentTankFuelLiters * drivingRangeNeeded)
-					/ truck.getDistanceCovered();
-			if (drivingRangeNeeded < 0) {
-				neededLitersToGoal = 0;
-			}
-			this.h = 1.25 * distanceToGoal * distRatio + neededLitersToGoal
-					* priceRatio;
+		case Utils.UNIFORM_COST:
 			break;
 		default:
-
 			break;
 		}
 	}
