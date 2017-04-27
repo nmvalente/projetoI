@@ -10,7 +10,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import logic.ProgramData;
 import logic.Utils;
 
@@ -55,7 +54,7 @@ public class InformationsRequest {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					InformationsRequest window = new InformationsRequest();
+					InformationsRequest window = new InformationsRequest();				      
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -261,7 +260,7 @@ public class InformationsRequest {
 		list.setSelectedIndex(0);
 		heuristic = list.getSelectedValue();
 		list.addListSelectionListener(new ListSelectionListener() {
-			
+
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				heuristic = list.getSelectedValue();

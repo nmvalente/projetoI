@@ -11,7 +11,7 @@ import logic.Utils;
 
 public class ProgramData {
 
-	protected Graph graph;
+	public static Graph graph;
 	protected int truckPlastic;
 	protected int truckPaper;
 	protected int truckGlass;
@@ -41,12 +41,12 @@ public class ProgramData {
 
 		//displayInformation();
 		try {
-			this.graph = loadMap();
+			ProgramData.graph = loadMap();
 		}
 		catch (IOException e) {System.out.println("Unable to load csv file"); e.printStackTrace(); }
 		//printGraph();
 
-		new BuildGraph(this.graph,
+		new BuildGraph(ProgramData.graph,
 				this.truckPlastic,
 				this.truckPaper,
 				this.truckGlass,
@@ -148,7 +148,7 @@ public class ProgramData {
 	}
 
 	public void printGraph(){
-		System.out.println(this.graph);
+		System.out.println(ProgramData.graph);
 	}
 }
 

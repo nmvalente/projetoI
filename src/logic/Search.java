@@ -1,10 +1,8 @@
 package logic;
 
-import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,13 +22,14 @@ public class Search {
 	protected Graph copyG;
 	protected LinkedList<Node> containers;
 	protected ArrayList<Node> garbageStations;
-	protected List<Node> itinerary;
+	public static List<Node> itinerary;
 	protected Map<String, Integer> typeTruck;
 	protected Node central;
 	protected Node station;
 	protected Map<String, ArrayList<Truck>> trucks;
 	protected PriorityQueue<Node> queue;
 	Set<Node> explored;
+	private Graph graph;
 
 
 	public Search(Graph graph,
@@ -46,6 +45,7 @@ public class Search {
 		this.containers = containers;
 		this.central = new Node(central);
 		this.station = new Node(station);
+		this.graph = graph;
 
 
 		switch(heuristic) {
@@ -63,7 +63,7 @@ public class Search {
 
 		// show in gui the result
 
-		//sendSearchToResult();
+		sendSearchToResult();
 	}
 
 	private void uniform_cost() {System.out.println("UNIFORM SELECTED");}
@@ -160,18 +160,18 @@ public class Search {
 
 
 	public List<Node> buildItinerary(){
-		this.itinerary = new ArrayList<Node>();
+		Search.itinerary = new ArrayList<Node>();
 
 		for(Node node = queue.poll(); node != null; node = node.getParent()){
 
 			//System.out.println(node.getParent());
 
-			this.itinerary.add(node);
+			Search.itinerary.add(node);
 		}
 
-		Collections.reverse(this.itinerary);
+		Collections.reverse(Search.itinerary);
 
-		return this.itinerary;
+		return Search.itinerary;
 	}
 
 	public void printItinerary(){
@@ -179,7 +179,7 @@ public class Search {
 		System.out.println("Itinerary :");
 
 		System.out.print("[");
-		for(Node node : this.itinerary ){
+		for(Node node : Search.itinerary ){
 			if(node.getType() == this.station.getType())
 				System.out.print(node.getName());
 			else
@@ -192,7 +192,7 @@ public class Search {
 
 	public void sendSearchToResult() {
 		try {
-			Result window = new Result(10,2); // to change in future
+			Result window = new Result(this.graph, Search.itinerary, 10,2); // to change in future
 			window.frmResult.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
