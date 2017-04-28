@@ -38,6 +38,7 @@ public class Search {
 		this.central = new Node(central);
 		this.station = new Node(station);
 		this.graph = graph;
+		this.trucks = trucks;
 
 		switch (heuristic) {
 		case Utils.A_STAR:
@@ -54,7 +55,7 @@ public class Search {
 
 		// show in gui the result
 
-		sendSearchToResult();
+		//sendSearchToResult();
 	}
 
 	private void uniform_cost() {
@@ -64,7 +65,8 @@ public class Search {
 	private void a_star(Graph graph, Node initial, Node goal) {
 		System.out.println("A STAR SELECTED");
 		this.copyG = new Graph(graph); // grafo para manipular
-
+		System.out.println(this.trucks.get("paper"));
+		
 		System.out.println(this.copyG);
 
 		for (Node n : this.copyG.getNodes()) {
@@ -121,7 +123,9 @@ public class Search {
 						child.getLongitude());
 				double temp_g_scores = current.getGValue() + cost;
 				double temp_f_scores = temp_g_scores + child.getHValue();
-
+				double h_scores = straightLineDistance(current.getLatitude(), current.getLongitude(), goal.getLatitude(),
+						goal.getLongitude());
+					
 				// System.out.println(temp_g_scores + " " + temp_f_scores);
 				/*
 				 * if child node has been evaluated and the newer f_score is
