@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 
 import graph.Graph;
 import graph.Node;
-import logic.Utils;
 
 public class ProgramData {
 
@@ -21,14 +20,8 @@ public class ProgramData {
 	protected double minimumLevelContainer;
 	protected String heuristic;
 
-	public ProgramData(int truckCapacity,
-			int numberOfStations,
-			double minimumLevelContainer,
-			int truckPlastic,
-			int truckPaper,
-			int truckGlass,
-			int truckCommon, 
-			String heuristic){
+	public ProgramData(int truckCapacity, int numberOfStations, double minimumLevelContainer, int truckPlastic,
+			int truckPaper, int truckGlass, int truckCommon, String heuristic) {
 
 		this.truckPlastic = truckPlastic;
 		this.truckPaper = truckPaper;
@@ -39,37 +32,31 @@ public class ProgramData {
 		this.minimumLevelContainer = minimumLevelContainer;
 		this.heuristic = heuristic;
 
-		//displayInformation();
+		// displayInformation();
 		try {
 			ProgramData.graph = loadMap();
+		} catch (IOException e) {
+			System.out.println("Unable to load csv file");
+			e.printStackTrace();
 		}
-		catch (IOException e) {System.out.println("Unable to load csv file"); e.printStackTrace(); }
-		//printGraph();
+		// printGraph();
 
-		new BuildGraph(ProgramData.graph,
-				this.truckPlastic,
-				this.truckPaper,
-				this.truckGlass,
-				this.truckCommon,
-				this.numberOfStations,
-				this.truckCapacity,
-				this.minimumLevelContainer,
-				this.heuristic);
+		new BuildGraph(ProgramData.graph, this.truckPlastic, this.truckPaper, this.truckGlass, this.truckCommon,
+				this.numberOfStations, this.truckCapacity, this.minimumLevelContainer, this.heuristic);
 	}
-	public void displayInformation(){
+
+	public void displayInformation() {
 		System.out.println(this);
 	}
 
-	public String toString(){
+	@Override
+	public String toString() {
 		int totalTrucks = this.truckCommon + this.truckGlass + this.truckPaper + this.truckPlastic;
-		String str = "Number of plastic trucks: " + this.truckPlastic + "\n" +
-				"Number of glass trucks: " + this.truckGlass + "\n" +
-				"Number of paper trucks: " + this.truckPaper + "\n" +
-				"Number of common trucks: " + this.truckCommon + "\n" +
-				"Number of total trucks: " + totalTrucks + "\n" +
-				"Minimum Level of each container: " + this.minimumLevelContainer + "\n" +
-				"Truck capacity: " + this.truckCapacity + "\n" + 
-				"Heuristic selected: " + this.heuristic + "\n";
+		String str = "Number of plastic trucks: " + this.truckPlastic + "\n" + "Number of glass trucks: "
+				+ this.truckGlass + "\n" + "Number of paper trucks: " + this.truckPaper + "\n"
+				+ "Number of common trucks: " + this.truckCommon + "\n" + "Number of total trucks: " + totalTrucks
+				+ "\n" + "Minimum Level of each container: " + this.minimumLevelContainer + "\n" + "Truck capacity: "
+				+ this.truckCapacity + "\n" + "Heuristic selected: " + this.heuristic + "\n";
 		return str;
 	}
 
@@ -85,7 +72,6 @@ public class ProgramData {
 
 			// Check non empty line
 			if (fileLine.length() > 0) {
-
 
 				// Checks if is a node or edge line
 				if (fileLine.contains(Utils.NODES)) {
@@ -104,11 +90,11 @@ public class ProgramData {
 						break;
 					}
 
-					Node node = new Node(Integer.parseInt(nodeValues[0]), 	//id
-							Double.parseDouble(nodeValues[1]), 	//lat
-							Double.parseDouble(nodeValues[2]), 	//lon
-							nodeValues[3],						//type
-							nodeValues[4]); 					//name of street
+					Node node = new Node(Integer.parseInt(nodeValues[0]), // id
+							Double.parseDouble(nodeValues[1]), // lat
+							Double.parseDouble(nodeValues[2]), // lon
+							nodeValues[3], // type
+							nodeValues[4]); // name of street
 					graph.addNode(node);
 
 					break;
@@ -125,12 +111,13 @@ public class ProgramData {
 					Node destiny = graph.findNode(Integer.parseInt(edgeValues[1]));
 
 					if (source == null || destiny == null) {
-						throw new IOException();						
+						throw new IOException();
 					}
 
 					double distance = Double.parseDouble(edgeValues[2]);
 
-					// double side because the file has only one - undirected graph
+					// double side because the file has only one - undirected
+					// graph
 
 					source.addEdge(destiny, distance);
 					destiny.addEdge(source, distance);
@@ -147,8 +134,7 @@ public class ProgramData {
 		return graph;
 	}
 
-	public void printGraph(){
+	public void printGraph() {
 		System.out.println(ProgramData.graph);
 	}
 }
-

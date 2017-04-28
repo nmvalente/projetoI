@@ -1,9 +1,10 @@
 package graph;
 
 import java.util.ArrayList;
+
 import logic.Utils;
 
-public class Node{
+public class Node {
 
 	private int id;
 	private double latitude;
@@ -16,19 +17,16 @@ public class Node{
 	private int indegree; // incident edges
 	protected String name;
 	protected Node parent;
-	protected double g,h,f=0;
+	protected double g, h, f = 0;
 
-	/*public Node(int id, double latitude, double longitude, String type){
-		this.setId(id);
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.processing = false;
-		this.indegree = 0;
-		this.outEdges = new ArrayList<Edge>();
-	}
+	/*
+	 * public Node(int id, double latitude, double longitude, String type){
+	 * this.setId(id); this.latitude = latitude; this.longitude = longitude;
+	 * this.processing = false; this.indegree = 0; this.outEdges = new
+	 * ArrayList<Edge>(); }
 	 */
 	// clones node without edges
-	public Node(Node node){
+	public Node(Node node) {
 		if (node != null) {
 			this.setId(node.id);
 			this.latitude = node.latitude;
@@ -49,13 +47,14 @@ public class Node{
 		this.name = nameStreet;
 		this.outEdges = new ArrayList<Edge>();
 
-		if(type.equals("central"))
+		if (type.equals("central"))
 			this.type = Utils.CENTRAL;
-		else if(type.equals("station"))
+		else if (type.equals("station"))
 			this.type = Utils.STATION;
-		else if(type.equals("false"))
+		else if (type.equals("false"))
 			this.type = Utils.FALSE_GARBAGE;
-		else this.type = Utils.TRUE_GARBAGE;
+		else
+			this.type = Utils.TRUE_GARBAGE;
 	}
 
 	// for test class only
@@ -73,19 +72,19 @@ public class Node{
 		return clone;
 	}
 
-	public int getId(){
+	public int getId() {
 		return id;
 	}
 
-	public void setId(int id){
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public double getLatitude(){
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public double getLongitude(){
+	public double getLongitude() {
 		return longitude;
 	}
 
@@ -93,40 +92,42 @@ public class Node{
 		return indegree;
 	}
 
-	public boolean hasGasStation(){
-		if(this.type.equals(Utils.TRUE_GARBAGE))
+	public boolean hasGasStation() {
+		if (this.type.equals(Utils.TRUE_GARBAGE))
 			return false;
-		else return true;
+		else
+			return true;
 	}
 
-	public void setGarbageStation(boolean garbageStation){
-		if(garbageStation)
+	public void setGarbageStation(boolean garbageStation) {
+		if (garbageStation)
 			this.type = Utils.TRUE_GARBAGE;
-		else this.type = Utils.FALSE_GARBAGE;
+		else
+			this.type = Utils.FALSE_GARBAGE;
 	}
 
-	public ArrayList<Edge> getOutEdges(){
+	public ArrayList<Edge> getOutEdges() {
 		return this.outEdges;
 	}
 
-	public void setLatitude(double latitude){
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
-	public void setLongitude(double longitude){
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 
-	public boolean getVisited(){
+	public boolean getVisited() {
 		return visited;
 	}
 
-	public void setVisited(boolean visited){
+	public void setVisited(boolean visited) {
 		this.visited = visited;
 	}
 
 	@Override
-	public boolean equals(Object obj){
+	public boolean equals(Object obj) {
 		if (obj == null)
 			return false;
 
@@ -137,16 +138,16 @@ public class Node{
 			return false;
 
 		Node node = (Node) obj;
-		
-		
-		if(this.id == node.id && this.getName() == node.getName())
+
+		if (this.id == node.id && this.getName() == node.getName())
 			return true;
-		else return false;
+		else
+			return false;
 	}
 
 	// we need to decrement the destiny indegree value outside (if we don't send
 	// the same node memory position)
-	public boolean removeEdgeTo(Node node){
+	public boolean removeEdgeTo(Node node) {
 		for (int i = 0; i < outEdges.size(); i++) {
 			if (outEdges.get(i).getDestiny().equals(node)) {
 				node.indegree--;
@@ -157,8 +158,8 @@ public class Node{
 		return false;
 	}
 
-	public void addEdge(Node destiny, double distance){
-		//destiny.indegree++;
+	public void addEdge(Node destiny, double distance) {
+		// destiny.indegree++;
 		Edge edge = new Edge(this, destiny, distance);
 		this.outEdges.add(edge);
 	}
@@ -167,12 +168,12 @@ public class Node{
 		return this.name;
 	}
 
-	public String getType(){
+	public String getType() {
 		return this.type;
 	}
 
 	@Override
-	public String toString(){	
+	public String toString() {
 
 		StringBuilder strN = new StringBuilder();
 		strN.append(this.getId() + " " + this.getName() + "\n");
@@ -188,16 +189,35 @@ public class Node{
 		this.outEdges = outEdges2;
 	}
 
-	public double getGValue(){return this.g;}
-	public double getHValue(){return this.h;}
-	public double getFValue(){return this.f;}
-	public void setGValue(double gValue){this.g = gValue;}
-	public void setHValue(double hValue){this.h = hValue;}
-	public void setFValue(double fValue){this.f = fValue;}
+	public double getGValue() {
+		return this.g;
+	}
 
-	public Node getParent(){return this.parent;}
+	public double getHValue() {
+		return this.h;
+	}
+
+	public double getFValue() {
+		return this.f;
+	}
+
+	public void setGValue(double gValue) {
+		this.g = gValue;
+	}
+
+	public void setHValue(double hValue) {
+		this.h = hValue;
+	}
+
+	public void setFValue(double fValue) {
+		this.f = fValue;
+	}
+
+	public Node getParent() {
+		return this.parent;
+	}
 
 	public void setParent(Node current) {
-		this.parent = current;		
+		this.parent = current;
 	}
 }

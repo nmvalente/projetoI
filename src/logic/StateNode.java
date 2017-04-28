@@ -12,8 +12,8 @@ public class StateNode {
 	private boolean sleepNeeded;
 	private double g, h;
 
-	public StateNode(Node node, StateNode parent, Edge edge, Truck truck,
-			String useHeuristics, double distRatio, double priceRatio) {
+	public StateNode(Node node, StateNode parent, Edge edge, Truck truck, String useHeuristics, double distRatio,
+			double priceRatio) {
 		this.parent = parent;
 		this.node = node;
 		this.edge = edge;
@@ -24,24 +24,29 @@ public class StateNode {
 		if (this.parent != null) {
 			if (toppingUpFuelTank()) {
 				// calc before reset... to use in the cost
-				/*fuelLiters = this.parent.truck.getTankFuel()
-						- ((this.parent.truck.getDrivingRange() * this.parent.truck
-								.getTankFuel()) / this.truck.getMaxDrivingRange());
-				this.parent.gasNeeded = true;
-				this.parent.truck.resetDrivingRange();*/
+				/*
+				 * fuelLiters = this.parent.truck.getTankFuel() -
+				 * ((this.parent.truck.getDrivingRange() * this.parent.truck
+				 * .getTankFuel()) / this.truck.getMaxDrivingRange());
+				 * this.parent.gasNeeded = true;
+				 * this.parent.truck.resetDrivingRange();
+				 */
 			}
 
-			/*if (sleepOver()) {
-				if (this.parent.getNode().getHotelPrice() > 0.0) {
-					this.parent.sleepNeeded = true;
-					this.parent.truck.resetDrivenMinutesOnDay();
-				}
-			}*/
+			/*
+			 * if (sleepOver()) { if (this.parent.getNode().getHotelPrice() >
+			 * 0.0) { this.parent.sleepNeeded = true;
+			 * this.parent.truck.resetDrivenMinutesOnDay(); } }
+			 */
 
 			if (this.edge != null) {/*
-				this.truck = new Truck(this.parent.gettruck());
-				this.truck.subtractDrivingRange(this.edge.getDistance());
-				this.truck.addTotalDrivenMinutes(this.edge.getMinutes());*/
+									 * this.truck = new
+									 * Truck(this.parent.gettruck());
+									 * this.truck.subtractDrivingRange(this.edge
+									 * .getDistance());
+									 * this.truck.addTotalDrivenMinutes(this.
+									 * edge.getMinutes());
+									 */
 			}
 		}
 
@@ -49,21 +54,22 @@ public class StateNode {
 		double price = 0.0;
 		if (this.edge != null) {
 			dist = edge.getDistance();
-			//price = edge.getPrice();
+			// price = edge.getPrice();
 		}
 
 		if (this.parent == null) {
 			this.g = 0.0;
 		} else {
-			this.g = this.parent.getPathCost()
-					+ ((dist * distRatio) + (price * priceRatio));
+			this.g = this.parent.getPathCost() + ((dist * distRatio) + (price * priceRatio));
 			if (this.parent.sleepNeeded) {
-				//this.g += (this.parent.getNode().getHotelPrice() * priceRatio);
+				// this.g += (this.parent.getNode().getHotelPrice() *
+				// priceRatio);
 			}
 
 			if (this.parent.gasNeeded) {
 				// System.out.println("litters needed: " + fuelLiters + " XD ");
-				//this.g += ((fuelLiters * this.parent.truck.getFuelPrice()) * priceRatio);
+				// this.g += ((fuelLiters * this.parent.truck.getFuelPrice()) *
+				// priceRatio);
 			}
 		}
 
@@ -76,15 +82,15 @@ public class StateNode {
 
 		switch (useHeuristics) {
 		case Utils.A_STAR:
-			distanceToGoal = Search.straightLineDistance(node.getLatitude(),
-					node.getLongitude(), goalNode.getLatitude(),
-					goalNode.getLongitude());
+			distanceToGoal = Search.straightLineDistance(node.getLatitude(), node.getLongitude(),
+					goalNode.getLatitude(), goalNode.getLongitude());
 			drivingRangeNeeded = distanceToGoal - this.truck.getDistanceCovered();
 			currentTankFuelLiters = this.truck.getDistanceCovered();
 			if (drivingRangeNeeded < 0) {
-				//neededLitersToGoal = 0;
+				// neededLitersToGoal = 0;
 			}
-			//this.h = distanceToGoal * distRatio + neededLitersToGoal * priceRatio;
+			// this.h = distanceToGoal * distRatio + neededLitersToGoal *
+			// priceRatio;
 			break;
 		case Utils.UNIFORM_COST:
 			break;
@@ -122,8 +128,8 @@ public class StateNode {
 	public Node getNode() {
 		return this.node;
 	}
-// (nr camioes + distancia percorrida) / quantidade de lixo
-// camiao deve voltar a central?
+	// (nr camioes + distancia percorrida) / quantidade de lixo
+	// camiao deve voltar a central?
 
 	public Edge getEdge() {
 		return edge;
@@ -212,17 +218,15 @@ public class StateNode {
 
 	@Override
 	public String toString() {
-		return "id: "
-				+ this.node.getId()
-				+ "\nparent = "
-				+ (this.parent == null ? "null" : (this.parent.getNode()
-						.getId() + "")) + "\ng = " + this.g + "\nh = " + this.h;
+		return "id: " + this.node.getId() + "\nparent = "
+				+ (this.parent == null ? "null" : (this.parent.getNode().getId() + "")) + "\ng = " + this.g + "\nh = "
+				+ this.h;
 	}
 
-	/*public boolean isValid() {
-		return truck.isDistanceDrivable(edge.getDistance())
-				&& truck.isTimeDrivable(edge.getMinutes());
-	}
+	/*
+	 * public boolean isValid() { return
+	 * truck.isDistanceDrivable(edge.getDistance()) &&
+	 * truck.isTimeDrivable(edge.getMinutes()); }
 	 */
 	public Truck getTruck() {
 		return truck;

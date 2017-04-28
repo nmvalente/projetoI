@@ -1,7 +1,16 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
@@ -10,17 +19,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import logic.ProgramData;
 import logic.Utils;
-
-import javax.swing.JSpinner;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JSeparator;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
 
 public class InformationsRequest {
 
@@ -45,16 +46,15 @@ public class InformationsRequest {
 
 	protected String current;
 
-
-
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
-					InformationsRequest window = new InformationsRequest();				      
+					InformationsRequest window = new InformationsRequest();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -88,13 +88,14 @@ public class InformationsRequest {
 		frame.getContentPane().add(txtHowManyTrucks);
 		txtHowManyTrucks.setColumns(10);
 
-		spinnerModel = new SpinnerNumberModel(truckPaper, //initial value
-				0, //min
-				10, //max
-				1);//step
+		spinnerModel = new SpinnerNumberModel(truckPaper, // initial value
+				0, // min
+				10, // max
+				1);// step
 		JSpinner truckPaperSpinner = new JSpinner(spinnerModel);
 
 		truckPaperSpinner.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				String current = ((JSpinner) e.getSource()).getValue().toString();
 				truckPaper = Integer.parseInt(current);
@@ -102,7 +103,6 @@ public class InformationsRequest {
 		});
 		truckPaperSpinner.setBounds(403, 222, 116, 22);
 		frame.getContentPane().add(truckPaperSpinner);
-
 
 		/* Glass */
 		truckGlass1 = new JTextField();
@@ -112,12 +112,13 @@ public class InformationsRequest {
 		truckGlass1.setBounds(403, 119, 116, 22);
 		frame.getContentPane().add(truckGlass1);
 
-		spinnerModel = new SpinnerNumberModel(truckGlass, //initial value
-				0, //min
-				10, //max
-				1);//step
+		spinnerModel = new SpinnerNumberModel(truckGlass, // initial value
+				0, // min
+				10, // max
+				1);// step
 		JSpinner truckGlassSpinner = new JSpinner(spinnerModel);
 		truckGlassSpinner.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				String current = ((JSpinner) e.getSource()).getValue().toString();
 				truckGlass = Integer.parseInt(current);
@@ -134,12 +135,13 @@ public class InformationsRequest {
 		truckCommon1.setBounds(106, 197, 116, 22);
 		frame.getContentPane().add(truckCommon1);
 
-		spinnerModel = new SpinnerNumberModel(truckCommon, //initial value
-				0, //min
-				10, //max
-				1);//step
+		spinnerModel = new SpinnerNumberModel(truckCommon, // initial value
+				0, // min
+				10, // max
+				1);// step
 		JSpinner truckCommonSpinner = new JSpinner(spinnerModel);
 		truckCommonSpinner.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				String current = ((JSpinner) e.getSource()).getValue().toString();
 				truckCommon = Integer.parseInt(current);
@@ -156,12 +158,13 @@ public class InformationsRequest {
 		truckPlastic1.setBounds(106, 119, 116, 22);
 		frame.getContentPane().add(truckPlastic1);
 
-		spinnerModel = new SpinnerNumberModel(truckPlastic, //initial value
-				0, //min
-				10, //max
-				1);//step
+		spinnerModel = new SpinnerNumberModel(truckPlastic, // initial value
+				0, // min
+				10, // max
+				1);// step
 		JSpinner truckPlasticSpinner = new JSpinner(spinnerModel);
 		truckPlasticSpinner.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				String current = ((JSpinner) e.getSource()).getValue().toString();
 				truckPlastic = Integer.parseInt(current);
@@ -179,12 +182,13 @@ public class InformationsRequest {
 		stationsNumber.setBounds(419, 13, 137, 22);
 		frame.getContentPane().add(stationsNumber);
 
-		spinnerModel = new SpinnerNumberModel(numberOfStations, //initial value
-				1, //min
-				3, //max
-				1);//step
+		spinnerModel = new SpinnerNumberModel(numberOfStations, // initial value
+				1, // min
+				3, // max
+				1);// step
 		JSpinner stationsNumberSpinnner = new JSpinner(spinnerModel);
 		stationsNumberSpinnner.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				String current = ((JSpinner) e.getSource()).getValue().toString();
 				numberOfStations = Integer.parseInt(current);
@@ -202,12 +206,13 @@ public class InformationsRequest {
 		frame.getContentPane().add(garbageTruckCapacity);
 
 		JSpinner garbageTruckCapacitySpinner = new JSpinner();
-		spinnerModel = new SpinnerNumberModel(truckCapacity, //initial value
-				0, //min
-				3000, //max
-				100);//step
+		spinnerModel = new SpinnerNumberModel(truckCapacity, // initial value
+				0, // min
+				3000, // max
+				100);// step
 		garbageTruckCapacitySpinner = new JSpinner(spinnerModel);
 		garbageTruckCapacitySpinner.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				String current = ((JSpinner) e.getSource()).getValue().toString();
 				truckCapacity = Integer.parseInt(current);
@@ -225,12 +230,14 @@ public class InformationsRequest {
 		containerMinimum.setBounds(239, 13, 131, 22);
 		frame.getContentPane().add(containerMinimum);
 
-		spinnerModel = new SpinnerNumberModel(minimumLevelContainer, //initial value
-				0, //min
-				1, //max
-				0.1);//step
+		spinnerModel = new SpinnerNumberModel(minimumLevelContainer, // initial
+																		// value
+				0, // min
+				1, // max
+				0.1);// step
 		JSpinner containerMinimumSpinner = new JSpinner(spinnerModel);
 		containerMinimumSpinner.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				String current = ((JSpinner) e.getSource()).getValue().toString();
 				minimumLevelContainer = Double.parseDouble(current);
@@ -247,7 +254,7 @@ public class InformationsRequest {
 		separator_1.setBounds(12, 280, 584, 2);
 		frame.getContentPane().add(separator_1);
 
-		DefaultListModel<String> listModel = new DefaultListModel<String>();	
+		DefaultListModel<String> listModel = new DefaultListModel<String>();
 		listModel.addElement(Utils.A_STAR);
 		listModel.addElement(Utils.UNIFORM_COST);
 		JScrollPane scrollPane = new JScrollPane();
@@ -268,14 +275,14 @@ public class InformationsRequest {
 		});
 		list.setVisibleRowCount(2);
 
-
 		/* Button submit */
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				frame.dispose();
-				new ProgramData(truckCapacity, numberOfStations, minimumLevelContainer, truckPlastic, truckPaper, truckGlass, truckCommon, heuristic);
+				new ProgramData(truckCapacity, numberOfStations, minimumLevelContainer, truckPlastic, truckPaper,
+						truckGlass, truckCommon, heuristic);
 			}
 		});
 		btnSubmit.setBounds(257, 355, 97, 25);

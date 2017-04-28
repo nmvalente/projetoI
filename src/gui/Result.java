@@ -1,30 +1,28 @@
 package gui;
 
-
-import graph.Edge;
-import graph.Graph;
-import graph.Node;
-import logic.ProgramData;
-import logic.Search;
-
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.geom.Rectangle2D;
+import java.util.List;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import org.jgraph.JGraph;
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
-import java.util.List;
-import javax.swing.BorderFactory;
-
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
 
-public class Result extends JFrame{
+import graph.Edge;
+import graph.Graph;
+import graph.Node;
+import logic.ProgramData;
+
+public class Result extends JFrame {
 
 	/**
 	 * 
@@ -35,13 +33,11 @@ public class Result extends JFrame{
 	private double distanceCovered;
 	private int numberOfTrucks;
 	private JScrollPane graphResult;
-	/*protected int truckPlastic = 1;
-	protected int truckPaper = 0;
-	protected int truckGlass = 0;
-	protected int truckCommon = 0;
-	protected int numberOfStations = 1;
-	protected int truckCapacity = 1000;
-	protected double minimumLevelContainer = 0.8;
+	/*
+	 * protected int truckPlastic = 1; protected int truckPaper = 0; protected
+	 * int truckGlass = 0; protected int truckCommon = 0; protected int
+	 * numberOfStations = 1; protected int truckCapacity = 1000; protected
+	 * double minimumLevelContainer = 0.8;
 	 */
 	protected String current;
 	private List<Node> itinerary;
@@ -51,15 +47,17 @@ public class Result extends JFrame{
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 
 			}
 		});
-	}	
+	}
 
 	/**
 	 * Create the application.
-	 * @param itinerary 
+	 * 
+	 * @param itinerary
 	 */
 	public Result(Graph graph, List<Node> itinerary, double distanceCovered, int numberOfTrucks) {
 		this.distanceCovered = distanceCovered;
@@ -72,7 +70,7 @@ public class Result extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
+
 		frmResult = new JFrame();
 		frmResult.setBounds(100, 100, 800, 800);
 		frmResult.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,9 +81,9 @@ public class Result extends JFrame{
 		GraphModel model = new DefaultGraphModel();
 		JGraph graphdisplay = new JGraph(model);
 
-		//Count elements
+		// Count elements
 		int counter = 0;
-		for(Node node : ProgramData.graph.getNodes()){
+		for (Node node : ProgramData.graph.getNodes()) {
 			counter++;
 			counter += node.getOutEdges().size();
 		}
@@ -96,42 +94,42 @@ public class Result extends JFrame{
 		// Nodes and edges
 		int i = 0, x = 20, j = 0, k = 0, y = 20;
 
-		for(Node node : ProgramData.graph.getNodes()){
-			if(this.itinerary.contains(node))
-				cells[i] = createVertex(node.getName(), x, y, 150, 40, Color.BLUE , false );
+		for (Node node : ProgramData.graph.getNodes()) {
+			if (this.itinerary.contains(node))
+				cells[i] = createVertex(node.getName(), x, y, 150, 40, Color.BLUE, false);
 			else
-				cells[i] = createVertex(node.getName(), x, y, 150, 40, null , false );
+				cells[i] = createVertex(node.getName(), x, y, 150, 40, null, false);
 
 			x += 250;
-			if(i%2.0 == 0.0 && i != 0){
-				y += 150; 
+			if (i % 2.0 == 0.0 && i != 0) {
+				y += 150;
 				x = 180;
 			}
 			i++;
 		}
 
-		for(Node node : ProgramData.graph.getNodes()){
+		for (Node node : ProgramData.graph.getNodes()) {
 			k++;
-			for(Edge edgeo : node.getOutEdges()){
+			for (Edge edgeo : node.getOutEdges()) {
 				DefaultEdge edge = new DefaultEdge(edgeo.getDistance());
 
-				edge.setSource(cells[k-1]);
+				edge.setSource(cells[k - 1]);
 
-				j=0;
+				j = 0;
 				Node target = null;
-				for(Node nodeaux : ProgramData.graph.getNodes()){
-					if(nodeaux.equals(edgeo.getDestiny())){
+				for (Node nodeaux : ProgramData.graph.getNodes()) {
+					if (nodeaux.equals(edgeo.getDestiny())) {
 						edge.setTarget(cells[j]);
 						target = nodeaux;
 					}
 					j++;
 				}
 
-				if(this.itinerary.contains(node) && this.itinerary.contains(target))
+				if (this.itinerary.contains(node) && this.itinerary.contains(target))
 					GraphConstants.setLineColor(edge.getAttributes(), Color.BLUE);
 
 				GraphConstants.setEndFill(edge.getAttributes(), true);
-				cells[i]= edge;
+				cells[i] = edge;
 				i++;
 			}
 		}
@@ -140,13 +138,13 @@ public class Result extends JFrame{
 		graphdisplay.getGraphLayoutCache().insert(cells);
 
 		// Show in Frame
-		//JFrame frame = new JFrame();
+		// JFrame frame = new JFrame();
 		graphResult = new JScrollPane(graphdisplay);
-		graphResult.setBounds(20, 20, frmResult.getWidth()-60, 600);
+		graphResult.setBounds(20, 20, frmResult.getWidth() - 60, 600);
 		frmResult.getContentPane().add(graphResult);
 		graphResult.revalidate();
 
-		//Statistics display
+		// Statistics display
 
 		/* Itinerary */
 		statistics = new JLabel();
@@ -157,7 +155,7 @@ public class Result extends JFrame{
 		statistics = new JLabel();
 		statistics.setForeground(Color.blue);
 		statistics.setText(printItinerary());
-		statistics.setBounds(42, 635, frmResult.getWidth()-60, 22);
+		statistics.setBounds(42, 635, frmResult.getWidth() - 60, 22);
 		frmResult.getContentPane().add(statistics);
 
 		/* Covered Distance */
@@ -183,15 +181,14 @@ public class Result extends JFrame{
 
 	}
 
-	public static DefaultGraphCell createVertex(String name, double x,
-			double y, double w, double h, Color bg, boolean raised) {
+	public static DefaultGraphCell createVertex(String name, double x, double y, double w, double h, Color bg,
+			boolean raised) {
 
 		// Create vertex with the given name
 		DefaultGraphCell cell = new DefaultGraphCell(name);
 
 		// Set bounds
-		GraphConstants.setBounds(cell.getAttributes(),
-				new Rectangle2D.Double(x, y, w, h));
+		GraphConstants.setBounds(cell.getAttributes(), new Rectangle2D.Double(x, y, w, h));
 
 		// Set fill color
 		if (bg != null) {
@@ -201,12 +198,10 @@ public class Result extends JFrame{
 
 		// Set raised border
 		if (raised) {
-			GraphConstants.setBorder(cell.getAttributes(),
-					BorderFactory.createRaisedBevelBorder());
+			GraphConstants.setBorder(cell.getAttributes(), BorderFactory.createRaisedBevelBorder());
 		} else // Set black border
 		{
-			GraphConstants.setBorderColor(cell.getAttributes(),
-					Color.black);
+			GraphConstants.setBorderColor(cell.getAttributes(), Color.black);
 		}
 		// Add a Floating Port
 		cell.addPort();
@@ -214,12 +209,12 @@ public class Result extends JFrame{
 		return cell;
 	}
 
-	public String printItinerary(){
+	public String printItinerary() {
 
 		String itinerary = "";
 		int i = 1;
-		for(Node node : this.itinerary ){
-			if(i == (this.itinerary.size()))
+		for (Node node : this.itinerary) {
+			if (i == (this.itinerary.size()))
 				itinerary += i + " - " + (node.getName());
 			else
 				itinerary += i + " - " + (node.getName() + ", ");

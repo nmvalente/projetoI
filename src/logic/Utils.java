@@ -3,7 +3,7 @@ package logic;
 import java.io.File;
 
 public class Utils {
-	
+
 	public static final String UNDEFINED = "UNDEFINED";
 	public static final String NODES = "[nodes]";
 	public static final String EDGES = "[edges]";
@@ -18,6 +18,6 @@ public class Utils {
 	public static final String SPLITTER = ";";
 	public static final File graphFile = new File("resources/graph.csv");
 	public static final double EARTH_RADIUS = 6373;
-	public static final String UNIFORM_COST = "Uniform-cost"; 
+	public static final String UNIFORM_COST = "Uniform-cost";
 	public static final String A_STAR = "A*";
 }

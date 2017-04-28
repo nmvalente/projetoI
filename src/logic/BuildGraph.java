@@ -18,31 +18,24 @@ public class BuildGraph {
 	protected Node station;
 	protected Map<String, ArrayList<Truck>> trucks;
 
-	public BuildGraph(Graph graph, 
-			int truckPlastic, 
-			int truckPaper, 
-			int truckGlass, 
-			int truckCommon, 
-			int numberOfStations, 
-			double truckCapacity, 
-			double minimumLevelContainer, 
-			String heuristic) {
+	public BuildGraph(Graph graph, int truckPlastic, int truckPaper, int truckGlass, int truckCommon,
+			int numberOfStations, double truckCapacity, double minimumLevelContainer, String heuristic) {
 
 		setContainersAndStations(graph);
 		setMapTrucks(truckPlastic, truckPaper, truckGlass, truckCommon);
 		setTrucks(truckCapacity);
 
-		new Search(graph, containers, garbageStations, itinerary, typeTruck,central,station,trucks, heuristic);
+		new Search(graph, containers, garbageStations, itinerary, typeTruck, central, station, trucks, heuristic);
 
-		//this.itinerary = new LinkedList<Node>();
+		// this.itinerary = new LinkedList<Node>();
 	}
 
 	private Map<String, Integer> setMapTrucks(int truckPlastic, int truckPaper, int truckGlass, int truckCommon) {
 		typeTruck = new HashMap<String, Integer>();
-		typeTruck.put("glass",truckGlass);
-		typeTruck.put("paper",truckPaper);
-		typeTruck.put("plastic",truckPlastic);
-		typeTruck.put("common",truckCommon);
+		typeTruck.put("glass", truckGlass);
+		typeTruck.put("paper", truckPaper);
+		typeTruck.put("plastic", truckPlastic);
+		typeTruck.put("common", truckCommon);
 		return typeTruck;
 	}
 
@@ -67,19 +60,18 @@ public class BuildGraph {
 		this.garbageStations = new ArrayList<Node>();
 
 		for (Node temp : graph.getNodes()) {
-			if(temp.getType().equals(Utils.STATION)){
+			if (temp.getType().equals(Utils.STATION)) {
 				station = new Node(temp);
 				station.setOutEdges(temp.getOutEdges());
 				addGarbageStation(temp);
-			}
-			else if(temp.getType().equals(Utils.TRUE_GARBAGE)){
+			} else if (temp.getType().equals(Utils.TRUE_GARBAGE)) {
 				addGarbageContainer(temp);
-			}
-			else if(temp.getType().equals(Utils.CENTRAL)){
+			} else if (temp.getType().equals(Utils.CENTRAL)) {
 				central = new Node(temp);
-				central.setOutEdges(temp.getOutEdges()); // falta testar problemas aqui
+				central.setOutEdges(temp.getOutEdges()); // falta testar
+															// problemas aqui
 			}
-		}	
+		}
 	}
 
 	public Map<String, ArrayList<Truck>> getTrucks() {
@@ -90,37 +82,36 @@ public class BuildGraph {
 		Truck truck;
 		ArrayList<Truck> truckTemp = new ArrayList<Truck>();
 		int i;
-		this.trucks = new HashMap<String , ArrayList<Truck>>();
+		this.trucks = new HashMap<String, ArrayList<Truck>>();
 
+		for (i = 0; i < typeTruck.get("glass"); i++) {
 
-		for(i = 0 ; i < typeTruck.get("glass") ; i++){
-
-			truck = new Truck(central,station,capacity, Utils.GLASS);
+			truck = new Truck(central, station, capacity, Utils.GLASS);
 			truckTemp.add(truck);
 		}
-		if(truckTemp.size() > 0)
+		if (truckTemp.size() > 0)
 			this.trucks.put("glass", truckTemp);
 
 		truckTemp = new ArrayList<Truck>();
-		for(i = 0 ; i < typeTruck.get("plastic") ; i++){
-			truck = new Truck(central,station,capacity, Utils.PLASTIC);
+		for (i = 0; i < typeTruck.get("plastic"); i++) {
+			truck = new Truck(central, station, capacity, Utils.PLASTIC);
 			truckTemp.add(truck);
 		}
-		if(truckTemp.size() > 0)
+		if (truckTemp.size() > 0)
 			this.trucks.put("glass", truckTemp);
 
-		for(i = 0 ; i < typeTruck.get("paper") ; i++){
-			truck = new Truck(central,station,capacity, Utils.PAPER);
+		for (i = 0; i < typeTruck.get("paper"); i++) {
+			truck = new Truck(central, station, capacity, Utils.PAPER);
 			truckTemp.add(truck);
 		}
-		if(truckTemp.size() > 0)
+		if (truckTemp.size() > 0)
 			this.trucks.put("glass", truckTemp);
 
-		for(i = 0 ; i < typeTruck.get("common") ; i++){
-			truck = new Truck(central,station,capacity, Utils.COMMON);
+		for (i = 0; i < typeTruck.get("common"); i++) {
+			truck = new Truck(central, station, capacity, Utils.COMMON);
 			truckTemp.add(truck);
 		}
-		if(truckTemp.size() > 0)
+		if (truckTemp.size() > 0)
 			this.trucks.put("glass", truckTemp);
 
 		return this.trucks;

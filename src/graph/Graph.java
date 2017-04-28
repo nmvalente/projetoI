@@ -9,10 +9,10 @@ public class Graph {
 		this.nodes = new ArrayList<Node>();
 	}
 
-	public Graph(Graph newG){
+	public Graph(Graph newG) {
 		this.nodes = newG.getNodes();
 	}
-	
+
 	public ArrayList<Node> getNodes() {
 		return nodes;
 	}
@@ -111,48 +111,37 @@ public class Graph {
 			return distance;
 	}
 
-	/*public double getTotalGarbage(boolean directed) {
-		int totalGarbage = 0;
-
-		for (int i = 0; i < nodes.size(); i++) {
-			ArrayList<Edge> edges = nodes.get(i).getOutEdges();
-			for (int z = 0; z < edges.size(); z++) {
-				totalGarbage += edges.get(z).getMinutes();
-			}
-		}
-
-		if (directed)
-			return time / 2.0;
-		else
-			return time;
-	}
+	/*
+	 * public double getTotalGarbage(boolean directed) { int totalGarbage = 0;
+	 * 
+	 * for (int i = 0; i < nodes.size(); i++) { ArrayList<Edge> edges =
+	 * nodes.get(i).getOutEdges(); for (int z = 0; z < edges.size(); z++) {
+	 * totalGarbage += edges.get(z).getMinutes(); } }
+	 * 
+	 * if (directed) return time / 2.0; else return time; }
 	 */
 	public int compareTotalDistance(Graph obj) {
 		double d1 = this.getTotalDistance(false);
 		double d2 = obj.getTotalDistance(false);
-		if (d1 > d2){
+		if (d1 > d2) {
 			return 1;
-		} 
-		else{
-			if(d1 < d2){
+		} else {
+			if (d1 < d2) {
 				return -1;
-			}
-			else{
+			} else {
 				return 0;
 			}
 		}
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		StringBuilder strb = new StringBuilder();
-		for(int i = 0 ; i < nodes.size() ; i++){
+		for (int i = 0; i < nodes.size(); i++) {
 			strb.append(nodes.get(i).toString() + "\n");
 		}
 		String str = strb.toString();
-		return str;	
+		return str;
 	}
-	
-	
 
 }

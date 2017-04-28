@@ -13,7 +13,7 @@ public class Truck {
 	protected static int current_id = 0;
 	protected int id;
 
-	public Truck(Node startingPos, Node destinyPos, double capacity, String type){
+	public Truck(Node startingPos, Node destinyPos, double capacity, String type) {
 		this.capacity = capacity;
 		this.startingPosition = new Node(startingPos);
 		this.destinyPosition = new Node(destinyPos);
@@ -35,65 +35,66 @@ public class Truck {
 		this.id = truck.id;
 	}
 
-	public Node getStartingPosition(){
+	public Node getStartingPosition() {
 		return startingPosition;
 	}
 
-	public double getDistanceCovered(){
+	public double getDistanceCovered() {
 		return distanceCovered;
 	}
 
-	public void setStartingPosition(Node startPos){
+	public void setStartingPosition(Node startPos) {
 		this.startingPosition = startPos;
 	}
 
-	public Node getDestinyPosition(){
+	public Node getDestinyPosition() {
 		return destinyPosition;
 	}
 
-	public void setDestinyPosition(Node destinyPos){
+	public void setDestinyPosition(Node destinyPos) {
 		this.destinyPosition = destinyPos;
 	}
 
-	public void addToDistanceCovered(double distance){
+	public void addToDistanceCovered(double distance) {
 		this.distanceCovered += distance;
 	}
 
-	public void resetDistanceCovered(){
+	public void resetDistanceCovered() {
 		this.distanceCovered = 0.0;
 	}
 
-	public double getCapacity(){
+	public double getCapacity() {
 		return capacity;
 	}
 
-	public boolean isFull(){
+	public boolean isFull() {
 		return this.totalGarbage > this.capacity;
 	}
 
-	public String getType(){
+	public String getType() {
 		return type;
 	}
 
-	public int getID(){
+	public int getID() {
 		return id;
 	}
-	
-	public void setTotalGarbage(double garbage){
+
+	public void setTotalGarbage(double garbage) {
 		this.totalGarbage += garbage;
 	}
 
-	public void resetTotalGarbage(){
+	public void resetTotalGarbage() {
 		this.totalGarbage = 0.0;
 	}
 
-	public double getTotalGarbage(){
+	public double getTotalGarbage() {
 		return totalGarbage;
 	}
 
 	@Override
-	public String toString(){
-		String str = this.getType() + " " + this.distanceCovered + " " + this.startingPosition + " " + this.destinyPosition;
+	public String toString() {
+		String str = this.getType() + " " + this.distanceCovered + " " + this.startingPosition + " "
+				+ this.destinyPosition;
 		return str;
 
 	}
