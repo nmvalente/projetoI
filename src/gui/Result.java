@@ -1,26 +1,35 @@
 package gui;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.geom.Rectangle2D;
-import java.util.List;
+import graph.Edge;
+import graph.Graph;
+import graph.Node;
+import logic.ProgramData;
+import logic.Search;
 
-import javax.swing.BorderFactory;
+import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import org.jgraph.JGraph;
+import java.awt.Color;
+import java.awt.geom.Rectangle2D;
+import java.util.List;
+import javax.swing.BorderFactory;
+
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
-
-import graph.Edge;
-import graph.Graph;
-import graph.Node;
-import logic.ProgramData;
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
+import java.beans.VetoableChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Result extends JFrame {
 
@@ -47,7 +56,6 @@ public class Result extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			@Override
 			public void run() {
 
 			}
@@ -80,6 +88,14 @@ public class Result extends JFrame {
 		// Graph Display
 		GraphModel model = new DefaultGraphModel();
 		JGraph graphdisplay = new JGraph(model);
+		graphdisplay.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				graphdisplay.refresh();
+				graphdisplay.revalidate();
+				graphdisplay.repaint();
+			}
+		});
 
 		// Count elements
 		int counter = 0;
@@ -136,6 +152,10 @@ public class Result extends JFrame {
 
 		// Insert the cells via the cache, so they get selected
 		graphdisplay.getGraphLayoutCache().insert(cells);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(0, 0, 5, 5);
+		frmResult.getContentPane().add(tabbedPane);
 
 		// Show in Frame
 		// JFrame frame = new JFrame();
