@@ -12,8 +12,6 @@ import logic.*;
 
 import org.junit.Test;
 
-
-
 import graph.Node;
 import graph.Edge;
 import graph.Graph;
