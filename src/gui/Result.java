@@ -152,10 +152,6 @@ public class Result extends JFrame {
 
 		// Insert the cells via the cache, so they get selected
 		graphdisplay.getGraphLayoutCache().insert(cells);
-		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 0, 5, 5);
-		frmResult.getContentPane().add(tabbedPane);
 
 		// Show in Frame
 		// JFrame frame = new JFrame();
