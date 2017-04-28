@@ -8,6 +8,7 @@ public class Node{
 	private int id;
 	private double latitude;
 	private double longitude;
+	private double distance; // for tests;
 	private String type;
 	private ArrayList<Edge> outEdges;
 	private boolean processing;
@@ -55,6 +56,14 @@ public class Node{
 		else if(type.equals("false"))
 			this.type = Utils.FALSE_GARBAGE;
 		else this.type = Utils.TRUE_GARBAGE;
+	}
+
+	// for test class only
+	public Node(int id, String name, double distance) {
+		this.id = id;
+		this.name = name;
+		this.distance = distance;
+		this.outEdges = new ArrayList<Edge>();
 	}
 
 	public ArrayList<Edge> cloneList(ArrayList<Edge> list) {
@@ -128,8 +137,11 @@ public class Node{
 			return false;
 
 		Node node = (Node) obj;
-
-		return this.id == node.id;
+		
+		
+		if(this.id == node.id && this.getName() == node.getName())
+			return true;
+		else return false;
 	}
 
 	// we need to decrement the destiny indegree value outside (if we don't send
@@ -158,31 +170,31 @@ public class Node{
 	public String getType(){
 		return this.type;
 	}
-	
+
 	@Override
 	public String toString(){	
-		
+
 		StringBuilder strN = new StringBuilder();
 		strN.append(this.getId() + " " + this.getName() + "\n");
-		
+
 		for (Edge temp : this.outEdges) {
 			strN.append("\t" + temp.toString() + "\n");
 		}
-		 
+
 		return strN.toString();
 	}
 
 	public void setOutEdges(ArrayList<Edge> outEdges2) {
 		this.outEdges = outEdges2;
 	}
-	
+
 	public double getGValue(){return this.g;}
 	public double getHValue(){return this.h;}
 	public double getFValue(){return this.f;}
 	public void setGValue(double gValue){this.g = gValue;}
 	public void setHValue(double hValue){this.h = hValue;}
 	public void setFValue(double fValue){this.f = fValue;}
-	
+
 	public Node getParent(){return this.parent;}
 
 	public void setParent(Node current) {

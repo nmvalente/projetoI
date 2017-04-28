@@ -122,6 +122,8 @@ public class StateNode {
 	public Node getNode() {
 		return this.node;
 	}
+// (nr camioes + distancia percorrida) / quantidade de lixo
+// camiao deve voltar a central?
 
 	public Edge getEdge() {
 		return edge;
