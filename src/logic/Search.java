@@ -30,6 +30,7 @@ public class Search {
 	protected PriorityQueue<Node> queue;
 	Set<Node> explored;
 	private Graph graph;
+	private double distanceCovered;
 
 
 	public Search(Graph graph,
@@ -163,19 +164,23 @@ public class Search {
 		Search.itinerary = new ArrayList<Node>();
 
 		for(Node node = queue.poll(); node != null; node = node.getParent()){
-
-			//System.out.println(node.getParent());
-
 			Search.itinerary.add(node);
 		}
 
 		Collections.reverse(Search.itinerary);
+		
+		for(int i = 0; i < Search.itinerary.size()-1; i++){
+			for(Edge edgeo : Search.itinerary.get(i).getOutEdges()){
+				if(edgeo.getSource().equals(Search.itinerary.get(i)) && edgeo.getDestiny().equals(Search.itinerary.get(i+1)))
+					distanceCovered += edgeo.getDistance();
+			}
+		}
 
 		return Search.itinerary;
 	}
 
 	public void printItinerary(){
-		
+
 		System.out.println("Itinerary :");
 
 		System.out.print("[");
@@ -192,7 +197,7 @@ public class Search {
 
 	public void sendSearchToResult() {
 		try {
-			Result window = new Result(this.graph, Search.itinerary, 10,2); // to change in future
+			Result window = new Result(this.graph, Search.itinerary, distanceCovered, 2); // to change in future
 			window.frmResult.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();

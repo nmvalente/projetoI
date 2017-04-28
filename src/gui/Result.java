@@ -5,6 +5,8 @@ import graph.Edge;
 import graph.Graph;
 import graph.Node;
 import logic.ProgramData;
+import logic.Search;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,8 +31,7 @@ public class Result extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	public JFrame frmResult;
-	private JLabel coveredDistance;
-	private JLabel numberTrucksUsed;
+	private JLabel statistics;
 	private double distanceCovered;
 	private int numberOfTrucks;
 	private JScrollPane graphResult;
@@ -71,6 +72,7 @@ public class Result extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		frmResult = new JFrame();
 		frmResult.setBounds(100, 100, 800, 800);
 		frmResult.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -122,7 +124,6 @@ public class Result extends JFrame{
 						edge.setTarget(cells[j]);
 						target = nodeaux;
 					}
-
 					j++;
 				}
 
@@ -141,32 +142,44 @@ public class Result extends JFrame{
 		// Show in Frame
 		//JFrame frame = new JFrame();
 		graphResult = new JScrollPane(graphdisplay);
-		graphResult.setBounds(20, 20, 740, 600);
+		graphResult.setBounds(20, 20, frmResult.getWidth()-60, 600);
 		frmResult.getContentPane().add(graphResult);
 		graphResult.revalidate();
 
-		//Statics display
+		//Statistics display
+
+		/* Itinerary */
+		statistics = new JLabel();
+		statistics.setText("Itenerary : ");
+		statistics.setBounds(20, 620, 156, 22);
+		frmResult.getContentPane().add(statistics);
+
+		statistics = new JLabel();
+		statistics.setForeground(Color.blue);
+		statistics.setText(printItinerary());
+		statistics.setBounds(42, 635, frmResult.getWidth()-60, 22);
+		frmResult.getContentPane().add(statistics);
 
 		/* Covered Distance */
-		coveredDistance = new JLabel();
-		coveredDistance.setText("Statistics :");
-		coveredDistance.setBounds(20, 620, 156, 22);
-		frmResult.getContentPane().add(coveredDistance);
+		statistics = new JLabel();
+		statistics.setText("Statistics :");
+		statistics.setBounds(20, 655, 156, 22);
+		frmResult.getContentPane().add(statistics);
 
 		/* Covered Distance */
-		coveredDistance = new JLabel();
-		coveredDistance.setForeground(Color.blue);
-		coveredDistance.setText("Distance Covered : " + String.valueOf(this.distanceCovered));
-		coveredDistance.setBounds(42, 650, 156, 22);
-		frmResult.getContentPane().add(coveredDistance);
+		statistics = new JLabel();
+		statistics.setForeground(Color.blue);
+		statistics.setText("Distance Covered : " + String.valueOf(this.distanceCovered));
+		statistics.setBounds(42, 675, 156, 22);
+		frmResult.getContentPane().add(statistics);
 
 		/* Number of trucks used */
 
-		numberTrucksUsed = new JLabel();
-		numberTrucksUsed.setForeground(Color.blue);
-		numberTrucksUsed.setText("Trucks used : " + String.valueOf(this.numberOfTrucks));
-		numberTrucksUsed.setBounds(42, 670, 131, 22);
-		frmResult.getContentPane().add(numberTrucksUsed);
+		statistics = new JLabel();
+		statistics.setForeground(Color.blue);
+		statistics.setText("Trucks used : " + String.valueOf(this.numberOfTrucks));
+		statistics.setBounds(42, 690, 131, 22);
+		frmResult.getContentPane().add(statistics);
 
 	}
 
@@ -199,5 +212,21 @@ public class Result extends JFrame{
 		cell.addPort();
 
 		return cell;
+	}
+
+	public String printItinerary(){
+
+		String itinerary = "";
+		int i = 1;
+		for(Node node : this.itinerary ){
+			if(i == (this.itinerary.size()))
+				itinerary += i + " - " + (node.getName());
+			else
+				itinerary += i + " - " + (node.getName() + ", ");
+
+			i++;
+		}
+		return itinerary;
+
 	}
 }
