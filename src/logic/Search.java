@@ -55,7 +55,7 @@ public class Search {
 
 		// show in gui the result
 
-		//sendSearchToResult();
+		sendSearchToResult();
 	}
 
 	private void uniform_cost() {
@@ -194,7 +194,7 @@ public class Search {
 
 	public void sendSearchToResult() {
 		try {
-			Result window = new Result(this.graph, Search.itinerary, distanceCovered, 2); // to
+			Result window = new Result(this.graph, Search.itinerary, distanceCovered); // to
 																							// change
 																							// in
 																							// future
