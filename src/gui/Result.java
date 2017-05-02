@@ -160,7 +160,7 @@ public class Result extends JFrame {
 		DefaultGraphCell[] cellsPlastic = Graph(this.itineraryPlastic);
 
 		JGraph graphPlastic = new JGraph(modelPlastic);
-		graphPaper.addMouseListener(new MouseAdapter() {
+		graphPlastic.addMouseListener(new MouseAdapter() { 
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				graphPlastic.refresh();
