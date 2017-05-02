@@ -55,7 +55,7 @@ public class Search {
 
 		// show in gui the result
 
-		//sendSearchToResult();
+		sendSearchToResult();
 	}
 
 	private void uniform_cost() {
@@ -193,8 +193,7 @@ public class Search {
 
 	public void sendSearchToResult() {
 		try {
-			Result window = new Result(this.graph, Search.itinerary, distanceCovered, 2);
-			
+			Result window = new Result(this.graph, Search.itinerary, distanceCovered); 
 			window.frmResult.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
