@@ -86,7 +86,7 @@ public class ProgramData {
 
 				case Utils.NODES:
 					String[] nodeValues = fileLine.split(Utils.SPLITTER);
-					if (nodeValues.length != 5) {
+					if (nodeValues.length != 9) {
 						break;
 					}
 
@@ -94,8 +94,14 @@ public class ProgramData {
 							Double.parseDouble(nodeValues[1]), // lat
 							Double.parseDouble(nodeValues[2]), // lon
 							nodeValues[3], // type
-							nodeValues[4]); // name of street
+							nodeValues[4], // name of street
+							Double.parseDouble(nodeValues[5]), // glass garbage
+							Double.parseDouble(nodeValues[6]), // paper garbage
+							Double.parseDouble(nodeValues[7]), // plastic garbage
+							Double.parseDouble(nodeValues[8]) // common garbage
+							); 
 					graph.addNode(node);
+
 
 					break;
 

@@ -24,7 +24,6 @@ public class BuildGraph {
 		setContainersAndStations(graph);
 		setMapTrucks(truckPlastic, truckPaper, truckGlass, truckCommon);
 		setTrucks(truckCapacity);
-
 		new Search(graph, containers, garbageStations, itinerary, typeTruck, central, station, trucks, heuristic);
 
 		// this.itinerary = new LinkedList<Node>();
@@ -68,8 +67,7 @@ public class BuildGraph {
 				addGarbageContainer(temp);
 			} else if (temp.getType().equals(Utils.CENTRAL)) {
 				central = new Node(temp);
-				central.setOutEdges(temp.getOutEdges()); // falta testar
-															// problemas aqui
+				central.setOutEdges(temp.getOutEdges()); // falta testar problemas aqui
 			}
 		}
 	}
@@ -83,14 +81,14 @@ public class BuildGraph {
 		ArrayList<Truck> truckTemp = new ArrayList<Truck>();
 		int i;
 		this.trucks = new HashMap<String, ArrayList<Truck>>();
-
+		
 		for (i = 0; i < typeTruck.get("glass"); i++) {
-
 			truck = new Truck(central, station, capacity, Utils.GLASS);
 			truckTemp.add(truck);
 		}
 		if (truckTemp.size() > 0)
 			this.trucks.put("glass", truckTemp);
+		
 
 		truckTemp = new ArrayList<Truck>();
 		for (i = 0; i < typeTruck.get("plastic"); i++) {
@@ -98,21 +96,23 @@ public class BuildGraph {
 			truckTemp.add(truck);
 		}
 		if (truckTemp.size() > 0)
-			this.trucks.put("glass", truckTemp);
-
+			this.trucks.put("plastic", truckTemp);
+		
+		truckTemp = new ArrayList<Truck>();
 		for (i = 0; i < typeTruck.get("paper"); i++) {
 			truck = new Truck(central, station, capacity, Utils.PAPER);
 			truckTemp.add(truck);
 		}
 		if (truckTemp.size() > 0)
-			this.trucks.put("glass", truckTemp);
+			this.trucks.put("paper", truckTemp);
 
+		truckTemp = new ArrayList<Truck>();
 		for (i = 0; i < typeTruck.get("common"); i++) {
 			truck = new Truck(central, station, capacity, Utils.COMMON);
 			truckTemp.add(truck);
 		}
 		if (truckTemp.size() > 0)
-			this.trucks.put("glass", truckTemp);
+			this.trucks.put("common", truckTemp);
 
 		return this.trucks;
 	}

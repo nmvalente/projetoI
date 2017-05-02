@@ -1,7 +1,10 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import logic.Truck;
 import logic.Utils;
 
 public class Node {
@@ -18,14 +21,8 @@ public class Node {
 	protected String name;
 	protected Node parent;
 	protected double g, h, f = 0;
+	protected Map<String, Double> garbageContainer;
 
-	/*
-	 * public Node(int id, double latitude, double longitude, String type){
-	 * this.setId(id); this.latitude = latitude; this.longitude = longitude;
-	 * this.processing = false; this.indegree = 0; this.outEdges = new
-	 * ArrayList<Edge>(); }
-	 */
-	// clones node without edges
 	public Node(Node node) {
 		if (node != null) {
 			this.setId(node.id);
@@ -37,10 +34,11 @@ public class Node {
 			this.name = node.name;
 			this.outEdges = new ArrayList<Edge>();
 			this.outEdges = node.getOutEdges();
+			this.garbageContainer = node.garbageContainer;
 		}
 	}
 
-	public Node(int id, double latitude, double longitude, String type, String nameStreet) {
+	public Node(int id, double latitude, double longitude, String type, String nameStreet, double glass, double paper, double plastic, double common) {
 		this.id = id;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -53,8 +51,14 @@ public class Node {
 			this.type = Utils.STATION;
 		else if (type.equals("false"))
 			this.type = Utils.FALSE_GARBAGE;
-		else
+		else{
+			this.garbageContainer = new HashMap<String, Double>();
+			this.garbageContainer.put("glass", glass);
+			this.garbageContainer.put("paper", paper);
+			this.garbageContainer.put("plastic", plastic);
+			this.garbageContainer.put("common", common);
 			this.type = Utils.TRUE_GARBAGE;
+		}
 	}
 
 	// for test class only
@@ -219,5 +223,10 @@ public class Node {
 
 	public void setParent(Node current) {
 		this.parent = current;
+	}
+	
+	public void setGarbageContainer(String typeGarbage, Double collected){
+		double temp = garbageContainer.get(typeGarbage);
+		garbageContainer.replace(typeGarbage, temp - collected);
 	}
 }

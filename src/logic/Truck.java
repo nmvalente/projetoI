@@ -93,8 +93,8 @@ public class Truck {
 
 	@Override
 	public String toString() {
-		String str = this.getType() + " " + this.distanceCovered + " " + this.startingPosition + " "
-				+ this.destinyPosition;
+		String str = this.getType() + ": " + this.distanceCovered + " " + this.startingPosition.getName() + " -> "
+				+ this.destinyPosition.getName();
 		return str;
 
 	}

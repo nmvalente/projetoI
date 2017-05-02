@@ -37,9 +37,9 @@ public class InformationsRequest {
 	private String heuristic;
 
 	protected int truckPlastic = 1;
-	protected int truckPaper = 0;
-	protected int truckGlass = 0;
-	protected int truckCommon = 0;
+	protected int truckPaper = 1;
+	protected int truckGlass = 1;
+	protected int truckCommon = 1;
 	protected int numberOfStations = 1;
 	protected int truckCapacity = 1000;
 	protected double minimumLevelContainer = 0.8;
@@ -90,7 +90,7 @@ public class InformationsRequest {
 
 		spinnerModel = new SpinnerNumberModel(truckPaper, // initial value
 				0, // min
-				10, // max
+				1, // max
 				1);// step
 		JSpinner truckPaperSpinner = new JSpinner(spinnerModel);
 
@@ -114,7 +114,7 @@ public class InformationsRequest {
 
 		spinnerModel = new SpinnerNumberModel(truckGlass, // initial value
 				0, // min
-				10, // max
+				1, // max
 				1);// step
 		JSpinner truckGlassSpinner = new JSpinner(spinnerModel);
 		truckGlassSpinner.addChangeListener(new ChangeListener() {
@@ -137,7 +137,7 @@ public class InformationsRequest {
 
 		spinnerModel = new SpinnerNumberModel(truckCommon, // initial value
 				0, // min
-				10, // max
+				1, // max
 				1);// step
 		JSpinner truckCommonSpinner = new JSpinner(spinnerModel);
 		truckCommonSpinner.addChangeListener(new ChangeListener() {
@@ -160,7 +160,7 @@ public class InformationsRequest {
 
 		spinnerModel = new SpinnerNumberModel(truckPlastic, // initial value
 				0, // min
-				10, // max
+				1, // max
 				1);// step
 		JSpinner truckPlasticSpinner = new JSpinner(spinnerModel);
 		truckPlasticSpinner.addChangeListener(new ChangeListener() {

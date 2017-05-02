@@ -26,7 +26,7 @@ public class Search {
 	protected Node station;
 	protected Map<String, ArrayList<Truck>> trucks;
 	protected PriorityQueue<Node> queue;
-	Set<Node> explored;
+	protected Set<Node> explored;
 	private Graph graph;
 	private double distanceCovered;
 
@@ -65,11 +65,9 @@ public class Search {
 	private void a_star(Graph graph, Node initial, Node goal) {
 		System.out.println("A STAR SELECTED");
 		this.copyG = new Graph(graph); // grafo para manipular
-		System.out.println(this.trucks.get("paper"));
-		
-		System.out.println(this.copyG);
+		//System.out.println(this.copyG);
 
-		for (Node n : this.copyG.getNodes()) {
+	/*	for (Node n : this.copyG.getNodes()) {
 			if (!n.equals(central)) {
 				n.setGValue(straightLineDistance(central.getLatitude(), central.getLongitude(), n.getLatitude(),
 						n.getLongitude()));
@@ -78,7 +76,7 @@ public class Search {
 			}
 			// System.out.println(n.getId() + " " + n.getFValue());
 		}
-
+*/
 		explored = new HashSet<Node>();
 		queue = new PriorityQueue<Node>(this.copyG.getNodes().size(), new Comparator<Node>() {
 
@@ -109,7 +107,7 @@ public class Search {
 			explored.add(current);
 
 			// goal found
-			if (current.getId() == goal.getId()) {
+			if (current.equals(goal)) {
 				found = true;
 				queue.add(current); // no caso em que deve adicionar o final
 			}
@@ -125,11 +123,12 @@ public class Search {
 				double temp_f_scores = temp_g_scores + child.getHValue();
 				double h_scores = straightLineDistance(current.getLatitude(), current.getLongitude(), goal.getLatitude(),
 						goal.getLongitude());
-					
+				current.setHValue(h_scores);
+				//current.setFValue();
 				// System.out.println(temp_g_scores + " " + temp_f_scores);
+				
 				/*
-				 * if child node has been evaluated and the newer f_score is
-				 * higher, skip
+				 * if child node has been evaluated and the newer f_score is higher, skip
 				 */
 
 				if ((explored.contains(child)) && (temp_f_scores >= child.getFValue())) {
@@ -194,10 +193,8 @@ public class Search {
 
 	public void sendSearchToResult() {
 		try {
-			Result window = new Result(this.graph, Search.itinerary, distanceCovered, 2); // to
-																							// change
-																							// in
-																							// future
+			Result window = new Result(this.graph, Search.itinerary, distanceCovered, 2);
+			
 			window.frmResult.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
