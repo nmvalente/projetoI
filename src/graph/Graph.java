@@ -2,6 +2,8 @@ package graph;
 
 import java.util.ArrayList;
 
+import logic.Utils;
+
 public class Graph {
 	protected ArrayList<Node> nodes;
 
@@ -24,6 +26,16 @@ public class Graph {
 			}
 		}
 		return null;
+	}
+
+	public double getTotalGarbageByTypeWaste(String wasteType){
+		double total=0;
+		for(Node n : nodes){
+			if(n.getType() == Utils.TRUE_GARBAGE)
+				total += n.getGarbageContainerByType(wasteType);
+		}
+		return total;
+
 	}
 
 	public boolean addNode(Node node) {
@@ -89,7 +101,7 @@ public class Graph {
 			return distance;
 	}
 
-	
+
 	public int compareTotalDistance(Graph obj) {
 		double d1 = this.getTotalDistance(false);
 		double d2 = obj.getTotalDistance(false);

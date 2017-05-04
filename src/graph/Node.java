@@ -229,4 +229,12 @@ public class Node {
 		double temp = garbageContainer.get(typeGarbage);
 		garbageContainer.replace(typeGarbage, temp - collected);
 	}
+	
+	public Map<String, Double> getGarbageContainer(){
+		return this.garbageContainer;
+	}
+	
+	public double getGarbageContainerByType(String wasteType){
+		return this.garbageContainer.get(wasteType);
+	}
 }

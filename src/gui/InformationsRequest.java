@@ -90,7 +90,7 @@ public class InformationsRequest {
 
 		spinnerModel = new SpinnerNumberModel(truckPaper, // initial value
 				0, // min
-				1, // max
+				10, // max
 				1);// step
 		JSpinner truckPaperSpinner = new JSpinner(spinnerModel);
 
@@ -114,7 +114,7 @@ public class InformationsRequest {
 
 		spinnerModel = new SpinnerNumberModel(truckGlass, // initial value
 				0, // min
-				1, // max
+				10, // max
 				1);// step
 		JSpinner truckGlassSpinner = new JSpinner(spinnerModel);
 		truckGlassSpinner.addChangeListener(new ChangeListener() {
@@ -137,7 +137,7 @@ public class InformationsRequest {
 
 		spinnerModel = new SpinnerNumberModel(truckCommon, // initial value
 				0, // min
-				1, // max
+				10, // max
 				1);// step
 		JSpinner truckCommonSpinner = new JSpinner(spinnerModel);
 		truckCommonSpinner.addChangeListener(new ChangeListener() {
@@ -160,7 +160,7 @@ public class InformationsRequest {
 
 		spinnerModel = new SpinnerNumberModel(truckPlastic, // initial value
 				0, // min
-				1, // max
+				10, // max
 				1);// step
 		JSpinner truckPlasticSpinner = new JSpinner(spinnerModel);
 		truckPlasticSpinner.addChangeListener(new ChangeListener() {

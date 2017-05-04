@@ -55,7 +55,7 @@ public class Search {
 
 		// show in gui the result
 
-		sendSearchToResult();
+		//sendSearchToResult();
 	}
 
 	private void uniform_cost() {
@@ -65,21 +65,30 @@ public class Search {
 	private void a_star(Graph graph, Node initial, Node goal) {
 		System.out.println("A STAR SELECTED");
 		this.copyG = new Graph(graph); // grafo para manipular
-		//System.out.println(this.copyG);
 
-	/*	for (Node n : this.copyG.getNodes()) {
-			if (!n.equals(central)) {
-				n.setGValue(straightLineDistance(central.getLatitude(), central.getLongitude(), n.getLatitude(),
-						n.getLongitude()));
-				n.setHValue(0);
-				n.setFValue(n.getGValue() + n.getHValue());
-			}
-			// System.out.println(n.getId() + " " + n.getFValue());
-		}
-*/
+		double paperToCollect = this.copyG.getTotalGarbageByTypeWaste(Utils.PAPER);
+		double plasticToCollect = this.copyG.getTotalGarbageByTypeWaste(Utils.PLASTIC);
+		double commonToCollect = this.copyG.getTotalGarbageByTypeWaste(Utils.COMMON);
+		double glassToCollect = this.copyG.getTotalGarbageByTypeWaste(Utils.GLASS);
+		double allWaste = paperToCollect + plasticToCollect + commonToCollect + glassToCollect;
+
+		ArrayList<Truck> trucksPaper = this.trucks.get(Utils.PAPER);
+		ArrayList<Truck> trucksPlastic = this.trucks.get(Utils.PLASTIC);
+		ArrayList<Truck> trucksGlass = this.trucks.get(Utils.GLASS);
+		ArrayList<Truck> trucksCommon = this.trucks.get(Utils.COMMON);
+
+		System.out.println(paperToCollect);
+		/*System.out.println(plasticToCollect);
+		System.out.println(glassToCollect);
+		System.out.println(commonToCollect);
+		System.out.println(allWaste);
+		System.out.println(trucksPaper);
+		System.out.println(trucksPlastic);
+		System.out.println(trucksGlass);
+		System.out.println(trucksCommon);*/
+
 		explored = new HashSet<Node>();
 		queue = new PriorityQueue<Node>(this.copyG.getNodes().size(), new Comparator<Node>() {
-
 			// override compare method
 			@Override
 			public int compare(Node i, Node j) {
@@ -97,20 +106,24 @@ public class Search {
 		initial.setGValue(0);
 
 		queue.add(initial);
-		boolean found = false;
+		double collected =0;
 
-		while ((!queue.isEmpty()) && (!found)) {
+		while ((!queue.isEmpty()) && (paperToCollect > 0)) {
+
 
 			// the node having the lowest f_score value
 			Node current = queue.poll();
-
+			//System.out.println(current);
 			explored.add(current);
 
-			// goal found
-			if (current.equals(goal)) {
-				found = true;
-				queue.add(current); // no caso em que deve adicionar o final
-			}
+			if(current.getType() == Utils.TRUE_GARBAGE)
+				if(current.getGarbageContainerByType("paper") > 0){
+					collected += current.getGarbageContainerByType("paper");
+					current.setGarbageContainer("paper", 0.0);
+				}
+
+
+
 
 			// check every child of current node
 			for (Edge e : current.getOutEdges()) {
@@ -121,12 +134,12 @@ public class Search {
 						child.getLongitude());
 				double temp_g_scores = current.getGValue() + cost;
 				double temp_f_scores = temp_g_scores + child.getHValue();
-				double h_scores = straightLineDistance(current.getLatitude(), current.getLongitude(), goal.getLatitude(),
+				/*	double h_scores = straightLineDistance(current.getLatitude(), current.getLongitude(), goal.getLatitude(),
 						goal.getLongitude());
-				current.setHValue(h_scores);
+				current.setHValue(h_scores);*/
 				//current.setFValue();
 				// System.out.println(temp_g_scores + " " + temp_f_scores);
-				
+
 				/*
 				 * if child node has been evaluated and the newer f_score is higher, skip
 				 */
@@ -153,7 +166,11 @@ public class Search {
 					queue.add(child);
 				}
 			}
+
+			paperToCollect = this.copyG.getTotalGarbageByTypeWaste(Utils.PAPER);
+
 		}
+		System.out.println(collected);
 	}
 
 	public List<Node> buildItinerary() {
@@ -204,8 +221,16 @@ public class Search {
 		double dLat = Math.toRadians(lat2 - lat1);
 		double dLon = Math.toRadians(lon2 - lon1);
 		double a = Math.pow((Math.sin(dLat / 2.0)), 2.0) + Math.cos(Math.toRadians(lat1))
-				* Math.cos(Math.toRadians(lat2)) * Math.pow((Math.sin(dLon / 2.0)), 2.0);
+		* Math.cos(Math.toRadians(lat2)) * Math.pow((Math.sin(dLon / 2.0)), 2.0);
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		return Utils.EARTH_RADIUS * c;
+	}
+
+	public double calculateHValue(Node actual, Node goal){
+
+
+		return 0;
+
+
 	}
 }

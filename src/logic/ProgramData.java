@@ -122,8 +122,7 @@ public class ProgramData {
 
 					double distance = Double.parseDouble(edgeValues[2]);
 
-					// double side because the file has only one - undirected
-					// graph
+					// double side because the file has only one - undirected graph
 
 					source.addEdge(destiny, distance);
 					destiny.addEdge(source, distance);
