@@ -143,7 +143,7 @@ public class Node {
 
 		Node node = (Node) obj;
 
-		if (this.id == node.id && this.getName() == node.getName())
+		if (this.id == node.id)
 			return true;
 		else
 			return false;

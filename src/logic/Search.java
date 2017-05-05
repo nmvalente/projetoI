@@ -1,14 +1,18 @@
 package logic;
 
+import java.nio.channels.ClosedSelectorException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 import graph.Edge;
 import graph.Graph;
@@ -26,7 +30,8 @@ public class Search {
 	protected Node station;
 	protected Map<String, ArrayList<Truck>> trucks;
 	protected PriorityQueue<Node> queue;
-	protected Set<Node> explored;
+	protected HashMap<Integer, Node> explored;
+	protected HashMap<Integer, Node> closeSet;
 	private Graph graph;
 	private double distanceCovered;
 
@@ -42,9 +47,9 @@ public class Search {
 
 		switch (heuristic) {
 		case Utils.A_STAR:
-			a_star(graph, this.central, this.station);
-			buildItinerary();
-			printItinerary();
+			computeProgram();
+			//buildItinerary();
+			//printItinerary();
 			break;
 		case Utils.UNIFORM_COST:
 			uniform_cost();
@@ -58,36 +63,23 @@ public class Search {
 		//sendSearchToResult();
 	}
 
+	private void computeProgram() {
+
+
+		ArrayList<Node> edges = a_star(graph, this.central);
+		System.out.println(edges);
+	}
+
 	private void uniform_cost() {
 		System.out.println("UNIFORM SELECTED");
 	}
 
-	private void a_star(Graph graph, Node initial, Node goal) {
+	private ArrayList<Node> a_star(Graph graph, Node initial) {
 		System.out.println("A STAR SELECTED");
 		this.copyG = new Graph(graph); // grafo para manipular
 
-		double paperToCollect = this.copyG.getTotalGarbageByTypeWaste(Utils.PAPER);
-		double plasticToCollect = this.copyG.getTotalGarbageByTypeWaste(Utils.PLASTIC);
-		double commonToCollect = this.copyG.getTotalGarbageByTypeWaste(Utils.COMMON);
-		double glassToCollect = this.copyG.getTotalGarbageByTypeWaste(Utils.GLASS);
-		double allWaste = paperToCollect + plasticToCollect + commonToCollect + glassToCollect;
-
-		ArrayList<Truck> trucksPaper = this.trucks.get(Utils.PAPER);
-		ArrayList<Truck> trucksPlastic = this.trucks.get(Utils.PLASTIC);
-		ArrayList<Truck> trucksGlass = this.trucks.get(Utils.GLASS);
-		ArrayList<Truck> trucksCommon = this.trucks.get(Utils.COMMON);
-
-		System.out.println(paperToCollect);
-		/*System.out.println(plasticToCollect);
-		System.out.println(glassToCollect);
-		System.out.println(commonToCollect);
-		System.out.println(allWaste);
-		System.out.println(trucksPaper);
-		System.out.println(trucksPlastic);
-		System.out.println(trucksGlass);
-		System.out.println(trucksCommon);*/
-
-		explored = new HashSet<Node>();
+		explored = new HashMap<Integer, Node>();
+		closeSet = new HashMap<Integer, Node>();
 		queue = new PriorityQueue<Node>(this.copyG.getNodes().size(), new Comparator<Node>() {
 			// override compare method
 			@Override
@@ -102,76 +94,117 @@ public class Search {
 			}
 		});
 
+		double allPaper = this.copyG.getTotalGarbageByTypeWaste(Utils.PAPER);
+		double allPlastic = this.copyG.getTotalGarbageByTypeWaste(Utils.PLASTIC);
+		double allCommon = this.copyG.getTotalGarbageByTypeWaste(Utils.COMMON);
+		double allGlass = this.copyG.getTotalGarbageByTypeWaste(Utils.GLASS);
+		double allWaste = allPaper + allPlastic + allCommon + allGlass;
+
 		// cost from start
 		initial.setGValue(0);
 
 		queue.add(initial);
-		double collected =0;
-
-		while ((!queue.isEmpty()) && (paperToCollect > 0)) {
-
+		explored.put(initial.getId(), initial);
+		Node goal = null; // quando tiver apanhado todo o lixo
+		double collected = 0.0;
+		while (explored.size() > 0 ) {
 
 			// the node having the lowest f_score value
 			Node current = queue.poll();
-			//System.out.println(current);
-			explored.add(current);
+			explored.remove(current);
 
-			if(current.getType() == Utils.TRUE_GARBAGE)
-				if(current.getGarbageContainerByType("paper") > 0){
-					collected += current.getGarbageContainerByType("paper");
-					current.setGarbageContainer("paper", 0.0);
-				}
+			if(current != null && current.getType() == Utils.TRUE_GARBAGE) // se for contentor de lixo
+				if(current.getGarbageContainerByType("paper") > 0){ // se houver papel por apanhar
+					collected += current.getGarbageContainerByType("paper"); // apanha o papel todo
+					current.setGarbageContainer("paper", 0.0); // coloca contentor vazio
+				}			
 
+			// goal found
+			if (allPaper == collected || current == null)  {
+				//goal = current;
+				System.out.println(allPaper);
+				System.out.println(collected);
+				break;
+			}
+			else{
+				System.out.println("Chegou");
+				goal = current; 		// just for test
+				closeSet.put(current.getId(), current);
+				ArrayList<Edge> neighbors = current.getOutEdges();
+				// check every child of current node
+				for (Edge neighborEdge : neighbors) {
 
+					Node neighbor = neighborEdge.getDestiny();
 
+					double cost = straightLineDistance(current.getLatitude(), current.getLongitude(), neighbor.getLatitude(),
+							neighbor.getLongitude());
+					double temp_g_scores = current.getGValue() + cost;
+					double temp_f_scores = temp_g_scores;// + neighbor.getHValue();
+					/*double h_scores = straightLineDistance(current.getLatitude(), current.getLongitude(), goal.getLatitude(),
+							goal.getLongitude());
+					current.setHValue(h_scores);
+					 */
+					Node n = explored.get(neighbor.getId());
 
-			// check every child of current node
-			for (Edge e : current.getOutEdges()) {
-
-				Node child = e.getDestiny();
-
-				double cost = straightLineDistance(current.getLatitude(), current.getLongitude(), child.getLatitude(),
-						child.getLongitude());
-				double temp_g_scores = current.getGValue() + cost;
-				double temp_f_scores = temp_g_scores + child.getHValue();
-				/*	double h_scores = straightLineDistance(current.getLatitude(), current.getLongitude(), goal.getLatitude(),
-						goal.getLongitude());
-				current.setHValue(h_scores);*/
-				//current.setFValue();
-				// System.out.println(temp_g_scores + " " + temp_f_scores);
-
-				/*
-				 * if child node has been evaluated and the newer f_score is higher, skip
-				 */
-
-				if ((explored.contains(child)) && (temp_f_scores >= child.getFValue())) {
-					continue;
-				}
-
-				/*
-				 * else if child node is not in queue or newer f_score is lower
-				 */
-
-				else if ((!queue.contains(child)) || (temp_f_scores < child.getFValue())) {
-
-					child.setParent(current);
-
-					// System.out.println(child.getName() + " has parent " +
-					// current.getName());
-					child.setGValue(temp_g_scores);
-					child.setFValue(temp_f_scores);
-					if (queue.contains(child)) {
-						queue.remove(child);
+					// se ainda n foi explorado
+					if (n == null) {
+						n = new Node(neighbor);
+						n.setParent(current);
+						// calculos faltam...
+						n.setFValue(temp_g_scores);
+						explored.put(neighbor.getId(), n);
+						queue.add(n);
 					}
-					queue.add(child);
+
+					else{ // se ja foi explorado
+						if (temp_g_scores < n.getGValue()) {
+							n.setParent(current);
+							n.setFValue(temp_g_scores);
+						}
+					}
 				}
 			}
-
-			paperToCollect = this.copyG.getTotalGarbageByTypeWaste(Utils.PAPER);
-
 		}
-		System.out.println(collected);
+		if(goal != null){
+
+			Stack<Node> stack = new Stack<Node>();
+			ArrayList<Node> list = new ArrayList<Node>();
+			Queue<Edge> edges = new LinkedList<Edge>();
+			stack.push(goal);
+			Node parent = goal.getParent();
+			while (parent != null) {
+				stack.push(parent);
+				parent = parent.getParent();
+			}
+
+			while (stack.size() > 0) {
+				list.add(stack.pop());
+			}
+			//Node finalNode = list.get(list.size() - 1);
+			
+			/*while (list.size() > 1) {
+				Node n = list.get(0);
+				for (Edge e : n.getOutEdges()) {
+					if (e.getDestiny().equals(list.get(1))) {
+						edges.add(e);
+						list.remove(0);
+						break;
+					}
+				}
+			}*/
+			/*if (finalNode.getPathToDump() != null)
+					for (int i = 0; i < finalNode.getPathToDump().size(); i++) {
+						edges.add(finalNode.getPathToDump().get(i));
+					}
+			 */
+			return list;
+			//return edges;
+		}
+		return null;
 	}
+
+
+
 
 	public List<Node> buildItinerary() {
 		Search.itinerary = new ArrayList<Node>();
