@@ -26,7 +26,7 @@ public class BuildGraph {
 		setTrucks(truckCapacity);
 		new Search(graph, containers, garbageStations, itinerary, typeTruck, central, station, trucks, heuristic);
 
-		// this.itinerary = new LinkedList<Node>();
+		
 	}
 
 	private Map<String, Integer> setMapTrucks(int truckPlastic, int truckPaper, int truckGlass, int truckCommon) {
@@ -64,10 +64,11 @@ public class BuildGraph {
 				station.setOutEdges(temp.getOutEdges());
 				addGarbageStation(temp);
 			} else if (temp.getType().equals(Utils.TRUE_GARBAGE)) {
+				
 				addGarbageContainer(temp);
 			} else if (temp.getType().equals(Utils.CENTRAL)) {
 				central = new Node(temp);
-				central.setOutEdges(temp.getOutEdges()); // falta testar problemas aqui
+				central.setOutEdges(temp.getOutEdges());
 			}
 		}
 	}

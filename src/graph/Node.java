@@ -227,7 +227,7 @@ public class Node {
 	
 	public void setGarbageContainer(String typeGarbage, Double collected){
 		double temp = garbageContainer.get(typeGarbage);
-		garbageContainer.replace(typeGarbage, temp - collected);
+		garbageContainer.replace(typeGarbage, collected);
 	}
 	
 	public Map<String, Double> getGarbageContainer(){
@@ -237,4 +237,6 @@ public class Node {
 	public double getGarbageContainerByType(String wasteType){
 		return this.garbageContainer.get(wasteType);
 	}
+
+	
 }

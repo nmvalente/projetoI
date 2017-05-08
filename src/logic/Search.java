@@ -40,6 +40,7 @@ public class Search {
 			String heuristic) {
 
 		this.containers = containers;
+		this.garbageStations = garbageStations;
 		this.central = new Node(central);
 		this.station = new Node(station);
 		this.graph = graph;
@@ -67,7 +68,7 @@ public class Search {
 
 
 		ArrayList<Node> edges = a_star(graph, this.central);
-		System.out.println(edges);
+		//System.out.println(edges);
 	}
 
 	private void uniform_cost() {
@@ -76,7 +77,7 @@ public class Search {
 
 	private ArrayList<Node> a_star(Graph graph, Node initial) {
 		System.out.println("A STAR SELECTED");
-		this.copyG = new Graph(graph); // grafo para manipular
+		this.copyG = new Graph(graph); 
 
 		explored = new HashMap<Integer, Node>();
 		closeSet = new HashMap<Integer, Node>();
@@ -95,13 +96,15 @@ public class Search {
 		});
 
 		double allPaper = this.copyG.getTotalGarbageByTypeWaste(Utils.PAPER);
-		double allPlastic = this.copyG.getTotalGarbageByTypeWaste(Utils.PLASTIC);
+		/*	double allPlastic = this.copyG.getTotalGarbageByTypeWaste(Utils.PLASTIC);
 		double allCommon = this.copyG.getTotalGarbageByTypeWaste(Utils.COMMON);
 		double allGlass = this.copyG.getTotalGarbageByTypeWaste(Utils.GLASS);
 		double allWaste = allPaper + allPlastic + allCommon + allGlass;
+		 */
 
 		// cost from start
 		initial.setGValue(0);
+		//initial.setFValue(Integer.MAX_VALUE);
 
 		queue.add(initial);
 		explored.put(initial.getId(), initial);
@@ -111,62 +114,83 @@ public class Search {
 
 			// the node having the lowest f_score value
 			Node current = queue.poll();
-			explored.remove(current);
+			//if(current == null) break;
 
-			if(current != null && current.getType() == Utils.TRUE_GARBAGE) // se for contentor de lixo
+			if(current.getType() == Utils.TRUE_GARBAGE){ // se for contentor de lixo
 				if(current.getGarbageContainerByType("paper") > 0){ // se houver papel por apanhar
 					collected += current.getGarbageContainerByType("paper"); // apanha o papel todo
 					current.setGarbageContainer("paper", 0.0); // coloca contentor vazio
-				}			
+					System.out.println(current.getName() + " " + current.getGarbageContainerByType("paper"));
+					System.out.println(collected);
+				}
+			}else
+				System.out.println(current.getName());
+
 
 			// goal found
-			if (allPaper == collected || current == null)  {
-				//goal = current;
+			if (allPaper == collected)  {
+				goal = current;
+
 				System.out.println(allPaper);
 				System.out.println(collected);
 				break;
 			}
 			else{
-				System.out.println("Chegou");
-				goal = current; 		// just for test
+
 				closeSet.put(current.getId(), current);
 				ArrayList<Edge> neighbors = current.getOutEdges();
-				// check every child of current node
+
 				for (Edge neighborEdge : neighbors) {
+
+					int count = 0;
+					for (Edge neighborEdgeTemp : neighbors) {
+						if(explored.containsValue(neighborEdgeTemp.getDestiny()))
+							count++;
+					}
+
+
+					if(count == neighbors.size())
+						explored = new HashMap<Integer, Node>();
 
 					Node neighbor = neighborEdge.getDestiny();
 
 					double cost = straightLineDistance(current.getLatitude(), current.getLongitude(), neighbor.getLatitude(),
 							neighbor.getLongitude());
 					double temp_g_scores = current.getGValue() + cost;
-					double temp_f_scores = temp_g_scores;// + neighbor.getHValue();
-					/*double h_scores = straightLineDistance(current.getLatitude(), current.getLongitude(), goal.getLatitude(),
-							goal.getLongitude());
-					current.setHValue(h_scores);
-					 */
+					double temp_h_scores = 0;
+					double temp_f_scores = temp_g_scores + temp_h_scores;// + neighbor.getHValue();
+
 					Node n = explored.get(neighbor.getId());
 
-					// se ainda n foi explorado
+					// se ainda nao foi explorado
 					if (n == null) {
 						n = new Node(neighbor);
+						
+						System.out.println(n.getName() + "  " + current.getName() +"\n\n\n\n");
+						//System.out.println(queue);
 						n.setParent(current);
-						// calculos faltam...
-						n.setFValue(temp_g_scores);
+
+						n.setGValue(temp_g_scores);
+						n.setHValue(temp_h_scores);
+						n.setFValue(temp_f_scores);
 						explored.put(neighbor.getId(), n);
 						queue.add(n);
 					}
-
-					else{ // se ja foi explorado
-						if (temp_g_scores < n.getGValue()) {
+					else{// se ja foi explorado
+						count++;
+						if (temp_f_scores < n.getFValue()) {
 							n.setParent(current);
-							n.setFValue(temp_g_scores);
+							n.setFValue(temp_f_scores);
 						}
 					}
+
+
 				}
+
+
 			}
 		}
 		if(goal != null){
-
 			Stack<Node> stack = new Stack<Node>();
 			ArrayList<Node> list = new ArrayList<Node>();
 			Queue<Edge> edges = new LinkedList<Edge>();
@@ -181,7 +205,8 @@ public class Search {
 				list.add(stack.pop());
 			}
 			//Node finalNode = list.get(list.size() - 1);
-			
+
+			System.out.println(list);
 			/*while (list.size() > 1) {
 				Node n = list.get(0);
 				for (Edge e : n.getOutEdges()) {
