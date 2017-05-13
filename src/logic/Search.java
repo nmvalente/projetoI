@@ -1,9 +1,12 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Stack;
 
 import graph.Edge;
 import graph.Graph;
@@ -66,51 +69,55 @@ public class Search {
 
 	}
 
-	private void printResult(AStarNode result) { // inverse order
-		System.out.println(result.getNode().getId());
+	private void printResult(AStarNode result) {
+		Stack<AStarNode> stack = new Stack<AStarNode>();
 		AStarNode parent = result.getParent();
-
 		while (parent != null) {
-			System.out.println(parent.getNode().getId());
+			stack.push(parent);
 			parent = parent.getParent();
 		}
+
+		while (stack.size() > 0) {
+			System.out.println(stack.pop().getNode().getId());
+		}
+
 	}
 
 	public ArrayList<Object> searchAStar(Graph g, String heuristic) {
+		HashMap<Integer, AStarNode> openSet = new HashMap<Integer, AStarNode>();
+		HashMap<Integer, AStarNode> closeSet = new HashMap<Integer, AStarNode>();
+		PriorityQueue<AStarNode> queue = PriorityQueue<AStarNode>(this.graph.getNumNodes(), AStarNodeComparator);
 		ArrayList<Object> result = new ArrayList<Object>(); // to get the result of search
+
 		// Number of visited nodes
 		int visitedNodes = 0;
-
-		// Initialize open and closed lists
-		ArrayList<AStarNode> open = new ArrayList<AStarNode>();
-		ArrayList<AStarNode> closed = new ArrayList<AStarNode>();
 
 		AStarNode initial = new AStarNode(graph, central, truck);
 		initial.setG(0);
 		initial.setH(heuristic_cost_estimate(initial, heuristic));
-		
-		// Add it to the open list
 
-		open.add(initial);
+		openSet.put(initial.getNode().getId(), initial);
+		queue.add(initial);
 		long startTime = System.currentTimeMillis();
-		AStarNode lowF = null;
+		AStarNode goal = null;
 
 		// Loop the open list as long as it isn't empty
-		while (!open.isEmpty()) {
+		while (!openSet.isEmpty()) {
 			// Increment number of visited nodes
 			visitedNodes++;
 
-			// Get the node with the lowest f value
-			lowF = lowestF(open);
+			AStarNode lowF = queue.poll();
+			openSet.remove(lowF.getNode().getId());
 			System.out.println(lowF);
-			
+
 			lowF.getTruck().setItinerary(lowF);
 			lowF.getTruck().collectWaste();
-			
+
 
 			//System.out.println(lowF.getGraph().getTotalGarbageByTypeWaste(Utils.PAPER));
 			// Check if it is the goal
-			if (lowF.hasFinish()) {	
+			if (lowF.hasFinish()) {
+				goal = lowF;
 				long stopTime = System.currentTimeMillis();
 				long elapsedTime = stopTime - startTime;
 
@@ -119,34 +126,24 @@ public class Search {
 				result.add(visitedNodes);
 				return result;
 			}
+			else{
 
-			// Add it to the closed list and remove it from the open list
-			closed.add(lowF);
-			open.remove(lowF);
-			
-			// Get the adjacent nodes
-			ArrayList<AStarNode> adj = getAdjacentNodes(lowF);
-	
-			// Check each adjacent node not on the closed list
-			for (int i = 0; i < adj.size(); i++) {
-				if (!closed.contains(adj.get(i))) {
-					// Set this node's f value
-					adj.get(i).setH(heuristic_cost_estimate(adj.get(i), heuristic));
+				closeSet.put(lowF.getNode().getId(), lowF);
 
-					// Check if it is on the open list
-					if (!open.contains(adj.get(i))) {
-						// Add it if it isn't
-						open.add(adj.get(i));
-					} else {
-						
-						// Get the one on the open list
-						AStarNode temp = open.get(open.indexOf(adj.get(i)));
-						
-						// Check which one has the lowest g value
-						if (adj.get(i).getG() < temp.getG()) {
-							
-							temp.setG(adj.get(i).getG());
-							temp.setParent(adj.get(i).getParent());
+				ArrayList<AStarNode> neighbors = getAdjacentNodes(lowF);
+
+				// Check each adjacent node not on the closed list
+				for (int i = 0; i < neighbors.size(); i++) {
+					AStarNode n = openSet.get(neighbors.get(i).getNode().getId());
+					if (n == null) {
+
+						neighbors.get(i).setH(heuristic_cost_estimate(neighbors.get(i), heuristic));
+						openSet.put(neighbors.get(i).getNode().getId(), neighbors.get(i));
+					}
+					else{
+						if(lowF.getG() < n.getG()){
+							n.setParent(lowF);
+							n.setG(lowF.getG());
 						}
 					}
 				}
@@ -160,7 +157,7 @@ public class Search {
 
 		// Check the chosen heuristic
 		if (heuristic == Utils.HEURISTIC1) {
-			// Count every node with minimum level	
+			// Count every node with minimum level
 			// verificar se o no é o inicial para atribuir-lhe um valor ainda mais elevado!
 			if(aStarNode.getNode().getType().equals(Utils.TRUE_GARBAGE))
 				h = aStarNode.getGraph().getTotalGarbageByTypeWaste(Utils.PAPER) - aStarNode.getNode().getGarbageContainerByType(Utils.PAPER);//getTotalGarbageByTypeWasteWithMinimumLevelInContainers(Utils.PAPER);// - aStarNode.getNode().getGarbageContainerByType(Utils.PAPER);
@@ -175,7 +172,7 @@ public class Search {
 
 	public void sendSearchToResult() {
 		try {
-			Result window = new Result(this.graph, Search.itinerary, distanceCovered); 
+			Result window = new Result(this.graph, Search.itinerary, distanceCovered);
 			window.frmResult.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
