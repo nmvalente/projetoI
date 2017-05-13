@@ -117,8 +117,6 @@ public class ProgramData {
 					Node destiny = graph.findNode(Integer.parseInt(edgeValues[1]));
 
 					if (source == null || destiny == null) {
-						System.out.println(source);
-						System.out.println(destiny);
 						throw new IOException();
 						
 					}

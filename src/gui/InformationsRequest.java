@@ -233,8 +233,8 @@ public class InformationsRequest {
 		spinnerModel = new SpinnerNumberModel(minimumLevelContainer, // initial
 																		// value
 				0, // min
-				1, // max
-				0.1);// step
+				Utils.garbageCapacity, // max
+				10);// step
 		JSpinner containerMinimumSpinner = new JSpinner(spinnerModel);
 		containerMinimumSpinner.addChangeListener(new ChangeListener() {
 			@Override
@@ -255,8 +255,9 @@ public class InformationsRequest {
 		frame.getContentPane().add(separator_1);
 
 		DefaultListModel<String> listModel = new DefaultListModel<String>();
-		listModel.addElement(Utils.A_STAR);
-		listModel.addElement(Utils.UNIFORM_COST);
+		listModel.addElement(Utils.HEURISTIC1);
+		listModel.addElement(Utils.HEURISTIC2);
+		listModel.addElement(Utils.HEURISTIC3);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(178, 295, 280, 47);
 		frame.getContentPane().add(scrollPane);

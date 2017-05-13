@@ -6,13 +6,30 @@ import logic.Utils;
 
 public class Graph {
 	protected ArrayList<Node> nodes;
+	protected double wastePaper=0.0, wastePlastic=0.0, wasteGlass=0.0, wasteCommon=0.0;
 
 	public Graph() {
 		this.nodes = new ArrayList<Node>();
+		for (int i = 0; i < nodes.size(); i++) {
+			if (this.nodes.get(i).getType().equals(Utils.TRUE_GARBAGE)) {
+				wastePaper += nodes.get(i).getGarbageContainerByType(Utils.PAPER);
+				wastePlastic += nodes.get(i).getGarbageContainerByType(Utils.PLASTIC);
+				wasteGlass += nodes.get(i).getGarbageContainerByType(Utils.GLASS);
+				wasteCommon += nodes.get(i).getGarbageContainerByType(Utils.COMMON);
+			}
+		}
 	}
 
 	public Graph(Graph newG) {
 		this.nodes = newG.getNodes();
+		for (int i = 0; i < nodes.size(); i++) {
+			if (this.nodes.get(i).getType().equals(Utils.TRUE_GARBAGE)) {
+				wastePaper += nodes.get(i).getGarbageContainerByType(Utils.PAPER);
+				wastePlastic += nodes.get(i).getGarbageContainerByType(Utils.PLASTIC);
+				wasteGlass += nodes.get(i).getGarbageContainerByType(Utils.GLASS);
+				wasteCommon += nodes.get(i).getGarbageContainerByType(Utils.COMMON);
+			}
+		}
 	}
 
 	public ArrayList<Node> getNodes() {
@@ -28,14 +45,34 @@ public class Graph {
 		return null;
 	}
 
+	public void setWasteByType(String wasteType, double collected){
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).getType().equals(Utils.TRUE_GARBAGE)) {
+				if(nodes.get(i).getGarbageContainerByType(wasteType) >= collected)
+					nodes.get(i).setGarbageContainer(wasteType, collected);
+			}
+		}
+	}
+
+	public double getTotalWaste(){return wastePaper+wastePlastic+wasteGlass+wasteCommon;}
+
 	public double getTotalGarbageByTypeWaste(String wasteType){
-		double total=0;
+		double total=0.0;
 		for(Node n : nodes){
 			if(n.getType() == Utils.TRUE_GARBAGE)
 				total += n.getGarbageContainerByType(wasteType);
 		}
 		return total;
+	}
 
+	public double getTotalGarbageByTypeWasteWithMinimumLevelInContainers(String wasteType){
+		double total=0.0;
+		for(Node n : nodes){
+			if(n.getType() == Utils.TRUE_GARBAGE)
+				if(n.getGarbageContainerByType(wasteType) > Utils.MinimumGarbageCapacity)
+					total += n.getGarbageContainerByType(wasteType);
+		}
+		return total;
 	}
 
 	public boolean addNode(Node node) {
@@ -76,44 +113,30 @@ public class Graph {
 
 	public int getNumEdges() {
 		int count = 0;
-
 		for (int i = 0; i < nodes.size(); i++) {
 			count += nodes.get(i).getOutEdges().size();
 		}
-
 		return count;
 	}
 
-	public double getTotalDistance(boolean directed) {
-		int distance = 0;
-
+	public boolean findEdge(Node a, Node b) {
 		for (int i = 0; i < nodes.size(); i++) {
-			ArrayList<Edge> edges = nodes.get(i).getOutEdges();
-
-			for (int z = 0; z < edges.size(); z++) {
-				distance += edges.get(z).getDistance();
+			for(int j = 0 ; j < nodes.get(i).getOutEdges().size() ; j++){
+				if((nodes.get(i).getOutEdges().get(j).getSource().getName() == a.getName()) && (nodes.get(i).getOutEdges().get(j).getDestiny().getName() == b.getName()))
+					return true;
 			}
 		}
-
-		if (directed)
-			return distance / 2.0;
-		else
-			return distance;
+		return false;
 	}
 
-
-	public int compareTotalDistance(Graph obj) {
-		double d1 = this.getTotalDistance(false);
-		double d2 = obj.getTotalDistance(false);
-		if (d1 > d2) {
-			return 1;
-		} else {
-			if (d1 < d2) {
-				return -1;
-			} else {
-				return 0;
+	public double calcDistance(Node a, Node b) {
+		for (int i = 0; i < nodes.size(); i++) {
+			for(int j = 0 ; j < nodes.get(i).getOutEdges().size() ; j++){
+				if((nodes.get(i).getOutEdges().get(j).getSource().getName() == a.getName()) && (nodes.get(i).getOutEdges().get(j).getDestiny().getName() == b.getName()))
+					return nodes.get(i).getOutEdges().get(j).getDistance();
 			}
 		}
+		return 0.0;
 	}
 
 	@Override

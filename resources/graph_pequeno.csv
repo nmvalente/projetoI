@@ -1,8 +1,8 @@
 [nodes];;;;;glass;paper;plastic;common
 1;41.1522624;-8.6094413;central;Trindade;0;0;0;0
-2;41.1485443;-8.5985226;true;Campo 24 de Agosto;0.6;0.6;0.5;1
+2;41.1485443;-8.5985226;true;Campo 24 de Agosto;60;60;50;100
 3;41.1514364;-8.6063681;false;Firmeza;0;0;0;0
-4;41.1494339;-8.6076112;true;Mercado do Bolhão;0.9;0.7;0.4;0.2
+4;41.1494339;-8.6076112;true;Mercado do Bolhão;90;70;40;20
 5;41.1492288;-8.6062713;station;Rua de Santa Catarina;0;0;0;0
 ;;;;;;;;
 [edges];;;;;;;;

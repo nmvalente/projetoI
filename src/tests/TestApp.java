@@ -2,15 +2,8 @@ package tests;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Set;
-
 import org.junit.Test;
 
-import graph.Edge;
 import graph.Graph;
 import graph.Node;
 import logic.Search;
@@ -141,97 +134,9 @@ public class TestApp {
 		graph.addNode(n14);
 
 		assertEquals(14, graph.getNodes().size());
-		a_star(graph, n1, n13);
 
-	}
 
-	public void a_star(Graph graph, Node initial, Node goal) {
-		System.out.println("A STAR SELECTED");
-		Graph copyG = new Graph(graph); // grafo para manipular
 
-		for (Node n : copyG.getNodes()) {
-			if (!n.equals(initial)) {
-				n.setGValue(Search.straightLineDistance(initial.getLatitude(), initial.getLongitude(), n.getLatitude(),
-						n.getLongitude()));
-				n.setHValue(0);
-				n.setFValue(n.getGValue() + n.getHValue());
-			}
-			System.out.println(n.getId() + " " + n.getFValue());
-		}
 
-		Set<Node> explored = new HashSet<Node>();
-		PriorityQueue<Node> queue = new PriorityQueue<Node>(copyG.getNodes().size(), new Comparator<Node>() {
-
-			// override compare method
-			@Override
-			public int compare(Node i, Node j) {
-				if (i.getFValue() > j.getFValue()) {
-					return 1;
-				} else if (i.getFValue() < j.getFValue()) {
-					return -1;
-				} else {
-					return 0;
-				}
-			}
-		});
-
-		// cost from start
-		initial.setGValue(0);
-
-		queue.add(initial);
-		boolean found = false;
-
-		while ((!queue.isEmpty()) && (!found)) {
-
-			// the node having the lowest f_score value
-			Node current = queue.poll();
-
-			explored.add(current);
-
-			// goal found
-			if (current.getId() == goal.getId()) {
-				found = true;
-				queue.add(current); // no caso em que deve adicionar o final
-			}
-
-			// check every child of current node
-			for (Edge e : current.getOutEdges()) {
-
-				Node child = e.getDestiny();
-
-				double cost = Search.straightLineDistance(current.getLatitude(), current.getLongitude(),
-						child.getLatitude(), child.getLongitude());
-				double temp_g_scores = current.getGValue() + cost;
-				double temp_f_scores = temp_g_scores + child.getHValue();
-
-				// System.out.println(temp_g_scores + " " + temp_f_scores);
-				/*
-				 * if child node has been evaluated and the newer f_score is
-				 * higher, skip
-				 */
-
-				if ((explored.contains(child)) && (temp_f_scores >= child.getFValue())) {
-					continue;
-				}
-
-				/*
-				 * else if child node is not in queue or newer f_score is lower
-				 */
-
-				else if ((!queue.contains(child)) || (temp_f_scores < child.getFValue())) {
-
-					child.setParent(current);
-
-					// System.out.println(child.getName() + " has parent " +
-					// current.getName());
-					child.setGValue(temp_g_scores);
-					child.setFValue(temp_f_scores);
-					if (queue.contains(child)) {
-						queue.remove(child);
-					}
-					queue.add(child);
-				}
-			}
-		}
 	}
 };

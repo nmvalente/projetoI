@@ -18,8 +18,10 @@ public class Utils {
 	public static final String SPLITTER = ";";
 	public static final File graphFile = new File("resources/graph.csv");
 	public static final double EARTH_RADIUS = 6373;
-	public static final String UNIFORM_COST = "Uniform-cost";
-	public static final String A_STAR = "A*";
+	public static final String HEURISTIC1 = "heuristic1";
+	public static final String HEURISTIC2 = "heuristic2";
+	public static final String HEURISTIC3 = "heuristic3";
+	public static final int MinimumGarbageCapacity = 50;
 	public static final int garbageCapacity = 100;
 	public static final int truckCapacity = 1000;
 	

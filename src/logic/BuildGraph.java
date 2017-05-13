@@ -60,14 +60,14 @@ public class BuildGraph {
 
 		for (Node temp : graph.getNodes()) {
 			if (temp.getType().equals(Utils.STATION)) {
-				station = new Node(temp);
+				station = temp;
 				station.setOutEdges(temp.getOutEdges());
 				addGarbageStation(temp);
 			} else if (temp.getType().equals(Utils.TRUE_GARBAGE)) {
 				
 				addGarbageContainer(temp);
 			} else if (temp.getType().equals(Utils.CENTRAL)) {
-				central = new Node(temp);
+				central = temp;
 				central.setOutEdges(temp.getOutEdges());
 			}
 		}

@@ -4,42 +4,40 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import logic.Truck;
 import logic.Utils;
 
 public class Node {
-
-	private int id;
+	
 	private double latitude;
 	private double longitude;
 	private double distance; // for tests;
 	private String type;
 	private ArrayList<Edge> outEdges;
 	private boolean processing;
-	private boolean visited;
-	private int indegree; // incident edges
+	
 	protected String name;
 	protected Node parent;
-	protected double g, h, f = 0;
 	protected Map<String, Double> garbageContainer;
-
+	protected static int current_id = 0;
+	protected int id;
+	
 	public Node(Node node) {
 		if (node != null) {
-			this.setId(node.id);
 			this.latitude = node.latitude;
 			this.longitude = node.longitude;
 			this.type = node.type;
 			this.processing = node.processing;
-			this.indegree = 0;
 			this.name = node.name;
 			this.outEdges = new ArrayList<Edge>();
 			this.outEdges = node.getOutEdges();
 			this.garbageContainer = node.garbageContainer;
+			++current_id;
+			this.id = current_id;
 		}
 	}
 
 	public Node(int id, double latitude, double longitude, String type, String nameStreet, double glass, double paper, double plastic, double common) {
-		this.id = id;
+		//this.id = id;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.name = nameStreet;
@@ -59,6 +57,8 @@ public class Node {
 			this.garbageContainer.put("common", common);
 			this.type = Utils.TRUE_GARBAGE;
 		}
+		++current_id;
+		this.id = current_id;
 	}
 
 	// for test class only
@@ -92,17 +92,6 @@ public class Node {
 		return longitude;
 	}
 
-	public int getIndegree() {
-		return indegree;
-	}
-
-	public boolean hasGasStation() {
-		if (this.type.equals(Utils.TRUE_GARBAGE))
-			return false;
-		else
-			return true;
-	}
-
 	public void setGarbageStation(boolean garbageStation) {
 		if (garbageStation)
 			this.type = Utils.TRUE_GARBAGE;
@@ -120,14 +109,6 @@ public class Node {
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
-	}
-
-	public boolean getVisited() {
-		return visited;
-	}
-
-	public void setVisited(boolean visited) {
-		this.visited = visited;
 	}
 
 	@Override
@@ -154,7 +135,6 @@ public class Node {
 	public boolean removeEdgeTo(Node node) {
 		for (int i = 0; i < outEdges.size(); i++) {
 			if (outEdges.get(i).getDestiny().equals(node)) {
-				node.indegree--;
 				outEdges.remove(i);
 				return true;
 			}
@@ -193,30 +173,6 @@ public class Node {
 		this.outEdges = outEdges2;
 	}
 
-	public double getGValue() {
-		return this.g;
-	}
-
-	public double getHValue() {
-		return this.h;
-	}
-
-	public double getFValue() {
-		return this.f;
-	}
-
-	public void setGValue(double gValue) {
-		this.g = gValue;
-	}
-
-	public void setHValue(double hValue) {
-		this.h = hValue;
-	}
-
-	public void setFValue(double fValue) {
-		this.f = fValue;
-	}
-
 	public Node getParent() {
 		return this.parent;
 	}
@@ -227,7 +183,9 @@ public class Node {
 	
 	public void setGarbageContainer(String typeGarbage, Double collected){
 		double temp = garbageContainer.get(typeGarbage);
-		garbageContainer.replace(typeGarbage, collected);
+		//System.out.println(garbageContainer.get(typeGarbage));
+		garbageContainer.replace(typeGarbage, temp - collected);
+		//System.out.println(garbageContainer.get(typeGarbage));
 	}
 	
 	public Map<String, Double> getGarbageContainer(){

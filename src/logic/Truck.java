@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.ArrayList;
+
 import graph.Node;
 
 public class Truck {
@@ -12,6 +14,18 @@ public class Truck {
 	private double totalGarbage; // garbage collected
 	protected static int current_id = 0;
 	protected int id;
+	protected AStarNode itinerary = null;
+	protected double allWasteSinceStart = 0.0;
+
+	public Truck(double capacity, String type) {
+		this.capacity = capacity;
+		this.type = new String(type);
+		this.distanceCovered = 0.0;
+		this.totalGarbage = 0.0;
+
+		++current_id;
+		this.id = current_id;
+	}	
 
 	public Truck(Node startingPos, Node destinyPos, double capacity, String type) {
 		this.capacity = capacity;
@@ -91,9 +105,59 @@ public class Truck {
 		return totalGarbage;
 	}
 
+	public AStarNode getItinerary(){
+		return this.itinerary;
+	}
+	
+	public void setItinerary(AStarNode node){
+		this.itinerary = node;
+	}
+	
 	@Override
 	public String toString() {
 		String str = this.getID() + "-" + this.getType() + ": " + this.distanceCovered;// + " " + this.startingPosition.getName() + " -> " + this.destinyPosition.getName();
 		return str;
 	}
+
+	public void collectWaste(){
+		AStarNode parent = itinerary.getParent();
+
+		while (parent != null) {
+			truckCollect(parent.getNode());
+			parent = parent.getParent();
+		}
+	}
+
+	public void truckCollect(Node node) {
+		if(node.getType().equals(Utils.TRUE_GARBAGE)){ // se for contentor de lixo
+			double actualPaperToCollected = node.getGarbageContainerByType("paper");
+			if(actualPaperToCollected > 0.0){ // se houver papel por apanhar
+				if(this.getType().equals(Utils.PAPER) && (this.getTotalGarbage()+actualPaperToCollected) <= this.getCapacity()){
+					this.setTotalGarbage(actualPaperToCollected);
+					this.allWasteSinceStart += actualPaperToCollected;
+					node.setGarbageContainer("paper", actualPaperToCollected); // apanha o papel
+				}
+				else if(this.getType().equals(Utils.PAPER) && (this.getTotalGarbage()+actualPaperToCollected) > this.getCapacity()){
+					double currentLoadGarbage = this.getCapacity() - this.getTotalGarbage();
+					this.setTotalGarbage(currentLoadGarbage);
+					this.allWasteSinceStart += currentLoadGarbage;
+					node.setGarbageContainer("paper", currentLoadGarbage); // apanha o papel
+				}
+			}
+		}
+
+		else if(node.getType().equals(Utils.STATION) && this.getTotalGarbage() > 0.0){ // se for estacao de tratamento, esvazia
+			this.resetTotalGarbage();
+		}
+	}
+
+	public void printItinerary(){
+			System.out.println(itinerary);
+	}
+
+	public double getTotalGarbageSinceInit() {
+		return this.allWasteSinceStart;
+	}
+
+
 }
