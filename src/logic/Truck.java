@@ -132,18 +132,18 @@ public class Truck {
 
 	public void truckCollect(Node node) {
 		if(node.getType().equals(Utils.TRUE_GARBAGE)){ // se for contentor de lixo
-			double actualPaperToCollected = node.getGarbageContainerByType("paper");
+			double actualPaperToCollected = node.getGarbageContainerByType(this.type);
 			if(actualPaperToCollected > 0.0){ // se houver papel por apanhar
-				if(this.getType().equals(Utils.PAPER) && (this.getTotalGarbage()+actualPaperToCollected) <= this.getCapacity()){
+				if(this.getType().equals(this.type) && (this.getTotalGarbage()+actualPaperToCollected) <= this.getCapacity()){
 					this.setTotalGarbage(actualPaperToCollected);
 					this.allWasteSinceStart += actualPaperToCollected;
-					node.setGarbageContainer("paper", actualPaperToCollected); // apanha o papel
+					node.setGarbageContainer(this.type, actualPaperToCollected); // apanha o papel
 				}
-				else if(this.getType().equals(Utils.PAPER) && (this.getTotalGarbage()+actualPaperToCollected) > this.getCapacity()){
+				else if(this.getType().equals(this.type) && (this.getTotalGarbage()+actualPaperToCollected) > this.getCapacity()){
 					double currentLoadGarbage = this.getCapacity() - this.getTotalGarbage();
 					this.setTotalGarbage(currentLoadGarbage);
 					this.allWasteSinceStart += currentLoadGarbage;
-					node.setGarbageContainer("paper", currentLoadGarbage); // apanha o papel
+					node.setGarbageContainer(this.type, currentLoadGarbage); // apanha o papel
 				}
 			}
 		}

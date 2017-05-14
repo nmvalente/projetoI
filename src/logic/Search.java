@@ -20,9 +20,9 @@ public class Search {
 	protected Node central;
 	protected Node station;
 	protected Map<String, ArrayList<Truck>> trucks;
-	private Graph graph;
+	protected static Graph graph;
 	private double distanceCovered;
-	private Truck truck = new Truck(1000,Utils.PAPER); // hard-coded to test
+	private Truck truck;
 
 	public Search(Graph graph, LinkedList<Node> containers, ArrayList<Node> garbageStations, LinkedList<Node> itinerary,
 			Map<String, Integer> typeTruck, Node central, Node station, Map<String, ArrayList<Truck>> trucks,
@@ -32,9 +32,8 @@ public class Search {
 		this.garbageStations = garbageStations;
 		this.central = central;
 		this.station = station;
-		this.graph = graph;
+		Search.graph = graph;
 		this.trucks = trucks;
-		System.out.println("Total Garbage to Collect: " + this.graph.getTotalGarbageByTypeWaste(Utils.PAPER));
 
 		switch (heuristic) {
 		case Utils.HEURISTIC1:
@@ -56,46 +55,97 @@ public class Search {
 	}
 
 	private void computeProgram(String heuristic) {
-		ArrayList<Object> result = searchAStar(heuristic);
+		truck = new Truck(1000,Utils.PAPER); // hard-coded to test
+		ArrayList<Object> paperResult = searchAStar(heuristic, Utils.PAPER);
+		truck = new Truck(1000,Utils.GLASS); // hard-coded to test
+		ArrayList<Object> glassResult = searchAStar(heuristic, Utils.GLASS);
+		truck = new Truck(1000,Utils.PLASTIC); // hard-coded to test
+		ArrayList<Object> plasticResult = searchAStar(heuristic, Utils.PLASTIC);
+		truck = new Truck(1000,Utils.COMMON); // hard-coded to test
+		ArrayList<Object> commonResult = searchAStar(heuristic, Utils.COMMON);
+
+
+
+		showresults(paperResult, Utils.PAPER);
+		showresults(glassResult, Utils.GLASS);
+		showresults(plasticResult, Utils.PLASTIC);
+		showresults(commonResult, Utils.COMMON);
+		showTotalResults(paperResult, glassResult,plasticResult, commonResult);
+	}
+
+	public void showresults(ArrayList<Object> result, String typeofWaste) {
 		if(result != null){
-			System.out.println("Best solution found - Statistics\n");
+			System.out.println("Best solution found for " + typeofWaste +" - Statistics");
 			long timePassed = (long)result.get(1);
 			System.out.println("Time of execution: " + timePassed + "ms");
 			AStarNode finalNode = (AStarNode)result.get(0);
 
-
-			if(graph.equals(finalNode.getGraph()))
-				System.out.println("E IGUAL; O ARTUR TINHA RAZAO");
-
 			System.out.println("Number of visited nodes = " + result.get(2));
-			System.out.println("Total Cost: " + finalNode.getG()+ "km\n");
-			System.out.println("Total Garbage to Collect: " + finalNode.getGraph().getTotalGarbageByTypeWaste(Utils.PAPER));
+			System.out.println("Total Cost: " + finalNode.getG()+ "km");
+			System.out.println("Total Garbage to Collect: " + finalNode.getGraph().getTotalGarbageByTypeWaste(typeofWaste));
 			System.out.println("Total Garbage Collected: " + finalNode.getTruck().allWasteSinceStart);
-			System.out.println(graph.getTotalGarbageByTypeWaste(Utils.PAPER));
+			System.out.println("Initial Garbage to Collect: " + graph.getTotalGarbageByTypeWaste(typeofWaste) + "\n");
 			printResult(finalNode);
+			System.out.println("==============================================================================================================================================================\n");
 		}
 		else {
-			System.out.println("Impossible problem!");
+			System.out.println("No solution found!");
 		}
+	}
+
+	private void showTotalResults(ArrayList<Object> paperResult, ArrayList<Object> glassResult, ArrayList<Object> plasticResult, ArrayList<Object> commonResult){
+
+			System.out.println("Total Statistics");
+			long timePassed = (long)paperResult.get(1) + (long)glassResult.get(1) + (long)plasticResult.get(1) + (long)commonResult.get(1);
+			System.out.println("Time of execution: " + timePassed + "ms");
+			AStarNode finalNodePaper = (AStarNode)paperResult.get(0);
+			AStarNode finalNodeGlass = (AStarNode)glassResult.get(0);
+			AStarNode finalNodePlastic = (AStarNode)plasticResult.get(0);
+			AStarNode finalNodeCommon = (AStarNode)commonResult.get(0);
+			int totalvisitednodes = (int)paperResult.get(2) + (int)glassResult.get(2) + (int)plasticResult.get(2) + (int)commonResult.get(2);
+			System.out.println("Number of visited nodes = " + totalvisitednodes);
+			double totalcost = finalNodePaper.getG() + finalNodeCommon.getG() + finalNodeGlass.getG() + finalNodePlastic.getG();
+			System.out.println("Total Cost: " + totalcost +  "km");
+			double totalgarbagetocollect = finalNodePaper.getGraph().getTotalGarbageByTypeWaste(Utils.PAPER) + finalNodeCommon.getGraph().getTotalGarbageByTypeWaste(Utils.COMMON) +
+					finalNodeGlass.getGraph().getTotalGarbageByTypeWaste(Utils.GLASS) + finalNodePlastic.getGraph().getTotalGarbageByTypeWaste(Utils.PLASTIC);
+			System.out.println("Total Garbage to Collect: " + totalgarbagetocollect);
+			double totaltruckcollect = finalNodePaper.getTruck().allWasteSinceStart + finalNodeCommon.getTruck().allWasteSinceStart +
+					finalNodeGlass.getTruck().allWasteSinceStart + finalNodePlastic.getTruck().allWasteSinceStart;
+			System.out.println("Total Garbage Collected: " + totaltruckcollect);
+			double totalInitialGarbage = graph.getTotalGarbageByTypeWaste(Utils.PAPER) +
+					graph.getTotalGarbageByTypeWaste(Utils.PLASTIC)+
+					graph.getTotalGarbageByTypeWaste(Utils.COMMON) +
+					graph.getTotalGarbageByTypeWaste(Utils.GLASS);
+			System.out.println("Initial Garbage to Collect: " + totalInitialGarbage + "\n");
+			System.out.println("==============================================================================================================================================================\n");
+
 
 	}
 
 	private void printResult(AStarNode result) {
 		Stack<AStarNode> stack = new Stack<AStarNode>();
+		stack.add(result);
 		AStarNode parent = result.getParent();
 		while (parent != null) {
 			stack.push(parent);
 			parent = parent.getParent();
 		}
-
+		System.out.println("ID node - Total to Collect / Current Truck Collected\n");
+		int count = 1;
 		while (stack.size() > 0) {
-			System.out.println(stack.peek().getNode().getId() + "->" + stack.peek().getTruck().getTotalGarbage());
+			if(count%6 == 0)
+				System.out.println(stack.peek().getNode().getId() + " - "  + stack.peek().getTruck().allWasteSinceStart + "/"  + stack.peek().getTruck().getTotalGarbage());
+			else
+				System.out.print(stack.peek().getNode().getId() + " - "  + stack.peek().getTruck().allWasteSinceStart + "/"  + stack.peek().getTruck().getTotalGarbage() + "  ->  ");
+
+			count++;
 			stack.pop();
 		}
+		System.out.println("");
 
 	}
 
-	public ArrayList<Object> searchAStar(String heuristic) {
+	public ArrayList<Object> searchAStar(String heuristic, String typeofWaste) {
 		ArrayList<Object> result = new ArrayList<Object>(); // to get the result of search
 		// Number of visited nodes
 		int visitedNodes = 0;
@@ -106,7 +156,7 @@ public class Search {
 
 		AStarNode initial = new AStarNode(graph, central, truck);
 		initial.setG(0);
-		initial.setH(heuristic_cost_estimate(initial, heuristic));
+		initial.setH(heuristic_cost_estimate(initial, heuristic, typeofWaste));
 
 		// Add it to the open list
 
@@ -121,15 +171,10 @@ public class Search {
 
 			// Get the node with the lowest f value
 			lowF = lowestF(open);
-			System.out.println(lowF);
-
-			//lowF.getTruck().setItinerary(lowF);
-			//lowF.getTruck().collectWaste();
-
 
 			//System.out.println(lowF.getGraph().getTotalGarbageByTypeWaste(Utils.PAPER));
 			// Check if it is the goal
-			if (lowF.hasFinish()) {
+			if (lowF.hasFinish(typeofWaste)) {
 				long stopTime = System.currentTimeMillis();
 				long elapsedTime = stopTime - startTime;
 
@@ -150,14 +195,13 @@ public class Search {
 			for (int i = 0; i < adj.size(); i++) {
 				if (!closed.contains(adj.get(i))) {
 					// Set this node's f value
-					adj.get(i).setH(heuristic_cost_estimate(adj.get(i), heuristic));
+					adj.get(i).setH(heuristic_cost_estimate(adj.get(i), heuristic, typeofWaste));
 
 					// Check if it is on the open list
 					if (!open.contains(adj.get(i))) {
 						// Add it if it isn't
 						open.add(adj.get(i));
 					} else {
-
 						// Get the one on the open list
 						AStarNode temp = open.get(open.indexOf(adj.get(i)));
 
@@ -174,7 +218,7 @@ public class Search {
 		return null;
 	}
 
-	private double heuristic_cost_estimate(AStarNode aStarNode, String heuristic) {
+	private double heuristic_cost_estimate(AStarNode aStarNode, String heuristic, String typeofWaste) {
 		double h = 0.0;
 
 		// Check the chosen heuristic
@@ -182,10 +226,10 @@ public class Search {
 			// Count every node with minimum level
 			// verificar se o no é o inicial para atribuir-lhe um valor ainda mais elevado!
 			if(aStarNode.getNode().getType().equals(Utils.TRUE_GARBAGE))
-				h = aStarNode.getGraph().getTotalGarbageByTypeWaste(Utils.PAPER) - aStarNode.getNode().getGarbageContainerByType(Utils.PAPER);//getTotalGarbageByTypeWasteWithMinimumLevelInContainers(Utils.PAPER);// - aStarNode.getNode().getGarbageContainerByType(Utils.PAPER);
-			else h = aStarNode.getGraph().getTotalGarbageByTypeWaste(Utils.PAPER);//getTotalGarbageByTypeWasteWithMinimumLevelInContainers(Utils.PAPER);
+				h = aStarNode.getGraph().getTotalGarbageByTypeWaste(typeofWaste) - aStarNode.getNode().getGarbageContainerByType(typeofWaste);//getTotalGarbageByTypeWasteWithMinimumLevelInContainers(Utils.PAPER);// - aStarNode.getNode().getGarbageContainerByType(Utils.PAPER);
+			else h = aStarNode.getGraph().getTotalGarbageByTypeWaste(typeofWaste);//getTotalGarbageByTypeWasteWithMinimumLevelInContainers(Utils.PAPER);
 		} else if (heuristic == Utils.HEURISTIC2) {
-			return h;
+			return -8* (aStarNode.getTruck().allWasteSinceStart - aStarNode.getGraph().getTotalGarbageByTypeWaste(typeofWaste)) / aStarNode.getGraph().getTotalGarbageByTypeWaste(typeofWaste);
 		} else if (heuristic == Utils.HEURISTIC3) {
 			return h;
 		}
@@ -194,7 +238,7 @@ public class Search {
 
 	public void sendSearchToResult() {
 		try {
-			Result window = new Result(this.graph, Search.itinerary, distanceCovered);
+			Result window = new Result(Search.graph, Search.itinerary, distanceCovered);
 			window.frmResult.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -241,5 +285,9 @@ public class Search {
 			adjacents.add(aux);
 		}
 		return adjacents;
+	}
+
+	Graph getGraph(){
+		return Search.graph;
 	}
 }

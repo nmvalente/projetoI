@@ -156,7 +156,7 @@ public class Graph {
 		String str = strb.toString();
 		return str;
 	}
-
+/*
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null)
@@ -177,5 +177,5 @@ public class Graph {
 				}
 		}
 		return true;
-	}
+	}*/
 }

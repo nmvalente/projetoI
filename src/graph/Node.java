@@ -30,7 +30,14 @@ public class Node {
 			this.name = node.name;
 			this.outEdges = new ArrayList<Edge>();
 			this.outEdges = node.getOutEdges();
-			this.garbageContainer = node.garbageContainer;
+			if(this.type == Utils.TRUE_GARBAGE){
+				this.garbageContainer = new HashMap<String, Double>();
+				this.garbageContainer.put("glass", node.getGarbageContainerByType(Utils.GLASS));
+				this.garbageContainer.put("paper", node.getGarbageContainerByType(Utils.PAPER));
+				this.garbageContainer.put("plastic", node.getGarbageContainerByType(Utils.PLASTIC));
+				this.garbageContainer.put("common", node.getGarbageContainerByType(Utils.COMMON));
+			}
+
 			this.id = node.id;
 		}
 	}

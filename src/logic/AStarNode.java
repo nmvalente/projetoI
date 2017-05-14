@@ -71,14 +71,36 @@ public class AStarNode {
 
 	@Override
 	public String toString() {
-		String str = this.getNode().getId() + " - G: " + this.getG() + " - H: " + this.getH();
+		String str = this.getNode().getId() + " - G: " + this.getG() + " - H: " + this.getH() + "   - Colected/Total - " + this.getTruck().allWasteSinceStart + "/" + Search.graph.getTotalGarbageByTypeWaste(this.getTruck().getType());
 		return str;
 	}
 
-	public boolean hasFinish() {
-		//if(this.graph.getTotalGarbageByTypeWaste(Utils.PAPER) == 0.0 && this.truck.getTotalGarbage() == 0.0)
-		if(this.getTruck().allWasteSinceStart >= this.graph.getTotalGarbageByTypeWaste(Utils.PAPER))
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+
+		if (this == obj)
 			return true;
+
+		if (this.getClass() != obj.getClass())
+			return false;
+
+		AStarNode aStarNode = (AStarNode) obj;
+
+		if (this.g != aStarNode.g)
+			return false;
+
+		if(this.getNode().getId() != aStarNode.getNode().getId())
+			return false;
+
+		return true;
+	}
+
+	public boolean hasFinish(String typeofWaste) {
+		if(this.getTruck().allWasteSinceStart == Search.graph.getTotalGarbageByTypeWaste(typeofWaste))
+			if(this.getTruck().getTotalGarbage() == 0.0)
+				return true;
 		return false;
 	}
 
