@@ -22,7 +22,6 @@ public class Utils {
 	public static final String HEURISTIC2 = "heuristic2";
 	public static final String HEURISTIC3 = "heuristic3";
 	public static final int MinimumGarbageCapacity = 50;
-	public static final int garbageCapacity = 100;
+	public static final int garbageCapacity = 1000;
 	public static final int truckCapacity = 1000;
-	
 }

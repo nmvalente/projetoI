@@ -7,20 +7,20 @@ import java.util.Map;
 import logic.Utils;
 
 public class Node {
-	
+
 	private double latitude;
 	private double longitude;
 	private double distance; // for tests;
 	private String type;
 	private ArrayList<Edge> outEdges;
 	private boolean processing;
-	
+
 	protected String name;
 	protected Node parent;
 	protected Map<String, Double> garbageContainer;
 	protected static int current_id = 0;
 	protected int id;
-	
+
 	public Node(Node node) {
 		if (node != null) {
 			this.latitude = node.latitude;
@@ -31,8 +31,7 @@ public class Node {
 			this.outEdges = new ArrayList<Edge>();
 			this.outEdges = node.getOutEdges();
 			this.garbageContainer = node.garbageContainer;
-			++current_id;
-			this.id = current_id;
+			this.id = node.id;
 		}
 	}
 
@@ -180,21 +179,21 @@ public class Node {
 	public void setParent(Node current) {
 		this.parent = current;
 	}
-	
+
 	public void setGarbageContainer(String typeGarbage, Double collected){
 		double temp = garbageContainer.get(typeGarbage);
 		//System.out.println(garbageContainer.get(typeGarbage));
 		garbageContainer.replace(typeGarbage, temp - collected);
 		//System.out.println(garbageContainer.get(typeGarbage));
 	}
-	
+
 	public Map<String, Double> getGarbageContainer(){
 		return this.garbageContainer;
 	}
-	
+
 	public double getGarbageContainerByType(String wasteType){
 		return this.garbageContainer.get(wasteType);
 	}
 
-	
+
 }

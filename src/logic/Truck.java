@@ -1,6 +1,5 @@
 package logic;
 
-import java.util.ArrayList;
 
 import graph.Node;
 
@@ -25,7 +24,7 @@ public class Truck {
 
 		++current_id;
 		this.id = current_id;
-	}	
+	}
 
 	public Truck(Node startingPos, Node destinyPos, double capacity, String type) {
 		this.capacity = capacity;
@@ -47,6 +46,8 @@ public class Truck {
 		this.distanceCovered = truck.distanceCovered;
 		this.totalGarbage = truck.totalGarbage;
 		this.id = truck.id;
+		this.allWasteSinceStart = truck.allWasteSinceStart;
+
 	}
 
 	public Node getStartingPosition() {
@@ -108,11 +109,11 @@ public class Truck {
 	public AStarNode getItinerary(){
 		return this.itinerary;
 	}
-	
+
 	public void setItinerary(AStarNode node){
 		this.itinerary = node;
 	}
-	
+
 	@Override
 	public String toString() {
 		String str = this.getID() + "-" + this.getType() + ": " + this.distanceCovered;// + " " + this.startingPosition.getName() + " -> " + this.destinyPosition.getName();
@@ -120,6 +121,7 @@ public class Truck {
 	}
 
 	public void collectWaste(){
+		truckCollect(itinerary.getNode());
 		AStarNode parent = itinerary.getParent();
 
 		while (parent != null) {

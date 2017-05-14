@@ -99,7 +99,7 @@ public class ProgramData {
 							Double.parseDouble(nodeValues[6]), // paper garbage
 							Double.parseDouble(nodeValues[7]), // plastic garbage
 							Double.parseDouble(nodeValues[8]) // common garbage
-							); 
+							);
 					graph.addNode(node);
 
 
@@ -117,8 +117,10 @@ public class ProgramData {
 					Node destiny = graph.findNode(Integer.parseInt(edgeValues[1]));
 
 					if (source == null || destiny == null) {
+						System.out.println(source);
+						System.out.println(destiny);
 						throw new IOException();
-						
+
 					}
 
 					double distance = Double.parseDouble(edgeValues[2]);
