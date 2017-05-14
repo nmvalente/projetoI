@@ -1,11 +1,14 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.io.File;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -22,6 +25,10 @@ import javax.swing.event.ListSelectionListener;
 
 import logic.ProgramData;
 import logic.Utils;
+import java.awt.Button;
+import java.awt.Label;
+import java.awt.Color;
+import java.awt.SystemColor;
 
 public class InformationsRequest {
 
@@ -45,6 +52,10 @@ public class InformationsRequest {
 	protected double minimumLevelContainer = 0.8;
 
 	protected String current;
+	protected File file;
+	private JButton btnSubmit;
+	private Button button;
+	private Button defaultButton;
 
 	/**
 	 * Launch the application.
@@ -231,7 +242,7 @@ public class InformationsRequest {
 		frame.getContentPane().add(containerMinimum);
 
 		spinnerModel = new SpinnerNumberModel(minimumLevelContainer, // initial
-																		// value
+				// value
 				0, // min
 				Utils.garbageCapacity, // max
 				10);// step
@@ -251,15 +262,22 @@ public class InformationsRequest {
 		frame.getContentPane().add(separator);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(12, 280, 584, 2);
+		separator_1.setBounds(12, 272, 584, 2);
 		frame.getContentPane().add(separator_1);
+
+		/* Select heuristic */
+
+		Label label = new Label("Select heuristic");
+		label.setAlignment(Label.CENTER);
+		label.setBounds(239, 280, 152, 24);
+		frame.getContentPane().add(label);
 
 		DefaultListModel<String> listModel = new DefaultListModel<String>();
 		listModel.addElement(Utils.HEURISTIC1);
 		listModel.addElement(Utils.HEURISTIC2);
 		listModel.addElement(Utils.HEURISTIC3);
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(178, 295, 280, 47);
+		scrollPane.setBounds(172, 307, 280, 47);
 		frame.getContentPane().add(scrollPane);
 
 		JList<String> list = new JList<String>(listModel);
@@ -276,17 +294,69 @@ public class InformationsRequest {
 		});
 		list.setVisibleRowCount(2);
 
+		/* select file */
+
+		final JFileChooser  fileDialog = new JFileChooser(Utils.graphFile);
+		button = new Button("Select/Open Graph");
+		button.setForeground(Color.WHITE);
+		button.setBackground(SystemColor.textHighlight);
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int returnVal = fileDialog.showOpenDialog(frame);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					file = fileDialog.getSelectedFile();
+					btnSubmit.setVisible(true);
+					defaultButton.setVisible(false);
+					button.setVisible(false);
+					button.setBackground(frame.getBackground());
+					button.setForeground(Color.BLACK);
+				}
+				else{
+					btnSubmit.setVisible(false);
+				}
+			}
+		});
+		button.setBounds(239, 171, 152, 24);
+		frame.getContentPane().add(button);
+
 		/* Button submit */
-		JButton btnSubmit = new JButton("Submit");
+
+		btnSubmit = new JButton("Run");
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnSubmit.setForeground(Color.WHITE);
+		btnSubmit.setBackground(new Color(60, 179, 113));
+		btnSubmit.setVisible(false);
 		btnSubmit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				frame.dispose();
 				new ProgramData(truckCapacity, numberOfStations, minimumLevelContainer, truckPlastic, truckPaper,
-						truckGlass, truckCommon, heuristic);
+						truckGlass, truckCommon, heuristic, file);
 			}
 		});
 		btnSubmit.setBounds(257, 355, 97, 25);
 		frame.getContentPane().add(btnSubmit);
+
+		/* Default graph */
+
+		defaultButton = new Button("Use Default Graph");
+		defaultButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				file = new File(Utils.defaultFileGraph);
+				button.setVisible(false);
+				btnSubmit.setVisible(true);
+				defaultButton.setVisible(false);
+			}
+		});
+		defaultButton.setBounds(239, 240, 152, 24);
+		frame.getContentPane().add(defaultButton);
+
+
+
 	}
 }

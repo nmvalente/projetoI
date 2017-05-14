@@ -12,32 +12,31 @@ public class Graph {
 	public Graph() {
 		this.original = true;
 		this.nodes = new ArrayList<Node>();
-		/*for (int i = 0; i < this.nodes.size(); i++) {
+		for (int i = 0; i < this.nodes.size(); i++) {
 			if (this.nodes.get(i).getType().equals(Utils.TRUE_GARBAGE)) {
 				this.wastePaper += this.nodes.get(i).getGarbageContainerByType(Utils.PAPER);
 				this.wastePlastic += this.nodes.get(i).getGarbageContainerByType(Utils.PLASTIC);
 				this.wasteGlass += this.nodes.get(i).getGarbageContainerByType(Utils.GLASS);
 				this.wasteCommon += this.nodes.get(i).getGarbageContainerByType(Utils.COMMON);
 			}
-		}*/
+		}
 	}
 
 
 	public Graph(Graph newG) {
 		this.original = false;
 		this.nodes = new ArrayList<Node>(newG.getNumNodes());
-		//this.nodes = (ArrayList<Node>) newG.getNodes().clone();
 		for(Node n : newG.getNodes())
 		this.nodes.add(new Node(n));
 
-		/*for (int i = 0; i < newG.getNodes().size(); i++) {
+		for (int i = 0; i < newG.getNodes().size(); i++) {
 			if (newG.getNodes().get(i).getType().equals(Utils.TRUE_GARBAGE)) {
 				this.wastePaper += newG.getNodes().get(i).getGarbageContainerByType(Utils.PAPER);
 				this.wastePlastic += newG.getNodes().get(i).getGarbageContainerByType(Utils.PLASTIC);
 				this.wasteGlass += newG.getNodes().get(i).getGarbageContainerByType(Utils.GLASS);
 				this.wasteCommon += newG.getNodes().get(i).getGarbageContainerByType(Utils.COMMON);
 			}
-		}*/
+		}
 	}
 
 	public ArrayList<Node> getNodes() {

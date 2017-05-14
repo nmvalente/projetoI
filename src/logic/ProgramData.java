@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,7 +22,7 @@ public class ProgramData {
 	protected String heuristic;
 
 	public ProgramData(int truckCapacity, int numberOfStations, double minimumLevelContainer, int truckPlastic,
-			int truckPaper, int truckGlass, int truckCommon, String heuristic) {
+			int truckPaper, int truckGlass, int truckCommon, String heuristic, File file) {
 
 		this.truckPlastic = truckPlastic;
 		this.truckPaper = truckPaper;
@@ -34,7 +35,7 @@ public class ProgramData {
 
 		// displayInformation();
 		try {
-			ProgramData.graph = loadMap();
+			ProgramData.graph = loadMap(file);
 		} catch (IOException e) {
 			System.out.println("Unable to load csv file");
 			e.printStackTrace();
@@ -60,10 +61,10 @@ public class ProgramData {
 		return str;
 	}
 
-	public Graph loadMap() throws IOException {
+	public Graph loadMap(File file) throws IOException {
 
 		Graph graph = new Graph();
-		FileInputStream fstream = new FileInputStream(Utils.graphFile);
+		FileInputStream fstream = new FileInputStream(file);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 		String readMode = Utils.UNDEFINED;
 		String fileLine;
@@ -86,19 +87,17 @@ public class ProgramData {
 
 				case Utils.NODES:
 					String[] nodeValues = fileLine.split(Utils.SPLITTER);
-					if (nodeValues.length != 9) {
+					if (nodeValues.length != 7) {
 						break;
 					}
 
 					Node node = new Node(Integer.parseInt(nodeValues[0]), // id
-							Double.parseDouble(nodeValues[1]), // lat
-							Double.parseDouble(nodeValues[2]), // lon
-							nodeValues[3], // type
-							nodeValues[4], // name of street
-							Double.parseDouble(nodeValues[5]), // glass garbage
-							Double.parseDouble(nodeValues[6]), // paper garbage
-							Double.parseDouble(nodeValues[7]), // plastic garbage
-							Double.parseDouble(nodeValues[8]) // common garbage
+							nodeValues[1], // type
+							nodeValues[2], // name of street
+							Double.parseDouble(nodeValues[3]), // glass garbage
+							Double.parseDouble(nodeValues[4]), // paper garbage
+							Double.parseDouble(nodeValues[5]), // plastic garbage
+							Double.parseDouble(nodeValues[6]) // common garbage
 							);
 					graph.addNode(node);
 

@@ -8,13 +8,10 @@ import logic.Utils;
 
 public class Node {
 
-	private double latitude;
-	private double longitude;
-	private double distance; // for tests;
+	private double distance;
 	private String type;
 	private ArrayList<Edge> outEdges;
 	private boolean processing;
-
 	protected String name;
 	protected Node parent;
 	protected Map<String, Double> garbageContainer;
@@ -23,8 +20,6 @@ public class Node {
 
 	public Node(Node node) {
 		if (node != null) {
-			this.latitude = node.latitude;
-			this.longitude = node.longitude;
 			this.type = node.type;
 			this.processing = node.processing;
 			this.name = node.name;
@@ -42,10 +37,7 @@ public class Node {
 		}
 	}
 
-	public Node(int id, double latitude, double longitude, String type, String nameStreet, double glass, double paper, double plastic, double common) {
-		//this.id = id;
-		this.latitude = latitude;
-		this.longitude = longitude;
+	public Node(int id, String type, String nameStreet, double glass, double paper, double plastic, double common) {
 		this.name = nameStreet;
 		this.outEdges = new ArrayList<Edge>();
 
@@ -71,7 +63,7 @@ public class Node {
 	public Node(int id, String name, double distance) {
 		this.id = id;
 		this.name = name;
-		this.distance = distance;
+		this.setDistance(distance);
 		this.outEdges = new ArrayList<Edge>();
 	}
 
@@ -90,14 +82,6 @@ public class Node {
 		this.id = id;
 	}
 
-	public double getLatitude() {
-		return latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
 	public void setGarbageStation(boolean garbageStation) {
 		if (garbageStation)
 			this.type = Utils.TRUE_GARBAGE;
@@ -107,14 +91,6 @@ public class Node {
 
 	public ArrayList<Edge> getOutEdges() {
 		return this.outEdges;
-	}
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
 	}
 
 	@Override
@@ -136,8 +112,6 @@ public class Node {
 			return false;
 	}
 
-	// we need to decrement the destiny indegree value outside (if we don't send
-	// the same node memory position)
 	public boolean removeEdgeTo(Node node) {
 		for (int i = 0; i < outEdges.size(); i++) {
 			if (outEdges.get(i).getDestiny().equals(node)) {
@@ -149,7 +123,6 @@ public class Node {
 	}
 
 	public void addEdge(Node destiny, double distance) {
-		// destiny.indegree++;
 		Edge edge = new Edge(this, destiny, distance);
 		this.outEdges.add(edge);
 	}
@@ -189,9 +162,7 @@ public class Node {
 
 	public void setGarbageContainer(String typeGarbage, Double collected){
 		double temp = garbageContainer.get(typeGarbage);
-		//System.out.println(garbageContainer.get(typeGarbage));
 		garbageContainer.replace(typeGarbage, temp - collected);
-		//System.out.println(garbageContainer.get(typeGarbage));
 	}
 
 	public Map<String, Double> getGarbageContainer(){
@@ -202,5 +173,11 @@ public class Node {
 		return this.garbageContainer.get(wasteType);
 	}
 
+	public double getDistance() {
+		return this.distance;
+	}
 
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
 }

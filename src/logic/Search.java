@@ -24,7 +24,7 @@ public class Search {
 	private double distanceCovered;
 	private Truck truck;
 
-	public Search(Graph graph, LinkedList<Node> containers, ArrayList<Node> garbageStations, LinkedList<Node> itinerary,
+	public Search(Graph graph, LinkedList<Node> containers, ArrayList<Node> garbageStations,
 			Map<String, Integer> typeTruck, Node central, Node station, Map<String, ArrayList<Truck>> trucks,
 			String heuristic) {
 
@@ -243,15 +243,6 @@ public class Search {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static double straightLineDistance(double lat1, double lon1, double lat2, double lon2) {
-		double dLat = Math.toRadians(lat2 - lat1);
-		double dLon = Math.toRadians(lon2 - lon1);
-		double a = Math.pow((Math.sin(dLat / 2.0)), 2.0) + Math.cos(Math.toRadians(lat1))
-		* Math.cos(Math.toRadians(lat2)) * Math.pow((Math.sin(dLon / 2.0)), 2.0);
-		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		return Utils.EARTH_RADIUS * c;
 	}
 
 	private AStarNode lowestF(ArrayList<AStarNode> open) {

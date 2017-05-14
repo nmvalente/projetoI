@@ -1,0 +1,46 @@
+[nodes];;;glass;paper;plastic;common
+1;central;Trindade;0;0;0;0
+2;true;Campo 24 de Agosto;60;60;50;100
+3;false;Firmeza;0;0;0;0
+4;true;Mercado do Bolhão;90;70;40;20
+5;true;Rua de Santa Catarina1;0;0;0;0
+6;station;Rua de Santa Catarina2;0;0;0;0
+7;true;Rua de Santa Catarina3;40;80;40;80
+8;true;Rua de Santa Catarina4;70;80;70;60
+9;true;Rua de Santa Catarina5;0;90;70;0
+10;true;Rua de Santa Catarina6;70;10;50;10
+11;true;Rua de Santa Catarina7;20;40;20;80
+12;station;Rua de Santa Catarina8;0;0;0;0
+13;true;Rua de Santa Catarina9;70;80;90;40
+14;true;Rua de Santa Catarina10;50;90;10;70
+15;true;Rua de Santa Catarina11;90;30;90;60
+16;station;Rua de Santa Catarina12;0;0;0;0
+17;true;Rua de Santa Catarina13;70;40;70;80
+18;true;Rua de Santa Catarina14;70;60;70;80
+;;;;;;
+[edges];;;;;;
+1;2;10;;;;
+1;18;12;;;;
+2;3;14;;;;
+2;12;9;;;;
+3;4;11;;;;
+3;10;13;;;;
+4;5;15;;;;
+5;6;14;;;;
+6;7;10;;;;
+6;10;12;;;;
+10;9;14;;;;
+9;8;9;;;;
+9;11;11;;;;
+8;7;13;;;;
+8;14;15;;;;
+7;15;18;;;;
+11;12;10;;;;
+11;13;12;;;;
+15;16;14;;;;
+13;14;9;;;;
+12;13;11;;;;
+12;18;13;;;;
+18;17;15;;;;
+16;17;9;;;;
+14;15;6;;;;

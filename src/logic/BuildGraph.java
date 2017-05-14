@@ -12,7 +12,6 @@ public class BuildGraph {
 
 	protected LinkedList<Node> containers;
 	protected ArrayList<Node> garbageStations;
-	protected LinkedList<Node> itinerary;
 	protected Map<String, Integer> typeTruck;
 	protected Node central;
 	protected Node station;
@@ -24,9 +23,9 @@ public class BuildGraph {
 		setContainersAndStations(graph);
 		setMapTrucks(truckPlastic, truckPaper, truckGlass, truckCommon);
 		setTrucks(truckCapacity);
-		new Search(graph, containers, garbageStations, itinerary, typeTruck, central, station, trucks, heuristic);
+		new Search(graph, containers, garbageStations, typeTruck, central, station, trucks, heuristic);
 
-		
+
 	}
 
 	private Map<String, Integer> setMapTrucks(int truckPlastic, int truckPaper, int truckGlass, int truckCommon) {
@@ -36,14 +35,6 @@ public class BuildGraph {
 		typeTruck.put("plastic", truckPlastic);
 		typeTruck.put("common", truckCommon);
 		return typeTruck;
-	}
-
-	public LinkedList<Node> getItinerary() {
-		return itinerary;
-	}
-
-	public void setItinerary(LinkedList<Node> itinerary) {
-		this.itinerary = itinerary;
 	}
 
 	public LinkedList<Node> getContainers() {
@@ -64,7 +55,7 @@ public class BuildGraph {
 				station.setOutEdges(temp.getOutEdges());
 				addGarbageStation(temp);
 			} else if (temp.getType().equals(Utils.TRUE_GARBAGE)) {
-				
+
 				addGarbageContainer(temp);
 			} else if (temp.getType().equals(Utils.CENTRAL)) {
 				central = temp;
@@ -82,14 +73,14 @@ public class BuildGraph {
 		ArrayList<Truck> truckTemp = new ArrayList<Truck>();
 		int i;
 		this.trucks = new HashMap<String, ArrayList<Truck>>();
-		
+
 		for (i = 0; i < typeTruck.get("glass"); i++) {
 			truck = new Truck(central, station, capacity, Utils.GLASS);
 			truckTemp.add(truck);
 		}
 		if (truckTemp.size() > 0)
 			this.trucks.put("glass", truckTemp);
-		
+
 
 		truckTemp = new ArrayList<Truck>();
 		for (i = 0; i < typeTruck.get("plastic"); i++) {
@@ -98,7 +89,7 @@ public class BuildGraph {
 		}
 		if (truckTemp.size() > 0)
 			this.trucks.put("plastic", truckTemp);
-		
+
 		truckTemp = new ArrayList<Truck>();
 		for (i = 0; i < typeTruck.get("paper"); i++) {
 			truck = new Truck(central, station, capacity, Utils.PAPER);
