@@ -49,7 +49,7 @@ public class InformationsRequest {
 	protected int truckCommon = 1;
 	protected int numberOfStations = 1;
 	protected int truckCapacity = 1000;
-	protected double minimumLevelContainer = 0.8;
+	protected int minimumLevelContainer = 50;
 
 	protected String current;
 	protected File file;
@@ -90,6 +90,7 @@ public class InformationsRequest {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setTitle("Waste collection");
+		Utils.MinimumGarbageCapacity = minimumLevelContainer;
 
 		/* Paper */
 		txtHowManyTrucks = new JTextField();
@@ -100,7 +101,7 @@ public class InformationsRequest {
 		txtHowManyTrucks.setColumns(10);
 
 		spinnerModel = new SpinnerNumberModel(truckPaper, // initial value
-				0, // min
+				1, // min
 				10, // max
 				1);// step
 		JSpinner truckPaperSpinner = new JSpinner(spinnerModel);
@@ -124,7 +125,7 @@ public class InformationsRequest {
 		frame.getContentPane().add(truckGlass1);
 
 		spinnerModel = new SpinnerNumberModel(truckGlass, // initial value
-				0, // min
+				1, // min
 				10, // max
 				1);// step
 		JSpinner truckGlassSpinner = new JSpinner(spinnerModel);
@@ -147,7 +148,7 @@ public class InformationsRequest {
 		frame.getContentPane().add(truckCommon1);
 
 		spinnerModel = new SpinnerNumberModel(truckCommon, // initial value
-				0, // min
+				1, // min
 				10, // max
 				1);// step
 		JSpinner truckCommonSpinner = new JSpinner(spinnerModel);
@@ -170,7 +171,7 @@ public class InformationsRequest {
 		frame.getContentPane().add(truckPlastic1);
 
 		spinnerModel = new SpinnerNumberModel(truckPlastic, // initial value
-				0, // min
+				1, // min
 				10, // max
 				1);// step
 		JSpinner truckPlasticSpinner = new JSpinner(spinnerModel);
@@ -251,7 +252,7 @@ public class InformationsRequest {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				String current = ((JSpinner) e.getSource()).getValue().toString();
-				minimumLevelContainer = Double.parseDouble(current);
+				minimumLevelContainer = Integer.parseInt(current);
 			}
 		});
 		containerMinimumSpinner.setBounds(239, 36, 131, 22);

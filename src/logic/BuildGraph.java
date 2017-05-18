@@ -2,7 +2,6 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import graph.Graph;
@@ -10,7 +9,7 @@ import graph.Node;
 
 public class BuildGraph {
 
-	protected LinkedList<Node> containers;
+	protected HashMap<Integer, Node> containers;
 	protected ArrayList<Node> garbageStations;
 	protected Map<String, Integer> typeTruck;
 	protected Node central;
@@ -30,23 +29,19 @@ public class BuildGraph {
 
 	private Map<String, Integer> setMapTrucks(int truckPlastic, int truckPaper, int truckGlass, int truckCommon) {
 		typeTruck = new HashMap<String, Integer>();
-		typeTruck.put("glass", truckGlass);
-		typeTruck.put("paper", truckPaper);
-		typeTruck.put("plastic", truckPlastic);
-		typeTruck.put("common", truckCommon);
+		typeTruck.put(Utils.GLASS, truckGlass);
+		typeTruck.put(Utils.PAPER, truckPaper);
+		typeTruck.put(Utils.PLASTIC, truckPlastic);
+		typeTruck.put(Utils.COMMON, truckCommon);
 		return typeTruck;
 	}
 
-	public LinkedList<Node> getContainers() {
-		return containers;
-	}
-
 	public ArrayList<Node> getGarbageStation() {
-		return garbageStations;
+		return this.garbageStations;
 	}
 
 	public void setContainersAndStations(Graph graph) {
-		this.containers = new LinkedList<Node>();
+		this.containers = new HashMap<Integer, Node>();
 		this.garbageStations = new ArrayList<Node>();
 
 		for (Node temp : graph.getNodes()) {
@@ -55,62 +50,60 @@ public class BuildGraph {
 				station.setOutEdges(temp.getOutEdges());
 				addGarbageStation(temp);
 			} else if (temp.getType().equals(Utils.TRUE_GARBAGE)) {
-
 				addGarbageContainer(temp);
 			} else if (temp.getType().equals(Utils.CENTRAL)) {
 				central = temp;
 				central.setOutEdges(temp.getOutEdges());
 			}
 		}
+		graph.setGraphContainers(this.containers);
 	}
 
 	public Map<String, ArrayList<Truck>> getTrucks() {
-		return trucks;
+		return this.trucks;
 	}
 
-	public Map<String, ArrayList<Truck>> setTrucks(double capacity) {
+	public void setTrucks(double capacity) {
 		Truck truck;
 		ArrayList<Truck> truckTemp = new ArrayList<Truck>();
 		int i;
 		this.trucks = new HashMap<String, ArrayList<Truck>>();
 
-		for (i = 0; i < typeTruck.get("glass"); i++) {
-			truck = new Truck(central, station, capacity, Utils.GLASS);
+		for (i = 0; i < typeTruck.get(Utils.GLASS); i++) {
+			truck = new Truck(capacity, Utils.GLASS);
 			truckTemp.add(truck);
 		}
 		if (truckTemp.size() > 0)
-			this.trucks.put("glass", truckTemp);
+			this.trucks.put(Utils.GLASS, truckTemp);
 
 
 		truckTemp = new ArrayList<Truck>();
-		for (i = 0; i < typeTruck.get("plastic"); i++) {
-			truck = new Truck(central, station, capacity, Utils.PLASTIC);
+		for (i = 0; i < typeTruck.get(Utils.PLASTIC); i++) {
+			truck = new Truck(capacity, Utils.PLASTIC);
 			truckTemp.add(truck);
 		}
 		if (truckTemp.size() > 0)
-			this.trucks.put("plastic", truckTemp);
+			this.trucks.put(Utils.PLASTIC, truckTemp);
 
 		truckTemp = new ArrayList<Truck>();
-		for (i = 0; i < typeTruck.get("paper"); i++) {
-			truck = new Truck(central, station, capacity, Utils.PAPER);
+		for (i = 0; i < typeTruck.get(Utils.PAPER); i++) {
+			truck = new Truck(capacity, Utils.PAPER);
 			truckTemp.add(truck);
 		}
 		if (truckTemp.size() > 0)
-			this.trucks.put("paper", truckTemp);
+			this.trucks.put(Utils.PAPER, truckTemp);
 
 		truckTemp = new ArrayList<Truck>();
-		for (i = 0; i < typeTruck.get("common"); i++) {
-			truck = new Truck(central, station, capacity, Utils.COMMON);
+		for (i = 0; i < typeTruck.get(Utils.COMMON); i++) {
+			truck = new Truck(capacity, Utils.COMMON);
 			truckTemp.add(truck);
 		}
 		if (truckTemp.size() > 0)
-			this.trucks.put("common", truckTemp);
-
-		return this.trucks;
+			this.trucks.put(Utils.COMMON, truckTemp);
 	}
 
 	public void addGarbageContainer(Node node) {
-		this.containers.add(node);
+		this.containers.put(node.getId(), node);
 	}
 
 	public void addGarbageStation(Node node) {

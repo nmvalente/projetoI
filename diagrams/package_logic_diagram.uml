@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>logic</OriginalElement>
+  <nodes>
+    <node x="-356.0" y="5.0">logic.Utils</node>
+    <node x="-175.0" y="0.0">logic.ProgramData</node>
+    <node x="212.0" y="318.0">logic.Search</node>
+    <node x="194.0" y="-3.0">logic.BuildGraph</node>
+    <node x="89.0" y="149.0">logic.Truck</node>
+    <node x="-164.0" y="147.0">logic.AStarNode</node>
+    <node x="-418.0" y="146.0">logic.AStarNodeComparator</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="logic.ProgramData" target="logic.BuildGraph">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="logic.AStarNode" target="logic.Truck">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="logic.BuildGraph" target="logic.Search">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="logic.BuildGraph" target="logic.Truck">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="logic.Search" target="logic.Truck">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="logic.Search" target="logic.AStarNode">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="logic.Truck" target="logic.AStarNode">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="-54.5" y="175.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

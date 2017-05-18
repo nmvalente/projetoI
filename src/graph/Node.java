@@ -11,17 +11,15 @@ public class Node {
 	private double distance;
 	private String type;
 	private ArrayList<Edge> outEdges;
-	private boolean processing;
-	protected String name;
-	protected Node parent;
-	protected Map<String, Double> garbageContainer;
-	protected static int current_id = 0;
-	protected int id;
+	private String name;
+	private Node parent;
+	private Map<String, Double> garbageContainer;
+	private static int current_id = 0;
+	private int id;
 
 	public Node(Node node) {
 		if (node != null) {
 			this.type = node.type;
-			this.processing = node.processing;
 			this.name = node.name;
 			this.outEdges = new ArrayList<Edge>();
 			this.outEdges = node.getOutEdges();
@@ -160,7 +158,7 @@ public class Node {
 		this.parent = current;
 	}
 
-	public void setGarbageContainer(String typeGarbage, Double collected){
+	public void setGarbageContainer(String typeGarbage, double collected){
 		double temp = garbageContainer.get(typeGarbage);
 		garbageContainer.replace(typeGarbage, temp - collected);
 	}

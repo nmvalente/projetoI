@@ -1,0 +1,33 @@
+\BOOKMARK [1][-]{section.1}{Objective}{}% 1
+\BOOKMARK [1][-]{section.2}{Description}{}% 2
+\BOOKMARK [1][-]{section.3}{Specification}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Important concepts}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Problem description}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Problem restrictions}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{Problem representation}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.5}{List of requirements}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.6}{Solution}{section.3}% 9
+\BOOKMARK [3][-]{subsubsection.3.6.1}{The function g\(x\)}{subsection.3.6}% 10
+\BOOKMARK [3][-]{subsubsection.3.6.2}{The function h\(x\)}{subsection.3.6}% 11
+\BOOKMARK [1][-]{section.4}{Development}{}% 12
+\BOOKMARK [2][-]{subsection.4.1}{Programming Languages, Tools, and APIs}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.2}{Application structure}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.3}{Relevant details of implementation}{section.4}% 15
+\BOOKMARK [1][-]{section.5}{Experiences}{}% 16
+\BOOKMARK [1][-]{section.6}{Conclusions}{}% 17
+\BOOKMARK [1][-]{section.7}{Enhancements}{}% 18
+\BOOKMARK [1][-]{section.8}{Resources}{}% 19
+\BOOKMARK [2][-]{subsection.8.1}{References}{section.8}% 20
+\BOOKMARK [2][-]{subsection.8.2}{Used software}{section.8}% 21
+\BOOKMARK [2][-]{subsection.8.3}{Effective work of each group member}{section.8}% 22
+\BOOKMARK [1][-]{appendix.A}{Annex}{}% 23
+\BOOKMARK [2][-]{subsection.A.1}{A Short User Manual}{appendix.A}% 24
+\BOOKMARK [2][-]{subsection.A.2}{Logic package diagram}{appendix.A}% 25
+\BOOKMARK [2][-]{subsection.A.3}{Graph package diagram}{appendix.A}% 26
+\BOOKMARK [2][-]{subsection.A.4}{Module View UML}{appendix.A}% 27
+\BOOKMARK [2][-]{subsection.A.5}{Graph examples used}{appendix.A}% 28
+\BOOKMARK [2][-]{subsection.A.6}{Source Code}{appendix.A}% 29
+\BOOKMARK [3][-]{subsubsection.A.6.1}{Package graph}{subsection.A.6}% 30
+\BOOKMARK [3][-]{subsubsection.A.6.2}{Package gui}{subsection.A.6}% 31
+\BOOKMARK [3][-]{subsubsection.A.6.3}{Package logic}{subsection.A.6}% 32
+\BOOKMARK [3][-]{subsubsection.A.6.4}{Package tests}{subsection.A.6}% 33

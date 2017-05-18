@@ -1,13 +1,18 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import logic.Utils;
 
 public class Graph {
-	protected ArrayList<Node> nodes;
-	protected double wastePaper=0.0, wastePlastic=0.0, wasteGlass=0.0, wasteCommon=0.0;
-	public boolean original;
+	private ArrayList<Node> nodes;
+	private double wastePaper=0.0,
+			wastePlastic=0.0,
+			wasteGlass=0.0,
+			wasteCommon=0.0;
+	private boolean original;
+	private HashMap<Integer, Node> containers;
 
 	public Graph() {
 		this.original = true;
@@ -20,8 +25,8 @@ public class Graph {
 				this.wasteCommon += this.nodes.get(i).getGarbageContainerByType(Utils.COMMON);
 			}
 		}
+		this.containers = new HashMap<Integer, Node>();
 	}
-
 
 	public Graph(Graph newG) {
 		this.original = false;
@@ -37,6 +42,8 @@ public class Graph {
 				this.wasteCommon += newG.getNodes().get(i).getGarbageContainerByType(Utils.COMMON);
 			}
 		}
+
+		this.containers = newG.getGraphContainers();
 	}
 
 	public ArrayList<Node> getNodes() {
@@ -154,6 +161,34 @@ public class Graph {
 		}
 		String str = strb.toString();
 		return str;
+	}
+
+	public void setGraphContainers(HashMap<Integer, Node> containers){
+		this.containers = containers;
+	}
+
+	public HashMap<Integer, Node> getGraphContainers(){
+		return this.containers;
+	}
+
+	public double getTotalInContainers(String typeofWaste){
+		double waste = 0.0;
+		for (HashMap.Entry<Integer, Node> entry : this.containers.entrySet()) {
+			Node node = entry.getValue();
+			waste += node.getGarbageContainerByType(typeofWaste);
+		}
+		return waste;
+	}
+
+	public int getNumberOfEmptyContainers(String typeofWaste){
+		int nr = 0;
+		for (HashMap.Entry<Integer, Node> entry : this.containers.entrySet()) {
+			Node node = entry.getValue();
+
+			if(node.getGarbageContainerByType(typeofWaste) == 0.0)
+				nr++;
+		}
+		return nr;
 	}
 /*
 	@Override

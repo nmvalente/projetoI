@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="-151.0" y="-6.0">graph</node>
+    <node x="-146.0" y="264.0">tests</node>
+    <node x="382.0" y="-9.0">gui</node>
+    <node x="140.0" y="147.0">logic</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="tests" target="logic">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="gui" target="graph">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="logic" target="gui">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="tests" target="graph">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="gui" target="logic">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="graph" target="graph">
+      <point x="0.0" y="0.0" />
+      <point x="-81.5" y="-34.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="logic" target="graph">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="logic" target="logic">
+      <point x="0.0" y="0.0" />
+      <point x="206.5" y="119.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="248.0" y="220.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

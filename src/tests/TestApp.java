@@ -1,12 +1,12 @@
 package tests;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-
 import graph.Graph;
 import graph.Node;
 import logic.Truck;
+import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestApp {
 
@@ -19,10 +19,10 @@ public class TestApp {
 
 	@Test
 	public void testTruckIDs() {
-		Truck truck1 = new Truck(null, null, 1000, "paper");
-		Truck truck2 = new Truck(null, null, 1000, "common");
-		Truck truck3 = new Truck(null, null, 1000, "paper");
-		Truck truck4 = new Truck(null, null, 1000, "glass");
+		Truck truck1 = new Truck(1000, "paper");
+		Truck truck2 = new Truck(1000, "common");
+		Truck truck3 = new Truck(1000, "paper");
+		Truck truck4 = new Truck(1000, "glass");
 		assertEquals(1, truck1.getID());
 		assertEquals(2, truck2.getID());
 		assertEquals(3, truck3.getID());

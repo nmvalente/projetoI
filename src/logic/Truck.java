@@ -26,18 +26,6 @@ public class Truck {
 		this.id = current_id;
 	}
 
-	public Truck(Node startingPos, Node destinyPos, double capacity, String type) {
-		this.capacity = capacity;
-		this.startingPosition = new Node(startingPos);
-		this.destinyPosition = new Node(destinyPos);
-		this.type = new String(type);
-		this.distanceCovered = 0.0;
-		this.totalGarbage = 0.0;
-
-		++current_id;
-		this.id = current_id;
-	}
-
 	public Truck(Truck truck) {
 		this.capacity = truck.capacity;
 		this.startingPosition = truck.startingPosition;
@@ -130,7 +118,7 @@ public class Truck {
 		}
 	}
 
-	public void truckCollect(Node node) {
+	public double truckCollect(Node node) {
 		if(node.getType().equals(Utils.TRUE_GARBAGE)){ // se for contentor de lixo
 			double actualPaperToCollected = node.getGarbageContainerByType(this.type);
 			if(actualPaperToCollected > 0.0){ // se houver papel por apanhar
@@ -138,12 +126,14 @@ public class Truck {
 					this.setTotalGarbage(actualPaperToCollected);
 					this.allWasteSinceStart += actualPaperToCollected;
 					node.setGarbageContainer(this.type, actualPaperToCollected); // apanha o papel
+					return actualPaperToCollected;
 				}
 				else if(this.getType().equals(this.type) && (this.getTotalGarbage()+actualPaperToCollected) > this.getCapacity()){
 					double currentLoadGarbage = this.getCapacity() - this.getTotalGarbage();
 					this.setTotalGarbage(currentLoadGarbage);
 					this.allWasteSinceStart += currentLoadGarbage;
 					node.setGarbageContainer(this.type, currentLoadGarbage); // apanha o papel
+					return currentLoadGarbage;
 				}
 			}
 		}
@@ -151,6 +141,7 @@ public class Truck {
 		else if(node.getType().equals(Utils.STATION) && this.getTotalGarbage() > 0.0){ // se for estacao de tratamento, esvazia
 			this.resetTotalGarbage();
 		}
+		return 0.0;
 	}
 
 	public void printItinerary(){
