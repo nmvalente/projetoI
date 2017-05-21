@@ -253,6 +253,7 @@ public class InformationsRequest {
 			public void stateChanged(ChangeEvent e) {
 				String current = ((JSpinner) e.getSource()).getValue().toString();
 				minimumLevelContainer = Integer.parseInt(current);
+				Utils.MinimumGarbageCapacity = minimumLevelContainer;
 			}
 		});
 		containerMinimumSpinner.setBounds(239, 36, 131, 22);

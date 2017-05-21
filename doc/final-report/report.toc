@@ -9,26 +9,27 @@
 \contentsline {subsection}{\numberline {3.5}List of requirements}{5}{subsection.3.5}
 \contentsline {subsection}{\numberline {3.6}Solution}{5}{subsection.3.6}
 \contentsline {subsubsection}{\numberline {3.6.1}The function $g(x)$}{5}{subsubsection.3.6.1}
-\contentsline {subsubsection}{\numberline {3.6.2}The function $h(x)$}{5}{subsubsection.3.6.2}
+\contentsline {subsubsection}{\numberline {3.6.2}The function $h(x)$}{6}{subsubsection.3.6.2}
 \contentsline {section}{\numberline {4}Development}{6}{section.4}
 \contentsline {subsection}{\numberline {4.1}Programming Languages, Tools, and APIs}{6}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Application structure}{6}{subsection.4.2}
 \contentsline {subsection}{\numberline {4.3}Relevant details of implementation}{6}{subsection.4.3}
 \contentsline {section}{\numberline {5}Experiences}{6}{section.5}
-\contentsline {section}{\numberline {6}Conclusions}{6}{section.6}
-\contentsline {section}{\numberline {7}Enhancements}{7}{section.7}
+\contentsline {section}{\numberline {6}Conclusions}{7}{section.6}
+\contentsline {section}{\numberline {7}Future enhancements}{7}{section.7}
 \contentsline {section}{\numberline {8}Resources}{8}{section.8}
 \contentsline {subsection}{\numberline {8.1}References}{8}{subsection.8.1}
 \contentsline {subsection}{\numberline {8.2}Used software}{8}{subsection.8.2}
 \contentsline {subsection}{\numberline {8.3}Effective work of each group member}{8}{subsection.8.3}
 \contentsline {section}{\numberline {A}Annex}{9}{appendix.A}
-\contentsline {subsection}{\numberline {A.1}A Short User Manual}{9}{subsection.A.1}
-\contentsline {subsection}{\numberline {A.2}Logic package diagram}{9}{subsection.A.2}
-\contentsline {subsection}{\numberline {A.3}Graph package diagram}{10}{subsection.A.3}
-\contentsline {subsection}{\numberline {A.4}Module View UML}{10}{subsection.A.4}
-\contentsline {subsection}{\numberline {A.5}Graph examples used}{10}{subsection.A.5}
-\contentsline {subsection}{\numberline {A.6}Source Code}{16}{subsection.A.6}
-\contentsline {subsubsection}{\numberline {A.6.1}Package graph}{16}{subsubsection.A.6.1}
-\contentsline {subsubsection}{\numberline {A.6.2}Package gui}{24}{subsubsection.A.6.2}
-\contentsline {subsubsection}{\numberline {A.6.3}Package logic}{35}{subsubsection.A.6.3}
-\contentsline {subsubsection}{\numberline {A.6.4}Package tests}{49}{subsubsection.A.6.4}
+\contentsline {subsection}{\numberline {A.1}Example of graph}{9}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}A Short User Manual}{9}{subsection.A.2}
+\contentsline {subsection}{\numberline {A.3}Logic package diagram}{12}{subsection.A.3}
+\contentsline {subsection}{\numberline {A.4}Graph package diagram}{12}{subsection.A.4}
+\contentsline {subsection}{\numberline {A.5}Module View UML}{13}{subsection.A.5}
+\contentsline {subsection}{\numberline {A.6}Graph examples used}{13}{subsection.A.6}
+\contentsline {subsection}{\numberline {A.7}Source Code}{19}{subsection.A.7}
+\contentsline {subsubsection}{\numberline {A.7.1}Package graph}{19}{subsubsection.A.7.1}
+\contentsline {subsubsection}{\numberline {A.7.2}Package gui}{26}{subsubsection.A.7.2}
+\contentsline {subsubsection}{\numberline {A.7.3}Package logic}{38}{subsubsection.A.7.3}
+\contentsline {subsubsection}{\numberline {A.7.4}Package tests}{52}{subsubsection.A.7.4}

@@ -118,7 +118,7 @@ public class AStarNode {
     }
 
     public boolean hasFinish(String typeofWaste) {
-        if (this.getTruck().allWasteSinceStart == Search.graph.getTotalGarbageByTypeWaste(typeofWaste))
+        if (this.getTruck().allWasteSinceStart == Search.graph.getTotalGarbageByTypeWasteWithMinimumLevelInContainers(typeofWaste))
             if (this.getTruck().getTotalGarbage() == 0.0)
                 return true;
         return false;

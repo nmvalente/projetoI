@@ -18,7 +18,7 @@ public class Utils {
 	public static final String SPLITTER = ";";
 	public static final File graphFile = new File("./resources/graphs");
 	public static final String HEURISTIC1 = "heuristic1";
-	public static final String HEURISTIC2 = "heuristic2";
+	public static final String HEURISTIC2 = "uniform cost";
 	public static final String HEURISTIC3 = "heuristic3";
 	public static int MinimumGarbageCapacity;
 	public static final int garbageCapacity = 100;

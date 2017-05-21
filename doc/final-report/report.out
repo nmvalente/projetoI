@@ -15,19 +15,20 @@
 \BOOKMARK [2][-]{subsection.4.3}{Relevant details of implementation}{section.4}% 15
 \BOOKMARK [1][-]{section.5}{Experiences}{}% 16
 \BOOKMARK [1][-]{section.6}{Conclusions}{}% 17
-\BOOKMARK [1][-]{section.7}{Enhancements}{}% 18
+\BOOKMARK [1][-]{section.7}{Future enhancements}{}% 18
 \BOOKMARK [1][-]{section.8}{Resources}{}% 19
 \BOOKMARK [2][-]{subsection.8.1}{References}{section.8}% 20
 \BOOKMARK [2][-]{subsection.8.2}{Used software}{section.8}% 21
 \BOOKMARK [2][-]{subsection.8.3}{Effective work of each group member}{section.8}% 22
 \BOOKMARK [1][-]{appendix.A}{Annex}{}% 23
-\BOOKMARK [2][-]{subsection.A.1}{A Short User Manual}{appendix.A}% 24
-\BOOKMARK [2][-]{subsection.A.2}{Logic package diagram}{appendix.A}% 25
-\BOOKMARK [2][-]{subsection.A.3}{Graph package diagram}{appendix.A}% 26
-\BOOKMARK [2][-]{subsection.A.4}{Module View UML}{appendix.A}% 27
-\BOOKMARK [2][-]{subsection.A.5}{Graph examples used}{appendix.A}% 28
-\BOOKMARK [2][-]{subsection.A.6}{Source Code}{appendix.A}% 29
-\BOOKMARK [3][-]{subsubsection.A.6.1}{Package graph}{subsection.A.6}% 30
-\BOOKMARK [3][-]{subsubsection.A.6.2}{Package gui}{subsection.A.6}% 31
-\BOOKMARK [3][-]{subsubsection.A.6.3}{Package logic}{subsection.A.6}% 32
-\BOOKMARK [3][-]{subsubsection.A.6.4}{Package tests}{subsection.A.6}% 33
+\BOOKMARK [2][-]{subsection.A.1}{Example of graph}{appendix.A}% 24
+\BOOKMARK [2][-]{subsection.A.2}{A Short User Manual}{appendix.A}% 25
+\BOOKMARK [2][-]{subsection.A.3}{Logic package diagram}{appendix.A}% 26
+\BOOKMARK [2][-]{subsection.A.4}{Graph package diagram}{appendix.A}% 27
+\BOOKMARK [2][-]{subsection.A.5}{Module View UML}{appendix.A}% 28
+\BOOKMARK [2][-]{subsection.A.6}{Graph examples used}{appendix.A}% 29
+\BOOKMARK [2][-]{subsection.A.7}{Source Code}{appendix.A}% 30
+\BOOKMARK [3][-]{subsubsection.A.7.1}{Package graph}{subsection.A.7}% 31
+\BOOKMARK [3][-]{subsubsection.A.7.2}{Package gui}{subsection.A.7}% 32
+\BOOKMARK [3][-]{subsubsection.A.7.3}{Package logic}{subsection.A.7}% 33
+\BOOKMARK [3][-]{subsubsection.A.7.4}{Package tests}{subsection.A.7}% 34

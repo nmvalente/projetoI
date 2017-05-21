@@ -11,7 +11,7 @@ public class Search {
 
     protected HashMap<Integer, Node> containers;
     protected ArrayList<Node> garbageStations;
-    public static List<Node> itinerary;
+    public static ArrayList<Node> itinerary = new ArrayList<Node>();
     protected Map<String, Integer> typeTruck;
     protected Node central;
     protected Node station;
@@ -47,7 +47,7 @@ public class Search {
 
         // show in gui the result
 
-        //sendSearchToResult();
+        sendSearchToResult();
     }
 
     private void computeProgram(String heuristic) {
@@ -123,6 +123,7 @@ public class Search {
     private void printResult(AStarNode result) {
         Stack<AStarNode> stack = new Stack<AStarNode>();
         stack.add(result);
+
         AStarNode parent = result.getParent();
         while (parent != null) {
             stack.push(parent);
@@ -131,6 +132,7 @@ public class Search {
         System.out.println("ID node - Total to Collect / Current Truck Collected\n");
         int count = 1;
         while (stack.size() > 0) {
+            itinerary.add(stack.peek().getNode());
             if (count % 6 == 0)
                 System.out.println(stack.peek().getNode().getId() + " - " + stack.peek().getTruck().allWasteSinceStart + "/" + stack.peek().getTruck().getTotalGarbage());
             else
@@ -151,7 +153,7 @@ public class Search {
         // Initialize open and closed lists
         ArrayList<AStarNode> open = new ArrayList<AStarNode>();
         ArrayList<AStarNode> closed = new ArrayList<AStarNode>();
-
+        PriorityQueue<AStarNode> queue = new PriorityQueue<AStarNode>(graph.getNumNodes(),new AStarNodeComparator());
         AStarNode initial = new AStarNode(graph, central, truck);
         initial.setG(0);
         initial.setH(heuristic_cost_estimate(initial, heuristic, typeofWaste));
@@ -159,6 +161,7 @@ public class Search {
         // Add it to the open list
 
         open.add(initial);
+        queue.add(initial);
         long startTime = System.currentTimeMillis();
         AStarNode lowF = null;
 
@@ -168,7 +171,8 @@ public class Search {
             visitedNodes++;
 
             // Get the node with the lowest f value
-            lowF = lowestF(open);
+            //lowF = lowestF(open);
+          lowF = queue.poll();
             //System.out.println(lowF);
 
             // Check if it is the goal
@@ -200,6 +204,7 @@ public class Search {
                     if (!open.contains(adj.get(i))) {
                         // Add it if it isn't
                         open.add(adj.get(i));
+                        queue.add(adj.get(i));
                     } else {
                         // Get the one on the open list
                         AStarNode temp = open.get(open.indexOf(adj.get(i)));
@@ -219,23 +224,21 @@ public class Search {
 
     private double heuristic_cost_estimate(AStarNode aStarNode, String heuristic, String typeofWaste) {
         double h = 0.0;
-
         // Check the chosen heuristic
         if (heuristic == Utils.HEURISTIC1) {
-
             if (aStarNode.getNode().getType().equals(Utils.TRUE_GARBAGE))
                 h = aStarNode.getGraph().getTotalGarbageByTypeWaste(typeofWaste) - aStarNode.getNode().getGarbageContainerByType(typeofWaste);//getTotalGarbageByTypeWasteWithMinimumLevelInContainers(Utils.PAPER);// - aStarNode.getNode().getGarbageContainerByType(Utils.PAPER);
             else
                 h = aStarNode.getGraph().getTotalGarbageByTypeWaste(typeofWaste);//getTotalGarbageByTypeWasteWithMinimumLevelInContainers(Utils.PAPER);
         } else if (heuristic == Utils.HEURISTIC2) {
-            return h;//-8 * (aStarNode.getTruck().allWasteSinceStart - aStarNode.getGraph().getTotalGarbageByTypeWaste(typeofWaste)) / aStarNode.getGraph().getTotalGarbageByTypeWaste(typeofWaste);
+            return h;
         } else if (heuristic == Utils.HEURISTIC3) {
             System.out.println((aStarNode.getGraph().getGraphContainers().size() - aStarNode.getGraph().getNumberOfEmptyContainers(typeofWaste)) * 10);
             if (aStarNode.getNode().getType().equals(Utils.TRUE_GARBAGE))
                 h = (aStarNode.getGraph().getGraphContainers().size() - aStarNode.getGraph().getNumberOfEmptyContainers(typeofWaste)) * 10;
             else h = aStarNode.getGraph().getTotalGarbageByTypeWaste(typeofWaste) * 10;
         }
-        return h; //nummero de contentores cheios ou soma das distancias de manhattan ou straight line distance nr de vezes q tem q is a uma estacao
+        return h;
     }
 
     public void sendSearchToResult() {

@@ -121,7 +121,7 @@ public class Truck {
 	public double truckCollect(Node node) {
 		if(node.getType().equals(Utils.TRUE_GARBAGE)){ // se for contentor de lixo
 			double actualPaperToCollected = node.getGarbageContainerByType(this.type);
-			if(actualPaperToCollected > 0.0){ // se houver papel por apanhar
+			if(actualPaperToCollected > Utils.MinimumGarbageCapacity){ // se houver papel por apanhar
 				if(this.getType().equals(this.type) && (this.getTotalGarbage()+actualPaperToCollected) <= this.getCapacity()){
 					this.setTotalGarbage(actualPaperToCollected);
 					this.allWasteSinceStart += actualPaperToCollected;

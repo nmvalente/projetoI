@@ -133,14 +133,10 @@ To represent the map of this problem, we considered a undirected-weighted graph 
 
 Although it is possible to consult the entire project code in Annex \ref{source}, here we present the fields that appear in each of the structures necessary to represent the graph:
 
-\iffalse 
-In sense of mathematical settlement is represented by an unoriented graph G = (V, E), where V is
-the set of vertices and E – a set of edges of the graph [1, 2]. The vertices of the graph correspond to
-the selected crossroads. Most are crossroads of at least three streets, none of which is blind. The edges
-of the graph correspond to the settlement streets that connect the vertices, and blind streets extending
-from the streets. Such procedures are used to simplify the task. At Fig. 1 on the map of settlement
-there were drawn vertices numbers (in circles) and edge numbers (in rectangles). Fig. 2 shows a graph
-representing such model of the settlement.
+In sense of mathematical settlement is represented by an unoriented graph G = (V, E), where V is the set of vertices and E – a set of edges of the graph. The vertices of the graph correspond to garbage containers, central or stations. The edges of the graph correspond to the settlement streets that connect the vertices.
+
+
+
 The weights are assigned to the edge. They correspond to a total length of street, which is
 represented by that edge. The length of each blind street is counted twice because the rubbish disposal
 van has to pass it twice. The van have to pass once other streets, taking garbage, but it can pass them
@@ -148,10 +144,6 @@ any number of times passing to other streets. Such transfers have been called em
 mentioned above, the optimal solution is one in which the sum made empty journeys and journeys to
 landfill is minimal, because the length of the path travelled by the garbage truck affect on transport
 costs and pollution of exhaust gases [11].
-
-
-
-\fi
 
 \begin{itemize}
 \item Graph:
@@ -201,32 +193,15 @@ where $g(x)$ is the cost to get from the start state to state x and $h(x)$ is th
 \subsubsection{The function $g(x)$}\label{cost_function}
 
 In the equation refered in (\ref{equation}), the $g(x)$ represents the cost to reach the current position starting from the initial. 
-To determine the cost we have calculate ... 
-
-FINALIZAR
+To determine the cost we have, initially, calculate the straight line distance between to nodes but, as we already referred, to debug it was more easy to use integer distances. So, the cost is the distance in kilometers.
 
 \subsubsection{The function $h(x)$}\label{heuristic_function}
 
 In same way, the $h(x)$ is the heuristic function that is used to approximate distance from the current location to the goal state. This function is distinct because it is a mere estimation rather than an exact value. The more accurate the heuristic the better and faster the goal state is reach and with much more accuracy.
-To determine the value of $h(x)$ where x is the actual state, we ...
+To determine the value of $h(x)$ where x is the actual state, we have determined the difference between the remaining waste of some type to collect and the possible garbage to collect in that state x, if in that state the truck move to one container of type garbage. If in that state doesn't exist any garbage, the heuristic function only returns the value of total garbage remaining in the graph.
 
-To ensure the admissibility of the heuristic function $h(x)$, the distance
-In a straight line between the geographic coordinates of the node in question
-And the place of destination, only in the case where all places of interest
-(POI) have already been visited. There are POIs with
-Before it reaches the destination, the division into subproblems is used
-With the allocation of POIs as intermediary places of destination, ensuring that The process described above is used. In advanced heuristics, online distance Between the geographical coordinates is multiplied by a factor (1.25),
-Allowing in most cases, a lower generation of intermediate states,
-Losing, however, the qualities of consistency and admissibility.
-H1 (n) = (distanceT oGoal distanceRatio) +
-(NeededLitersT oGoal priceRatio) (2)
-H2 (n) = (1.25 distanceT oGoal distRatio) +
-(NeededLitersT oGoal priceRatio) (3)
-In the two heuristic functions, no estimates are made of expenditures
-In hotels and tolls, as this is not possible.
-Without significantly compromising the heuristic's admissibility.
 
-FINALIZAR
+It is easy to understand that heuristics is admissible, since at the beginning the heuristic returns the maximum value and at the end 0, never overestimating, although it does not return a value in kilometers. We have hypothesized to perform the minimum spanning tree search on each node but we do not consider it meaningful since we would have a search within another search.
 
 \section{Development}
 
@@ -236,7 +211,7 @@ Both the algorithm and the graphical interface were programmed in Java with
 support of the IntelliJ IDEA and Ecplise development environment programs. In the interface with the user we use Java Swing in the windows that allow the configuration of the application and to show some statistics. In map and solution view found, we embedded the dynamic modeling and analysis library of graphs GraphStream in Java Swing.
 
 \subsection{Application structure}
-
+*
 The project is divided into four folders: diagrams(diagrams), source code (src), documents (doc) and resources (res). In order to organize the project source code, the files with the code sources are subdivided into six packets:
 
 \begin{itemize}
@@ -253,53 +228,55 @@ We provide some uml diagrams to better present some key packages in this project
 \subsection{Relevant details of implementation}
 
 We were careful to choose the data structures that could be most effective in representing and manipulating data.
-
-
-ACRESCENTAR
-
+One example was the use of one priority queue in the $A^*$ algorithm.
 
 \section{Experiences}
 
 In addition to the unit tests that test the important components of the program, experiments were also performed on the performance of the algorithm. We have used 3 graphs to test, with incremental number of nodes and edges, 3 heuristic functions, collectiong the following information, gathered in the table:
 
-TABELA
+\begin{table}[H]
+	\centering
+	\label{heuristic1}
+	\begin{tabular}{ | m{1.5cm} | m{3cm} | m{2cm} | m{2.5cm} |  }
+		\hline
+		\centering \textbf{Nodes} &	\textbf{Time execution(ms)} & \textbf{Visited nodes} & \textbf{Total cost(km)} \\[2ex] \hline
+		6  &	32 	& 121 	& 196	\\[2ex] \hline
+		12 & 	47 	& 74 	& 496 \\[2ex] \hline
+		18 &	187 & 540 	& 913 \\[2ex] \hline
+		30 &	785 & 1902 	& 1155 \\[2ex] \hline
+		60 & 94560 	& 18221 	& 2224 \\[2ex] \hline		
+	\end{tabular}\caption{Heuristic}
+\end{table}
+
+Heuristic/Uniform Cost
+\begin{table}[H]
+	\centering
+	\label{heuristicvs0}
+	\begin{tabular}{ | m{1.5cm} | m{3cm} | m{2cm} | m{2.5cm} |  }
+		\hline
+		\centering \textbf{Nodes} &	\textbf{Time execution(ms)} & \textbf{Visited nodes} & \textbf{Total cost(km)} \\[2ex] \hline
+		6 	&	32/46 	& 121/252 	& 192/192 \\[2ex] \hline
+		12 	&	47/20657 & 74/28429 & 496/496 \\[2ex] \hline
+	\end{tabular}\caption{heuristic vs uniform cost}
+\end{table}
+
+As we can see in the previous tables, the heuristic used improves a lot the search time execution.
 
 \section{Conclusions} 
 
 The application developed meets all the items of the list of requirements \ref{subsecsec:requirements}. 
 
-
 We want to increment the number of nodes and edges, maybe try and test with other algorithm to compare the solutions. 
 
+Cost minimization is important when planning routes serving the waste collection vehicles. Garbage truck must pass all the planned streets. Some of them must overcome a second time to get to the next street, now without receiving waste.
+This paper presents the method of determining the street, which must be passed more than one time and the sum of their length is the smallest possible, which significantly reduces costs. 
 
-Cost minimization is important when planning routes serving the waste collection vehicles.
-Influence on the amount of the costs of has among other length of the route. Garbage truck must pass
-all the planned streets. Some of them must overcome a second time to get to the next street, now
-without receiving waste.
-This paper presents the method of determining the street, which must be passed more than one time
-and the sum of their length is the smallest possible, which significantly reduces costs. The method
-involves constructing a graph representing the streets of the settlement and extending it to the Euler's
-graph in such a way that the sum of the length of the edges is minimal. Purpose is achieved by using
-the theorem of Euler and clonal selection paradigm of artificial immune systems.
-\section{Enhancements} 
-
+\section{Future enhancements} 
 
 It is suggested that in future works the way of generating / importing
-Input data. Due to the difficult import of data with the format and
-Details appropriate to the problem, it is advisable to make a
-Of a large number of nodes and edges,
-Size of the graph representing the map and consequently the complexity
-Problems.
+Input data changes. Maybe we create some type of parse to get xml values, useful to download data in Open Street Map. 
 
-The next step in the planning garbage truck routes is an indication of the order of passing of
-the streets. According to Euler theorem, such solutions exist. They can be obtained using for example
-algorithms of Hierholzer or of Fleury or using the artificial immune systems. The presented algorithm
-applies algorithm of Hierholzer.
-Another issue is the division of the land in areas serviced by a fleet of vehicles, taking into account
-their capacity and the amount of waste collected. This is a very important issue in connection to
-the statutory changes relating to waste collection, which came into force this year in Poland. This issue
-will be the target of further research of the author.
-
+The next step in the planning garbage truck routes is an indication of the order of passing of the streets. In future, more variables can be added to truck, like fuel, hours of work, points to fuel the trucks and add more trucks to the fleet.
 \newpage
 
 \section{Resources}
@@ -344,10 +321,34 @@ Each element of the group, consisting of two students, initially worked on disti
 \appendix
 
 \section{Annex}\label{annex}
+\subsection{Example of graph}\label{graph_ex}
+\includegraphics[scale=0.75]{small_graph.png}
+
+
 \subsection{A Short User Manual}
 
+To run this application you can import all the source directory into your favourite IDE and run, choosing the InformationsRequest class as the entry point and the class that have the main function.
+
+After that you can edit the information to run the apllication, Following successively the following tables:
+
+\begin{center}
+\centering \includegraphics[scale=0.75]{table1.png}	
+\end{center}
+
+\begin{center}
+\centering \includegraphics[scale=0.75]{table2.png}
+\end{center}
+
+\begin{center}
+\centering \includegraphics[scale=0.75]{table3.png}
+\end{center}
+ 
 \begin{center}
 	\includegraphics[scale=0.75]{console_statistics.png}
+\end{center}
+
+\begin{center}
+	\includegraphics[scale=0.6]{result.png}
 \end{center}
 	
 \subsection{Logic package diagram}\label{lpdUML}
